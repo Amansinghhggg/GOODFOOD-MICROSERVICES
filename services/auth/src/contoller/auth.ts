@@ -1,9 +1,18 @@
 import jwt from 'jsonwebtoken';
 import {User} from '../model/User.js';
 import tryCatch from '../middleware/trycatch.js'
-
+import {oauth2Client} from '../config/googleConfig.js'
+import axios from 'axios';
 const login = tryCatch(async (req, res) => {
-    const { name, email, picture } = req.body;
+    const {code} = req.body
+    if(!code) return res.status(400).json({message:"Code is required"})
+    
+        const googleRes = await oauth2Client.getToken(code)
+        oauth2Client.setCredentials(googleRes.tokens)
+        const userRes = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`);
+
+    console.log( "google apu user data",userRes.data)
+    const { name, email, picture } = userRes.data;
     let user = await User.findOne({ email });
   if (!user) {
     user = await User.create({

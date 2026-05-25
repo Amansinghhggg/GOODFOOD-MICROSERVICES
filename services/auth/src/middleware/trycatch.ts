@@ -4,7 +4,8 @@ const tryCatch = (handler: RequestHandler): RequestHandler => {
         try {
             await handler(req, res, next);
         } catch (error: any) {
-            res.status(500).json({ error: error.message || 'Internal Server Error' });
+            console.error('Unhandled error in request handler:', error);
+            res.status(500).json({ error: error.message || 'Internal Server Error', stack: error.stack });
         }
     };
 };
