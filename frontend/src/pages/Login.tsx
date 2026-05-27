@@ -5,22 +5,23 @@ import { authService } from "../main";
 import toast from "react-hot-toast";
 import { useGoogleLogin } from "@react-oauth/google";
 import { FcGoogle } from "react-icons/fc";
+import { useAppContext } from "../context/context";
 const Login = () => {
   const[loading, setLoading] = useState(false)
   const navigate = useNavigate();
+  const { setUser, setIsAuth } = useAppContext();
   const responseGoogle = async (authResult: any) => {
     setLoading(true);
     try {
       const result = await axios.post(`${authService}/api/auth/login`, {
         code: authResult["code"]
       });
-      console.log(`result: `+JSON.stringify(result));
-      console.log(`token: `+result.data.token);
-      console.log(`result.user: `+ JSON.stringify(result.data.user));
       localStorage.setItem("token", result.data.token);
+      setUser(result.data.user);
+      setIsAuth(true);
       toast .success("Login successful");
       setLoading(false);
-      navigate("/home");
+      navigate(result.data.user?.role ? "/" : "/select-role", { replace: true });
     } catch (error) {
       console.log(error);
       setLoading(false);

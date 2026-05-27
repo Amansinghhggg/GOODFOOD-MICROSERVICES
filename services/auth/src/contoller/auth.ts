@@ -43,7 +43,7 @@ const addUserRole = tryCatch(async (req, res) => {
     const token = jwt.sign( {user}, process.env.JWT_SECRET as string, {
         expiresIn: '7d',
     });
-    res.status(200).json({message:"Role added successfully", user})
+    res.status(200).json({message:"Role added successfully", user, token})
 })
 
 const MyProfile = tryCatch(async (req, res) => {
@@ -53,6 +53,8 @@ const MyProfile = tryCatch(async (req, res) => {
     if(!user) return res.status(404).json({message:"User not found"})
     res.status(200).json({user})
 })
+
+
 
 
  
