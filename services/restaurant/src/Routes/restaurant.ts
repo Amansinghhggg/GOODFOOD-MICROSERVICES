@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post("/add",isAuth,isOwner,uploadFile,addRestaurant);
 router.get("/my",isAuth,isOwner,fetchMyRestaurant)
-router.post("/is-open", isAuth, isOwner, isOpenRestaurant);
-router.post("/edit", isAuth, isOwner, uploadFile, editRestaurant); 
+router.put("/is-open", isAuth, isOwner, isOpenRestaurant);
+router.put("/edit", isAuth, isOwner, uploadFile, editRestaurant); 
 export default router;

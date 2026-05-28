@@ -39,6 +39,7 @@ export const isOwner = async (req:AuthenticatedRequest,res:Response,next:NextFun
  const user = req.user
  if(user&&user.role !=="owner"){
     res.status(401).json({message:"you are not authorized owner"})
+    return;
  }
  next();
 }

@@ -31,6 +31,7 @@ export interface AppContextType {
 }
 
 export interface IRestaurant extends Document {
+    _id: string;
     name: string;
     description?: string;
     image: string;     

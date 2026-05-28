@@ -12,7 +12,6 @@ const reverseGeocode = tryCatch(async (req: Request, res: Response) => {
         headers: { 'User-Agent': 'GOODFOOD/1.0 (+https://example.com)' },
         timeout: 10000,
     });
-    console.log("Reverse geocode data:", data);
     res.status(200).json({ data });
 });
 

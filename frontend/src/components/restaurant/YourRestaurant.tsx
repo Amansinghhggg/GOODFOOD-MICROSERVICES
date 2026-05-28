@@ -3,6 +3,8 @@ import type { IRestaurant } from "../../types";
 import { Link } from "react-router-dom";
 import { Edit, MapPin, Phone } from "lucide-react";
 import toast from "react-hot-toast";
+import AddItems from "./addItems";
+import AllMenuItems from "./allMenuItems";
 
 type Props = {
   restaurant: IRestaurant;
@@ -15,20 +17,13 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
     restaurant.name || "Restaurant"
   )}&background=E23774&color=fff`;
 
+
   const formattedAddress = restaurant.autoLocation?.formattedAddress || "Address not available";
   const [isOpen, setIsOpen] = React.useState<boolean>(!!restaurant.isOpen);
-  const [active, setActive] = React.useState<"menu" | "add" | "sales">("menu");
-
-  // local menu state (not persisted) — shows existing items if backend provides `menu`
-  const initialMenu: any[] = (restaurant as any).menu || [];
-  const [menuItems, setMenuItems] = React.useState<any[]>(initialMenu);
-
-  // Add item form state
-  const [itemName, setItemName] = React.useState("");
-  const [itemPrice, setItemPrice] = React.useState<string>("");
-  const [itemDesc, setItemDesc] = React.useState("");
-  const [itemFile, setItemFile] = React.useState<File | null>(null);
-
+  const [active, setActive] = React.useState<"menu" | "add" | "sales">("menu"); 
+  function gotoMenu(){
+    setActive("menu");
+  }
   async function handleToggle() {
     const next = !isOpen;
     setIsOpen(next);
@@ -41,32 +36,7 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
     }
   }
 
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const f = e.target.files?.[0] ?? null;
-    setItemFile(f);
-  }
-
-  function handleAddItem(e: React.FormEvent) {
-    e.preventDefault();
-    if (!itemName || !itemPrice) {
-      toast.error("Name and price are required");
-      return;
-    }
-    const newItem = {
-      id: Date.now(),
-      name: itemName,
-      price: Number(itemPrice),
-      description: itemDesc,
-      image: itemFile ? URL.createObjectURL(itemFile) : null,
-    };
-    setMenuItems((m) => [newItem, ...m]);
-    setItemName("");
-    setItemPrice("");
-    setItemDesc("");
-    setItemFile(null);
-    toast.success("Item added (local)");
-    setActive("menu");
-  }
+ 
 
   return (
     <div className="w-full px-4 py-8 sm:px-6 lg:px-8">
@@ -75,7 +45,7 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
         <div className="bg-linear-to-r from-[#E23774] via-[#f65d95] to-[#ff8a5c] p-10 text-white">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
             <div className="flex items-center gap-6">
-              <div className="h-36 w-36 flex-shrink-0 overflow-hidden rounded-3xl border border-white/30 bg-white/10 shadow-lg">
+              <div className="h-36 w-36 shrink-0 overflow-hidden rounded-3xl border border-white/30 bg-white/10 shadow-lg">
                 <img src={image} alt={restaurant.name} className="h-full w-full object-cover" />
               </div>
 
@@ -90,7 +60,7 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
                 <div className="mt-4 flex flex-wrap items-center gap-4 text-sm">
                   <div className="inline-flex items-center gap-2">
                     <MapPin size={16} />
-                    <span className="truncate max-w-[36rem]">{formattedAddress}</span>
+                    <span className="truncate max-w-xl">{formattedAddress}</span>
                   </div>
                   <div className="inline-flex items-center gap-2">
                     <Phone size={16} />
@@ -134,46 +104,11 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
           </div>
 
           <div className="mt-6">
-            {active === "menu" && (
-              <div className="space-y-4">
-                {menuItems.length === 0 ? (
-                  <div className="rounded-2xl border border-dashed border-orange-100 bg-orange-50/40 p-6 text-center">
-                    <p className="font-medium text-slate-800">No menu items yet</p>
-                    <p className="mt-1 text-sm text-slate-500">Use the Add Item tab to create dishes.</p>
-                  </div>
-                ) : (
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {menuItems.map((it) => (
-                      <div key={it.id} className="flex items-center gap-4 rounded-2xl border bg-white p-4 shadow-sm">
-                        <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100">
-                          {it.image ? <img src={it.image} className="h-full w-full object-cover" /> : null}
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between">
-                            <h4 className="font-medium text-slate-900">{it.name}</h4>
-                            <div className="font-semibold text-slate-800">₹{it.price}</div>
-                          </div>
-                          <p className="mt-1 text-sm text-slate-500">{it.description}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-
             {active === "add" && (
-              <form onSubmit={handleAddItem} className="max-w-xl">
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <input value={itemName} onChange={(e) => setItemName(e.target.value)} placeholder="Item name" className="rounded-md border border-gray-200 px-3 py-2" />
-                  <input value={itemPrice} onChange={(e) => setItemPrice(e.target.value)} placeholder="Price" type="number" className="rounded-md border border-gray-200 px-3 py-2" />
-                </div>
-                <textarea value={itemDesc} onChange={(e) => setItemDesc(e.target.value)} placeholder="Description" className="mt-3 w-full rounded-md border border-gray-200 px-3 py-2" />
-                <input type="file" accept="image/*" onChange={handleFileChange} className="mt-3" />
-                <div className="mt-4">
-                  <button type="submit" className="inline-flex items-center gap-2 rounded-full bg-[#E23774] px-4 py-2 text-sm font-semibold text-white shadow">Add item</button>
-                </div>
-              </form>
+             <AddItems gotoMenu={gotoMenu} />
+            )}
+            {active === "menu" && (
+              <AllMenuItems restaurantId={restaurant._id} />
             )}
 
             {active === "sales" && (

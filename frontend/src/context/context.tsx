@@ -50,7 +50,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                     const { latitude, longitude } = position.coords;
                     const token = localStorage.getItem("token");
                     // Use backend proxy to avoid CORS issues
-                    console.log(`Fetching location data for lat: ${latitude}, lon: ${longitude}`);
                     const resp = await axios.get(`${authService}/api/geocode/reverse?lat=${latitude}&lon=${longitude}`, {
                         headers: {
                             Authorization: `Bearer ${token}`,
