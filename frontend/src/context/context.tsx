@@ -48,17 +48,22 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             async (position) => {
                 try {
                     const { latitude, longitude } = position.coords;
-                // Use backend proxy to avoid CORS issues
-                console.log(`Fetching location data for lat: ${latitude}, lon: ${longitude}`);
-                const resp = await axios.get(`${authService}/api/geocode/reverse?lat=${latitude}&lon=${longitude}`);
-                const data = resp.data?.data || resp.data;
-                setLocation({
-                    latitude,
-                    longitude,
-                    formattedAddress: data.display_name || "Current Location"
-                });
-                setcity(data.address?.city || data.address?.town || data.address?.village || data.address?.county || "Unknown City");
-                setloadingLocation(false);
+                    const token = localStorage.getItem("token");
+                    // Use backend proxy to avoid CORS issues
+                    console.log(`Fetching location data for lat: ${latitude}, lon: ${longitude}`);
+                    const resp = await axios.get(`${authService}/api/geocode/reverse?lat=${latitude}&lon=${longitude}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    const data = resp.data?.data || resp.data;
+                    setLocation({
+                        latitude,
+                        longitude,
+                        formattedAddress: data.display_name || "Current Location"
+                    });
+                    setcity(data.address?.city || data.address?.town || data.address?.village || data.address?.county || "Unknown City");
+                    setloadingLocation(false);
                 } catch (error) {
                     setLocation({
                         latitude: position.coords.latitude,

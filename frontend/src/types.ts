@@ -29,3 +29,19 @@ export interface AppContextType {
     city: string;
     setcity: React.Dispatch<React.SetStateAction<string>>;
 }
+
+export interface IRestaurant extends Document {
+    name: string;
+    description?: string;
+    image: string;     
+    owner: string;
+    phone : number;
+    isVerified: boolean;
+    autoLocation: {
+        type:"Point",
+        coordinates:[number,number];
+        formattedAddress:String;
+    }
+    isOpen: boolean;
+    createdAt: Date;
+}

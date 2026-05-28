@@ -4,7 +4,8 @@ import { ShoppingCart, User, Search, ChevronRight, MapPin } from "lucide-react";
 import { useAppContext } from "../context/context";
 
 const Navbar = () => {
-  const { isAuth, city, loadingLocation } = useAppContext();
+  const { isAuth, city, loadingLocation ,  user } = useAppContext();
+  console.log("Navbar user:", user?.role);
   const location = useLocation();
   const isHomepage = location.pathname === "/";
 
@@ -22,7 +23,7 @@ const Navbar = () => {
 
     return () => clearTimeout(timer);
   }, [search, setSearchParams]);
-  if(location.pathname === "/login" || location.pathname === "/select-role") {
+  if (location.pathname === "/login" || location.pathname === "/select-role" || user?.role === "owner") {
     return null
   }
   return (

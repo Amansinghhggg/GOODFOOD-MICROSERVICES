@@ -7,7 +7,24 @@ import ProtectedRoute from "./components/protectedRoute";
 import SelectRoles from "./pages/select-roles";
 import Navbar from "./components/Navbar";
 import Account from "./components/Account";
+import { useAppContext } from "./context/context";
+import Restaurant from "./pages/restaurant";
+import EditRestaurant from "./components/restaurant/editrestauran";
 function App() {
+  const { user } = useAppContext();
+
+  if(user?.role === "owner") {
+    return (
+    <BrowserRouter>
+    <Routes >
+      <Route></Route>
+      <Route path="/edit-restaurant" element={<EditRestaurant />} />
+      <Route path="/" element={<Restaurant />} />
+    </Routes>
+    <Toaster />
+    </BrowserRouter>
+    )
+  }
   return (
     <BrowserRouter>
       {/* {user?.role && <Navbar />} */}

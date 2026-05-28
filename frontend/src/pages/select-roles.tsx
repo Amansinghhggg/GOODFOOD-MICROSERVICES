@@ -9,8 +9,10 @@ import {
     FaStore,
     FaCheck,
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const SelectRoles = () => {
+    const navigate = useNavigate();
     const [role, setRole] = useState("");
    const {setUser} =useAppContext();
    const handleSubmit = async (e: React.FormEvent) => {
@@ -25,6 +27,7 @@ const SelectRoles = () => {
         setUser(data.user);
         localStorage.setItem("token", data.token);
         toast.success("Role set successfully");
+        navigate("/");
 
     } catch (error) {
         toast.error("Failed to set role. Please try again.");
