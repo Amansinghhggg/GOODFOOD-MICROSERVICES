@@ -2,11 +2,19 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { restaurantService } from "../../main";
 import toast from "react-hot-toast";
-import { Trash2, ToggleLeft, ToggleRight } from "lucide-react";
+import { Edit2, Trash2, ToggleLeft, ToggleRight, X, Divide, ShoppingCart } from "lucide-react";
+import { useAppContext } from "../../context/context";
 
-const AllMenuItems = ({ restaurantId }: { restaurantId: string }) => {
+const AllMenuItems = ({ restaurantId, restaurantOwner }: { restaurantId: string; restaurantOwner: string }) => {
     const [menuItems, setMenuItems] = React.useState<any[]>([]);
-
+  const [editingItem, setEditingItem] = React.useState<any | null>(null);
+  const [editName, setEditName] = React.useState("");
+  const [editPrice, setEditPrice] = React.useState<string>("");
+  const [editDesc, setEditDesc] = React.useState("");
+  const [editFile, setEditFile] = React.useState<File | null>(null);
+  const [savingEdit, setSavingEdit] = React.useState(false);
+  const { user } = useAppContext();
+  const isOwner = user?._id === restaurantOwner;
     async function fetchMenuItems() {
         try {
             const {data} = await axios.get(`${restaurantService}/api/menu/all/${restaurantId}`, {
@@ -66,6 +74,59 @@ const AllMenuItems = ({ restaurantId }: { restaurantId: string }) => {
     }
   }
 
+  function startEdit(item: any) {
+    setEditingItem(item);
+    setEditName(item.name || "");
+    setEditPrice(String(item.price ?? ""));
+    setEditDesc(item.description || "");
+    setEditFile(null);
+  }
+
+  function closeEdit() {
+    setEditingItem(null);
+    setEditName("");
+    setEditPrice("");
+    setEditDesc("");
+    setEditFile(null);
+  }
+
+  async function saveEdit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!editingItem) return;
+
+    setSavingEdit(true);
+    const formData = new FormData();
+    formData.append("name", editName);
+    formData.append("price", editPrice);
+    formData.append("description", editDesc);
+    if (editFile) {
+      formData.append("file", editFile);
+    }
+
+    try {
+      const { data } = await axios.put(
+        `${restaurantService}/api/menu/edit/${editingItem._id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setMenuItems((prev) =>
+        prev.map((item) => (item._id === editingItem._id ? data?.menuItem ?? item : item))
+      );
+      toast.success("Item updated");
+      closeEdit();
+    } catch (err) {
+      console.error("Failed to update item", err);
+      toast.error("Failed to update item");
+    } finally {
+      setSavingEdit(false);
+    }
+  }
+
     useEffect(() => {
     if (restaurantId) {
       fetchMenuItems();
@@ -114,7 +175,16 @@ const AllMenuItems = ({ restaurantId }: { restaurantId: string }) => {
                               </div>
                             </div>
                           </div>
+                            {isOwner?(
                           <div className="mt-3 flex flex-wrap gap-2">
+                            <button
+                              type="button"
+                              onClick={() => startEdit(it)}
+                              className="inline-flex items-center gap-2 rounded-full border border-sky-200 px-3 py-1.5 text-sm font-medium text-sky-700 hover:bg-sky-50"
+                            >
+                              <Edit2 size={16} />
+                              Edit
+                            </button>
                             <button
                               type="button"
                               onClick={() => toggleAvailability(it._id)}
@@ -132,7 +202,79 @@ const AllMenuItems = ({ restaurantId }: { restaurantId: string }) => {
                               Delete
                             </button>
                           </div>
+                            ):(<button
+                              type="button"
+                              onClick={() => toast.error("Only restaurant owner can add items to cart")}
+                              className="flex h-full w-full items-center justify-center text-red-400"
+                              aria-label={`Add ${it.name} to cart`}
+                            >
+                              <ShoppingCart size={20} />
+                            </button>)}
                         </div>
+
+                  {editingItem ? (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+                      <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl">
+                        <div className="flex items-center justify-between gap-4">
+                          <div>
+                            <h3 className="text-lg font-semibold text-slate-900">Edit menu item</h3>
+                            <p className="text-sm text-slate-500">Update the item details and save changes.</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={closeEdit}
+                            className="rounded-full p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+                          >
+                            <X size={18} />
+                          </button>
+                        </div>
+
+                        <form onSubmit={saveEdit} className="mt-5 space-y-3">
+                          <input
+                            value={editName}
+                            onChange={(e) => setEditName(e.target.value)}
+                            placeholder="Item name"
+                            className="w-full rounded-md border border-gray-200 px-3 py-2"
+                          />
+                          <input
+                            value={editPrice}
+                            onChange={(e) => setEditPrice(e.target.value)}
+                            placeholder="Price"
+                            type="number"
+                            className="w-full rounded-md border border-gray-200 px-3 py-2"
+                          />
+                          <textarea
+                            value={editDesc}
+                            onChange={(e) => setEditDesc(e.target.value)}
+                            placeholder="Description"
+                            className="w-full rounded-md border border-gray-200 px-3 py-2"
+                          />
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => setEditFile(e.target.files?.[0] ?? null)}
+                            className="w-full"
+                          />
+                          <div className="flex justify-end gap-3 pt-2">
+                            <button
+                              type="button"
+                              onClick={closeEdit}
+                              className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              type="submit"
+                              disabled={savingEdit}
+                              className="rounded-full bg-[#E23774] px-4 py-2 text-sm font-semibold text-white shadow disabled:cursor-not-allowed disabled:opacity-70"
+                            >
+                              {savingEdit ? "Saving..." : "Save changes"}
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  ) : null}
                       </div>
                       
                     ))}

@@ -5,7 +5,6 @@ import { useAppContext } from "../context/context";
 
 const Navbar = () => {
   const { isAuth, city, loadingLocation ,  user } = useAppContext();
-  console.log("Navbar user:", user?.role);
   const location = useLocation();
   const isHomepage = location.pathname === "/";
 

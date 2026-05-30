@@ -1,7 +1,7 @@
 import {BrowserRouter , Routes , Route} from "react-router-dom"
 import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Login from "./pages/GoogleLogin";
 import PublicRoute from "./components/publicRoute";
 import ProtectedRoute from "./components/protectedRoute";
 import SelectRoles from "./pages/select-roles";
@@ -10,6 +10,7 @@ import Account from "./components/Account";
 import { useAppContext } from "./context/context";
 import Restaurant from "./pages/restaurant";
 import EditRestaurant from "./components/restaurant/editrestauran";
+import CustomerResView from "./components/restaurant/customerResView";
 function App() {
   const { user } = useAppContext();
 
@@ -37,6 +38,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/account" element={<Account />} />
         <Route path="/select-role" element={<SelectRoles />} />
+        <Route path="/restaurant/:id" element={<CustomerResView/>} />
         </Route>
       </Routes>
       <Toaster />

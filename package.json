@@ -1,0 +1,28 @@
+{
+  "name": "goodfood",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Amansinghhggg/GOODFOOD-MICROSERVICES#readme",
+  "bugs": {
+    "url": "https://github.com/Amansinghhggg/GOODFOOD-MICROSERVICES/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amansinghhggg/GOODFOOD-MICROSERVICES.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "frontend": "cd frontend && npm run dev",
+    "auth": "cd services/auth && npm run dev",
+    "restaurant": "cd services/restaurant && npm run dev",
+    "utils": "cd services/utils && npm run dev",
+    "dev": "concurrently \"npm:frontend\" \"npm:auth\" \"npm:restaurant\" \"npm:utils\"",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "concurrently": "^10.0.0"
+  }
+}

@@ -1,7 +1,8 @@
 import React from "react";
 import type { IRestaurant } from "../../types";
-import { Link } from "react-router-dom";
-import { Edit, MapPin, Phone } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Edit, MapPin, Phone, LogOut } from "lucide-react";
+import { useAppContext } from "../../context/context";
 import toast from "react-hot-toast";
 import AddItems from "./addItems";
 import AllMenuItems from "./allMenuItems";
@@ -34,6 +35,17 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
       setIsOpen(!next);
       toast.error("Failed to update status");
     }
+  }
+
+  const { setIsAuth, setUser } = useAppContext();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    setIsAuth(false);
+    setUser(null);
+    navigate("/login", { replace: true });
+    toast.success("Logged out successfully");
   }
 
  
@@ -75,6 +87,9 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
                   <button onClick={handleToggle} className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${isOpen ? "bg-white text-[#E23774]" : "bg-emerald-500 text-white"}`}>
                     {isOpen ? "Set Closed" : "Set Open"}
                   </button>
+                  <button onClick={handleLogout} className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#E23774]">
+                    <LogOut size={16} /> Logout
+                  </button>
                 </div>
               </div>
             </div>
@@ -108,7 +123,7 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
              <AddItems gotoMenu={gotoMenu} />
             )}
             {active === "menu" && (
-              <AllMenuItems restaurantId={restaurant._id} />
+              <AllMenuItems restaurantId={restaurant._id} restaurantOwner={restaurant.owner} />
             )}
 
             {active === "sales" && (
