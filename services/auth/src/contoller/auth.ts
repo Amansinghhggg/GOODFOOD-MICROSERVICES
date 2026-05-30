@@ -3,6 +3,7 @@ import {User} from '../model/User.js';
 import tryCatch from '../middleware/trycatch.js'
 import {oauth2Client} from '../config/googleConfig.js'
 import axios from 'axios';
+import bcrypt from 'bcrypt'
 const login = tryCatch(async (req, res) => {
     const {code} = req.body
     if(!code) return res.status(400).json({message:"Code is required"})
@@ -53,12 +54,43 @@ const MyProfile = tryCatch(async (req, res) => {
     if(!user) return res.status(404).json({message:"User not found"})
     res.status(200).json({user})
 })
+const createUser = tryCatch(async (req, res) => {
+   const { name, email, password } = req.body;
+   if (!name || !email || !password) {
+       return res.status(400).json({ message: "Name, email and password are required" });
+   }
+   const existingUser = await User.findOne({ email });
+   if (existingUser) {
+       return res.status(400).json({ message: "User already exists" });
+   }
+   const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ name, email, password: hashedPassword } as any);
+   const token = jwt.sign({ user }, process.env.JWT_SECRET as string, {
+        expiresIn: '7d',
+    });
+   res.status(201).json({ message: "User created successfully", user, token });
+});
 
+const userLogin = tryCatch(async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required" });
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(400).json({ message: "Invalid email or password" });
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        return res.status(400).json({ message: "Invalid email or password" });
+    }
+    const token = jwt.sign({ user }, process.env.JWT_SECRET as string, {
+        expiresIn: '7d',
+    });
+    res.status(200).json({ message: "Login successful", token, user });
+});
 
-
-
- 
-export  { login, addUserRole, MyProfile }
+export  { login, addUserRole, MyProfile, createUser, userLogin }
 
 
 

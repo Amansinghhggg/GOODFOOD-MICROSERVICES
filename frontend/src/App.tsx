@@ -1,7 +1,7 @@
 import {BrowserRouter , Routes , Route} from "react-router-dom"
 import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
-import Login from "./pages/GoogleLogin";
+import Login from "./pages/Login";
 import PublicRoute from "./components/publicRoute";
 import ProtectedRoute from "./components/protectedRoute";
 import SelectRoles from "./pages/select-roles";

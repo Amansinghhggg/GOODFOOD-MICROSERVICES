@@ -39,7 +39,7 @@ const Restaurant = () => {
     if (restaurant) {
         const handleToggle = async (open: boolean) => {
             try {
-                await axios.post(`${restaurantService}/api/restaurant/is-open`, {}, {
+                await axios.put(`${restaurantService}/api/restaurant/is-open`, { }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
                 });
                 await fetchRestaurant();
