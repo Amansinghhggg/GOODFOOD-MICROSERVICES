@@ -35,10 +35,6 @@ const Navbar = () => {
           >
             <span className="text-lg font-extrabold tracking-[0.2em]">GOODFOOD</span>
           </Link>
-
-          <span className="hidden items-center gap-2 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-[#C2410C] sm:flex lg:hidden">
-            Fresh picks <ChevronRight size={14} />
-          </span>
         </div>
 
         <div className="flex flex-1 items-center rounded-full border border-orange-200 bg-white/90 px-4 py-3 shadow-sm shadow-orange-100 transition focus-within:border-[#E23774] focus-within:ring-2 focus-within:ring-[#E23774]/15">

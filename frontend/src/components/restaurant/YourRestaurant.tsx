@@ -58,36 +58,64 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
             <div className="flex items-center gap-6">
               <div className="h-36 w-36 shrink-0 overflow-hidden rounded-3xl border border-white/30 bg-white/10 shadow-lg">
-                <img src={image} alt={restaurant.name} className="h-full w-full object-cover" />
+                <img
+                  src={image}
+                  alt={restaurant.name}
+                  className="h-full w-full object-cover"
+                />
               </div>
 
               <div>
-                <h1 className="text-3xl font-extrabold">{restaurant.name}&nbsp;&nbsp;
-                    <div className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ${isOpen ? "bg-emerald-500 " : "bg-gray-500 text-white"}`}>
+                <h1 className="text-3xl font-extrabold">
+                  {restaurant.name}&nbsp;&nbsp;
+                  <div
+                    className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ${isOpen ? "bg-emerald-500 " : "bg-gray-500 text-white"}`}
+                  >
                     {isOpen ? "Open" : "Closed"}
                   </div>
                 </h1>
-                 
-                <p className="mt-2 max-w-xl text-sm text-white/90">{restaurant.description || "No description provided."}</p>
+
+                <p className="mt-2 max-w-xl text-sm text-white/90">
+                  {restaurant.description || "No description provided."}
+                </p>
                 <div className="mt-4 flex flex-wrap items-center gap-4 text-sm">
                   <div className="inline-flex items-center gap-2">
                     <MapPin size={16} />
-                    <span className="truncate max-w-xl">{formattedAddress}</span>
+                    <span className="truncate max-w-xl">
+                      {formattedAddress}
+                    </span>
                   </div>
-                  <div className="inline-flex items-center gap-2">
+                  <div className="inline-flex items-center gap-3 rounded-2xl border border-white/25 bg-white/10 px-3 py-2 backdrop-blur-sm">
                     <Phone size={16} />
-                    <span>{restaurant.phone}</span>
+                    <div className="flex flex-col leading-tight">
+                      <span className="text-[11px] uppercase tracking-[0.22em] text-white/70">Phone</span>
+                      <a
+                        href={`tel:+91${String(restaurant.phone)}`}
+                        className="inline-flex items-center font-bold text-white underline decoration-white/60 underline-offset-4 transition hover:text-orange-100"
+                        aria-label={`Call ${restaurant.name} at ${restaurant.phone}`}
+                      >
+                        +91 {restaurant.phone}
+                      </a>
+                    </div>
                   </div>
-                 
                 </div>
                 <div className="mt-4 flex items-center gap-3">
-                  <Link to="/edit-restaurant" className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-medium text-white">
+                  <Link
+                    to="/edit-restaurant"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-medium text-white"
+                  >
                     <Edit size={16} /> Edit
                   </Link>
-                  <button onClick={handleToggle} className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${isOpen ? "bg-white text-[#E23774]" : "bg-emerald-500 text-white"}`}>
+                  <button
+                    onClick={handleToggle}
+                    className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${isOpen ? "bg-white text-[#E23774]" : "bg-emerald-500 text-white"}`}
+                  >
                     {isOpen ? "Set Closed" : "Set Open"}
                   </button>
-                  <button onClick={handleLogout} className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#E23774]">
+                  <button
+                    onClick={handleLogout}
+                    className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#E23774]"
+                  >
                     <LogOut size={16} /> Logout
                   </button>
                 </div>
@@ -95,8 +123,12 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
             </div>
 
             <div className="mt-6 lg:mt-0 lg:ml-auto text-sm text-white/90">
-              <div>Created: {new Date(restaurant.createdAt).toLocaleDateString()}</div>
-              <div className="mt-2">OwnerId: {(restaurant as any).owner || "-"}</div>
+              <div>
+                Created: {new Date(restaurant.createdAt).toLocaleDateString()}
+              </div>
+              <div className="mt-2">
+                OwnerId: {(restaurant as any).owner || "-"}
+              </div>
             </div>
           </div>
         </div>
@@ -105,13 +137,22 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
         <div className="border-t border-orange-100 bg-white p-6">
           <div className="flex items-center justify-between">
             <div className="flex gap-2">
-              <button onClick={() => setActive("menu")} className={`px-4 py-2 rounded-md text-sm font-medium ${active === "menu" ? "bg-[#E23774] text-white" : "bg-slate-50 text-slate-700"}`}>
+              <button
+                onClick={() => setActive("menu")}
+                className={`px-4 py-2 rounded-md text-sm font-medium ${active === "menu" ? "bg-[#E23774] text-white" : "bg-slate-50 text-slate-700"}`}
+              >
                 Menu
               </button>
-              <button onClick={() => setActive("add")} className={`px-4 py-2 rounded-md text-sm font-medium ${active === "add" ? "bg-[#E23774] text-white" : "bg-slate-50 text-slate-700"}`}>
+              <button
+                onClick={() => setActive("add")}
+                className={`px-4 py-2 rounded-md text-sm font-medium ${active === "add" ? "bg-[#E23774] text-white" : "bg-slate-50 text-slate-700"}`}
+              >
                 Add Item
               </button>
-              <button onClick={() => setActive("sales")} className={`px-4 py-2 rounded-md text-sm font-medium ${active === "sales" ? "bg-[#E23774] text-white" : "bg-slate-50 text-slate-700"}`}>
+              <button
+                onClick={() => setActive("sales")}
+                className={`px-4 py-2 rounded-md text-sm font-medium ${active === "sales" ? "bg-[#E23774] text-white" : "bg-slate-50 text-slate-700"}`}
+              >
                 Sales
               </button>
             </div>
@@ -119,22 +160,33 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
           </div>
 
           <div className="mt-6">
-            {active === "add" && (
-             <AddItems gotoMenu={gotoMenu} />
-            )}
+            {active === "add" && <AddItems gotoMenu={gotoMenu} />}
             {active === "menu" && (
-              <AllMenuItems restaurantId={restaurant._id} restaurantOwner={restaurant.owner} />
+              <AllMenuItems
+                restaurantId={restaurant._id}
+                restaurantOwner={restaurant.owner}
+              />
             )}
 
             {active === "sales" && (
               <div className="space-y-4">
                 <div className="rounded-2xl border bg-white p-6 shadow-sm">
                   <h4 className="font-bold text-slate-900">Sales Summary</h4>
-                  <p className="mt-2 text-sm text-slate-500">No sales data available yet.</p>
+                  <p className="mt-2 text-sm text-slate-500">
+                    No sales data available yet.
+                  </p>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="rounded-2xl border bg-white p-4 text-center">Orders<br/><span className="text-2xl font-bold">0</span></div>
-                  <div className="rounded-2xl border bg-white p-4 text-center">Revenue<br/><span className="text-2xl font-bold">₹0</span></div>
+                  <div className="rounded-2xl border bg-white p-4 text-center">
+                    Orders
+                    <br />
+                    <span className="text-2xl font-bold">0</span>
+                  </div>
+                  <div className="rounded-2xl border bg-white p-4 text-center">
+                    Revenue
+                    <br />
+                    <span className="text-2xl font-bold">₹0</span>
+                  </div>
                 </div>
               </div>
             )}

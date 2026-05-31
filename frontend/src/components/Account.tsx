@@ -1,12 +1,21 @@
 import { useAppContext } from "../context/context";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { ArrowRight, Home, Mail, Package, ShieldCheck, LogOut, MapPin, User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { restaurantService } from "../main";
+import axios from "axios";
+
+type Address = {
+  _id: string;
+  mobile: number;
+  formattedAddress: string;
+};
 
 const Account = () => {
   const { setIsAuth, setUser, user, location, city } = useAppContext();
   const navigate = useNavigate();
-
+  const [address, setAddress] = useState<Address[]>([]);
   function handleLogout() {
     localStorage.removeItem("token");
     setIsAuth(false);
@@ -31,6 +40,22 @@ const Account = () => {
 
   const avatar = user.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=E23774&color=fff`;
   const primaryAddress = location?.formattedAddress || city;
+  async function fetchAddress(){
+    try {
+      const {data} = await axios.get(`${restaurantService}/api/address/all`,{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      });
+      setAddress(Array.isArray(data?.addresses) ? data.addresses : []);
+    } catch (error) {
+      console.error("Error fetching addresses:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchAddress();
+  }, []);
 
   return (
   <div className="mx-auto min-h-[70vh] max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
@@ -139,22 +164,31 @@ const Account = () => {
                   <p className="text-sm text-slate-500">Manage your delivery address details.</p>
                 </div>
               </div>
-              <ArrowRight size={18} className="text-slate-400" />
             </div>
+           
+                           {address.length === 0 ? (
+                  <div className="mt-3 rounded-2xl border border-dashed border-orange-200 bg-white p-4 text-sm text-slate-500">
+                    No saved address.
+                  </div>
+                ) : (
+                  <div className="mt-3 space-y-3">
+                    {address.map((addr) => (
+                      <div
+                        key={addr._id}
+                        className="rounded-2xl border border-white bg-white p-4 shadow-sm"
+                      >
+                        <p className="text-sm font-medium text-slate-900">{addr.formattedAddress}</p>
+                        <p className="mt-1 text-xs text-slate-500">Mobile: {addr.mobile}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+            
 
-            <div className="mt-5 rounded-2xl border border-orange-100 bg-orange-50/50 p-4">
-              <div className="flex items-start gap-3">
-                <MapPin size={18} className="mt-0.5 text-[#E23774]" />
-                <div>
-                  <p className="font-medium text-slate-900">Primary location</p>
-                  <p className="mt-1 text-sm text-slate-600">{primaryAddress}</p>
-                </div>
-              </div>
-            </div>
-
-            <button className="mt-4 inline-flex items-center gap-2 rounded-full border border-orange-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-[#E23774] hover:text-[#E23774]">
+            <Link to="/AddAddress" className="mt-4 inline-flex items-center gap-2 rounded-full border border-orange-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-[#E23774] hover:text-[#E23774]">
               Add new address
-            </button>
+            </Link>
           </div>
         </div>
       </div>
