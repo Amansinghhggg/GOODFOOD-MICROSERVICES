@@ -37,7 +37,7 @@ const Restaurant = () => {
         return <CreateRestaurant/>
     }
     if (restaurant) {
-        const handleToggle = async (open: boolean) => {
+        const handleToggle = async () => {
             try {
                 await axios.put(`${restaurantService}/api/restaurant/is-open`, { }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }

@@ -13,7 +13,7 @@ const AllMenuItems = ({ restaurantId, restaurantOwner }: { restaurantId: string;
   const [editDesc, setEditDesc] = React.useState("");
   const [editFile, setEditFile] = React.useState<File | null>(null);
   const [savingEdit, setSavingEdit] = React.useState(false);
-  const { user } = useAppContext();
+  const { user,fetchCart } = useAppContext();
   const isOwner = user?._id === restaurantOwner;
     async function fetchMenuItems() {
         try {
@@ -133,6 +133,24 @@ const AllMenuItems = ({ restaurantId, restaurantOwner }: { restaurantId: string;
     }
   }, [restaurantId]);
 
+  async function addtocart(itemId: string) {
+    console.log("Adding to cart:", itemId, restaurantId);
+    try {
+      await axios.post(`${restaurantService}/api/cart/add`, { itemsId: itemId,
+    restaurantId}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      toast.success("Item added to cart");
+      await fetchCart();
+    } catch (error: any) {
+      console.error("Failed to add item to cart", error);
+      toast.error(`${error.response?.data?.message || "Failed to add item to cart"}`);
+    }
+  }
+
+
   return( <div>
               <div className="space-y-4">
                 {menuItems.length === 0 ? (
@@ -204,7 +222,7 @@ const AllMenuItems = ({ restaurantId, restaurantOwner }: { restaurantId: string;
                           </div>
                             ):(<button
                               type="button"
-                              onClick={() => toast.error("Only restaurant owner can add items to cart")}
+                              onClick={() => addtocart(it._id)}
                               className="flex h-full w-full items-center justify-center text-red-400"
                               aria-label={`Add ${it.name} to cart`}
                             >

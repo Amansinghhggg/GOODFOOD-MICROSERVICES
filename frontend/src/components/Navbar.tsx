@@ -4,13 +4,13 @@ import { ShoppingCart, User, Search, ChevronRight, MapPin } from "lucide-react";
 import { useAppContext } from "../context/context";
 
 const Navbar = () => {
-  const { isAuth, city, loadingLocation ,  user } = useAppContext();
+  const { isAuth, city, loadingLocation ,  user,quantity} = useAppContext();
   const location = useLocation();
   const isHomepage = location.pathname === "/";
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState(searchParams.get("search") || "");
-
+  console.log("quantity in navbar:", quantity);
   useEffect(() => {
     const timer = setTimeout(() => {
       if (search) {
@@ -61,13 +61,15 @@ const Navbar = () => {
         <div className="flex items-center justify-end gap-3 lg:shrink-0">
           <Link
             to="/cart"
-            className="relative flex h-11 w-11 items-center justify-center rounded-full border border-orange-200 bg-white text-slate-700 transition hover:-translate-y-0.5 hover:border-[#E23774] hover:text-[#E23774]"
+            className="relative flex h-11 w-11 items-center justify-center overflow-visible rounded-full border border-orange-200 bg-white text-slate-700 transition hover:-translate-y-0.5 hover:border-[#E23774] hover:text-[#E23774]"
             aria-label="Cart"
           >
             <ShoppingCart size={18} />
-            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#E23774] text-[10px] font-bold text-white">
-              2
-            </span>
+            {quantity > 0 && (
+              <span className="absolute -right-1 -top-1 z-10 flex min-h-5 min-w-5 items-center justify-center rounded-full bg-[#E23774] px-1 text-[10px] font-bold leading-none text-white shadow-md shadow-[#E23774]/25">
+                {quantity}
+              </span>
+            )}
           </Link>
 
           {isAuth ? (

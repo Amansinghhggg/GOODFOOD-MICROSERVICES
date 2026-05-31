@@ -1,8 +1,8 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { authService } from "../main";
-import type { AppContextType, LocationData, User } from "../types";
+import { authService, restaurantService } from "../main";
+import { type ICart, type AppContextType, type LocationData, type User } from "../types";
 import toast from "react-hot-toast";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -82,6 +82,29 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         );
         
     }, []);
+     const [cart, setcart] = useState<ICart[]| null>([]);
+     const [subtotal, setsubtotal] = useState(0);
+     const [quantity, setquantity] = useState(0);
+    async function fetchCart() {
+    try {
+        const {data} = await axios.get(`${restaurantService}/api/cart/all`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        });
+        console.log("Cart data fetched:", data);
+        setcart(data.cart);
+        setsubtotal(data.subtotal);
+        setquantity(data.cartlength);
+    } catch (error) {
+        console.log("Error fetching cart:", error);
+    }
+    }
+    useEffect(() => {
+        if (user&& user.role === "customer") {
+            fetchCart();
+        }
+    }, [user]);
 
     return (
         <AppContext.Provider
@@ -99,7 +122,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                 setloadingLocation,
                 city,
                 setcity,
-            }}
+                cart,
+                fetchCart,
+                subtotal,
+                quantity,
+            } as AppContextType}
         >
             {children}
         </AppContext.Provider>

@@ -26,7 +26,6 @@ export default function Home() {
                     },
                 });
                 const data = response.data;
-                console.log("Fetched restaurants:", data);
                 if (data.success) {
                     setRestaurants(data.restaurants);
                 }

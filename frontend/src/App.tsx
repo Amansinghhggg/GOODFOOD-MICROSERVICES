@@ -11,6 +11,7 @@ import { useAppContext } from "./context/context";
 import Restaurant from "./pages/restaurant";
 import EditRestaurant from "./components/restaurant/editrestauran";
 import CustomerResView from "./components/restaurant/customerResView";
+import Cart from "./pages/Cart";
 function App() {
   const { user } = useAppContext();
 
@@ -39,6 +40,7 @@ function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/select-role" element={<SelectRoles />} />
         <Route path="/restaurant/:id" element={<CustomerResView/>} />
+        <Route path="/cart" element={<Cart />} />
         </Route>
       </Routes>
       <Toaster />
