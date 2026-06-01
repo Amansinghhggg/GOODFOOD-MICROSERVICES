@@ -13,6 +13,7 @@ import EditRestaurant from "./components/restaurant/editrestauran";
 import CustomerResView from "./components/restaurant/customerResView";
 import Cart from "./pages/Cart";
 import AddAddress from "./components/restaurant/AddAddress";
+import Checkout from "./pages/checkout";
 function App() {
   const { user } = useAppContext();
 
@@ -39,6 +40,7 @@ function App() {
         <Route element={<ProtectedRoute/>}>
         <Route path="/" element={<Home />} />
         <Route path="/AddAddress" element={<AddAddress/>} />
+        <Route path="/checkout" element={<Checkout/>} />
         <Route path="/account" element={<Account />} />
         <Route path="/select-role" element={<SelectRoles />} />
         <Route path="/restaurant/:id" element={<CustomerResView/>} />

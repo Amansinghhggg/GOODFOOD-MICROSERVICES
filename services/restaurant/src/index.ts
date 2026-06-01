@@ -4,6 +4,7 @@ import restaurantRoutes from "./Routes/restaurant.js";
 import menuItemRoutes from "./Routes/menuItems.js";
 import cartRoutes from "./Routes/cart.js";
 import addressRoutes from "./Routes/address.js";
+import orderRoutes from "./Routes/order.js";
 import cors from "cors";
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.use("/api/restaurant",restaurantRoutes);
 app.use("/api/menu",menuItemRoutes);
 app.use("/api/cart",cartRoutes);
 app.use("/api/address",addressRoutes);
+app.use("/api/order",orderRoutes);
     app.listen(port, () => {
         connectDB();
         console.log(`Restaurant service is running on port ${port}`);

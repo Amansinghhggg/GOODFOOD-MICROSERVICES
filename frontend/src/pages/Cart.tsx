@@ -217,13 +217,14 @@ const Cart = () => {
                 <p className="mt-2 text-sm leading-6 text-white/85">
                   This panel is styled to fit a later checkout action, but it intentionally stays read-only for now.
                 </p>
-                <button
+                <Link
+                  to="/checkout"
                   type="button"
                   className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-[#E23774] shadow-lg shadow-black/10 transition hover:-translate-y-0.5"
                 >
                   Checkout preview
                   <ArrowRight size={16} />
-                </button>
+                </Link>
               </div>
             </aside>
           </div>
