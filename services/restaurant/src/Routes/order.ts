@@ -4,6 +4,6 @@ import { createOrder, fetchOrders } from "../controller/order.js";
 const router = express.Router();
 
 router.post("/new",isAuth,createOrder);
-router.get("/payment",fetchOrders);
+router.get("/payment/:id",fetchOrders);
 
 export default router;

@@ -3,10 +3,15 @@ import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
 import cors from 'cors';
 import upload from './routes/cloudinary';
+import { connectRabbitMQ } from './config/rabbitmq';
+import paymentRoutes from './routes/payment';
 
 dotenv.config();
 
-
+connectRabbitMQ().catch(err => {
+    console.error('Failed to connect to RabbitMQ:', err);
+    process.exit(1);
+});
 const app = express();
 app.use(cors());
 app.use(express.json({limit: '10mb'}));
@@ -24,6 +29,7 @@ cloudinary.v2.config({
     api_secret: CLOUDINARY_API_SECRET
 })
 app.use("/api/cloudinary", upload);
+app.use("/api/payment", paymentRoutes);
 app.listen(PORT,()=>{
     console.log(`utils is running on ${PORT}`)
 })

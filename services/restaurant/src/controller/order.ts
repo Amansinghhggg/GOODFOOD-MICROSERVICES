@@ -17,11 +17,14 @@ export const createOrder = tryCatch(async (req: AuthenticatedRequest, res) => {
     if(!addressId){
         return res.status(400).json({ message: "Address is required" });
     }
+    if(typeof distance !== "number" || Number.isNaN(distance) || distance < 0){
+        return res.status(400).json({ message: "Distance is required" });
+    }
     const Address = await address.findById(addressId);
     if(!Address){
         return res.status(404).json({ message: "Address not found" });
     }
-    const cartItems = await Cart.find({ userId: user._id }).populate<{itemId: IMenuItem}>("itemId").populate("restaurantId");
+    const cartItems = await Cart.find({ userId: user._id }).populate<{itemsId: IMenuItem}>("itemsId").populate("restaurantId");
     if(cartItems.length === 0){
         return res.status(400).json({ message: "Cart is empty" });
     }
@@ -38,10 +41,10 @@ export const createOrder = tryCatch(async (req: AuthenticatedRequest, res) => {
     }
     let subtotal = 0;
     const items = cartItems.map(cartItem => {
-        if(!cartItem.itemId){
+        if(!cartItem.itemsId){
             throw new Error("Invalid cart item");
         }
-        const item = cartItem.itemId ;
+        const item = cartItem.itemsId;
         const itemTotal = item.price * cartItem.quantity;
         subtotal += itemTotal;
         return {
@@ -87,8 +90,8 @@ export const createOrder = tryCatch(async (req: AuthenticatedRequest, res) => {
     res.json({ message: "Order placed successfully", orderId: order._id.toString(),amount: totalAmount });
 })
 export const fetchOrders = tryCatch(async(req,res)=>{
-    if(req.headers["x-internal-key"] === process.env.INTERNAL_SERVICE_KEY){
-        return res.status(401).json({ message: "Forbidden" });
+    if(req.headers["x-internal-key"] !== process.env.INTERNAL_SERVICE_KEY){
+        return res.status(401).json({ message: "Unauthorized" });
     }
     const order = await Order.findById(req.params.id);
     if(!order){

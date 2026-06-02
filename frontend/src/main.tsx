@@ -7,6 +7,7 @@ import { AppProvider } from './context/context.tsx'
 import "leaflet/dist/leaflet.css";
 export const authService = "http://localhost:3000"
 export const restaurantService = "http://localhost:3001"
+export const utilsService = "http://localhost:3002"
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GoogleOAuthProvider clientId="312310535295-nljij6pop13qibktp21s2fc3q3c5f3s9.apps.googleusercontent.com">

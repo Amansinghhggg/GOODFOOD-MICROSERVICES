@@ -10,7 +10,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 import dotenv from "dotenv";
+import { connectRabbitMQ } from "./config/rabbitmq.js";
+import { startPaymentConsumer } from "./config/payment.consumer.js";
 dotenv.config({ path: './src/.env' });
+connectRabbitMQ().then(() => {
+    startPaymentConsumer();
+}).catch((error) => {
+    console.error('Failed to connect to RabbitMQ:', error);
+    process.exit(1); // Exit the application if RabbitMQ connection fails
+});
 const port = process.env.PORT || 3001;
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
