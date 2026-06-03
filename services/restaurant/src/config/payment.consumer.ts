@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Order } from '../Models/order.js';
 import {getChannel} from './rabbitmq.js';
 
@@ -35,6 +36,31 @@ export const startPaymentConsumer = async() => {
                 return;
             }
             console.log(`Order ${orderId} marked as paid.`);
+
+            const realtimeUrl = process.env.REALTIME_SERVICE_URL;
+            if (!realtimeUrl) {
+                console.error('REALTIME_SERVICE_URL not defined; skipping realtime emit for order', order._id);
+            } else {
+                try {
+                    await axios.post(
+                        `${realtimeUrl}/api/v1/internal/emit`,
+                        {
+                            event: "order_new",
+                            room: `restaurant:${order.restaurantId}`,
+                            payload: {
+                                orderId: order._id,
+                            },
+                        },
+                        {
+                            headers: {
+                                "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "",
+                            },
+                        }
+                    );
+                } catch (err) {
+                    console.error('Failed to notify realtime service about new order', err);
+                }
+            }
 
             channel.ack(msg);
 

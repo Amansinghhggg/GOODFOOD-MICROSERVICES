@@ -86,7 +86,7 @@ const CustomerResView = () => {
                             </div>
                         </div>
                     </div>
-                    <AllMenuItems restaurantId={restaurant._id} restaurantOwner={restaurant.owner} />
+                    <AllMenuItems restaurantId={restaurant._id} restaurantOwner={restaurant.owner} isOpen={restaurant.isOpen} />
                 </div>
             ) : (
                 <div className="p-6 text-center">Restaurant not found.</div>

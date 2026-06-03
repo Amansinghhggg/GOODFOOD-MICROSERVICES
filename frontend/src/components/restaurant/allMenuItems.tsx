@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { Edit2, Trash2, ToggleLeft, ToggleRight, X, Divide, ShoppingCart } from "lucide-react";
 import { useAppContext } from "../../context/context";
 
-const AllMenuItems = ({ restaurantId, restaurantOwner }: { restaurantId: string; restaurantOwner: string }) => {
+const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen }: { restaurantId: string; restaurantOwner: string; isOpen: boolean }) => {
     const [menuItems, setMenuItems] = React.useState<any[]>([]);
   const [editingItem, setEditingItem] = React.useState<any | null>(null);
   const [editName, setEditName] = React.useState("");
@@ -134,8 +134,7 @@ const AllMenuItems = ({ restaurantId, restaurantOwner }: { restaurantId: string;
   }, [restaurantId]);
 
   async function addtocart(itemId: string) {
-    console.log("Adding to cart:", itemId, restaurantId);
-    try {
+       try {
       await axios.post(`${restaurantService}/api/cart/add`, { itemsId: itemId,
     restaurantId}, {
         headers: {

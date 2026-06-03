@@ -50,7 +50,7 @@ const Checkout = () => {
   const platfromFee = 7;
   const grandTotal = subtotal + deliveryFee + platfromFee;
   const restaurantLocation = restaurant?.autoLocation?.coordinates;
-
+ 
   const calculateDistanceKm = (
     fromLatitude: number,
     fromLongitude: number,
@@ -131,8 +131,7 @@ const payWithRazorpay = async()=>{
            orderId:orderId
           })
           toast.success("Payment successful");
-          navigate("/paymentsuccess"+response.razorpay_payment_id);
-          navigate("/orders");
+          navigate(`/paymentsuccess/${response.razorpay_payment_id}`);
         } catch (error) {
           console.log(error);
           toast.error("Payment verification failed");

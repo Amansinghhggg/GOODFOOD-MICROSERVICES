@@ -17,7 +17,7 @@ const formatCurrency = (value: number) =>
 const Cart = () => {
   const { cart, subtotal, quantity,fetchCart } = useAppContext();
   const cartItems = Array.isArray(cart) ? cart : [];
-  const deliveryFee = subtotal < 250 ?  0: 49;
+  const deliveryFee = subtotal >250 ?  0: 49;
   const platformServiceFee = 7;
 
   async function removeItem(itemsId?: string, restaurantId?: string) {

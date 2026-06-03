@@ -4,6 +4,7 @@ import axios from "axios";
 import { restaurantService } from "../main";
 import CreateRestaurant from "../components/restaurant/createRestaurant";
 import YourRestaurant from "../components/restaurant/YourRestaurant";
+import RestaurantOrder from "../components/restaurant/RestaurantOrder";
 
 const Restaurant = () => {
     const [restaurant, setRestaurant] = useState<IRestaurant | null>(null);
@@ -48,7 +49,14 @@ const Restaurant = () => {
             }
         };
 
-        return (<YourRestaurant restaurant={restaurant} onToggle={handleToggle} />)
+        return (<>
+
+         <RestaurantOrder restaurantId={restaurant._id} />
+        <YourRestaurant restaurant={restaurant} onToggle={handleToggle} />
+
+        </>
+       
+    )
     }
 };
 
