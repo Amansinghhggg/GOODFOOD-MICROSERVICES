@@ -27,8 +27,7 @@ const YourRestaurant: React.FC<Props> = ({ reload,restaurant, onToggle }) => {
   function gotoMenu(){
     setActive("menu");
   }
-  async function handleToggle() {
-    const next = !isOpen;
+  async function handleToggle(next: boolean = !isOpen) {
     setIsOpen(next);
     try {
       if (onToggle) await onToggle(next);
@@ -43,6 +42,7 @@ const YourRestaurant: React.FC<Props> = ({ reload,restaurant, onToggle }) => {
   const navigate = useNavigate();
 
   function handleLogout() {
+     handleToggle(false);
     localStorage.removeItem("token");
     setIsAuth(false);
     setUser(null);
@@ -109,13 +109,13 @@ const YourRestaurant: React.FC<Props> = ({ reload,restaurant, onToggle }) => {
                     <Edit size={16} /> Edit
                   </Link>
                   <button
-                    onClick={handleToggle}
+                    onClick={() => handleToggle()}
                     className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${isOpen ? "bg-white text-[#E23774]" : "bg-emerald-500 text-white"}`}
                   >
                     {isOpen ? "Set Closed" : "Set Open"}
                   </button>
                   <button
-                    onClick={handleLogout}
+                    onClick={() => handleLogout()}
                     className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#E23774]"
                   >
                     <LogOut size={16} /> Logout

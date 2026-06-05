@@ -12,7 +12,7 @@ app.use(express.json());
 import dotenv from "dotenv";
 import { connectRabbitMQ } from "./config/rabbitmq.js";
 import { startPaymentConsumer } from "./config/payment.consumer.js";
-dotenv.config({ path: './src/.env' });
+dotenv.config();
 connectRabbitMQ().then(() => {
     startPaymentConsumer();
 }).catch((error) => {

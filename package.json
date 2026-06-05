@@ -20,7 +20,8 @@
     "restaurant": "cd services/restaurant && npm run dev",
     "utils": "cd services/utils && npm run dev",
     "realtime": "cd services/realtime && npm run dev",
-    "dev": "concurrently \"npm:frontend\" \"npm:auth\" \"npm:restaurant\" \"npm:utils\" \"npm:realtime\"",
+    "rider": "cd services/rider && npm run dev",
+    "dev": "concurrently \"npm:frontend\" \"npm:auth\" \"npm:restaurant\" \"npm:utils\" \"npm:realtime\" \"npm:rider\"",
     "start": "npm run dev"
   },
   "dependencies": {

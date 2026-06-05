@@ -38,7 +38,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         fetchUser();
     }, []);
 
-    useEffect(() => {
+
+    async function fetchLocation() {
         if (!navigator.geolocation) {
             toast.error("Geolocation is not supported by your browser or access denied.");
             return;
@@ -88,7 +89,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             },
             { enableHighAccuracy: true, timeout: 10000 }
         );
-        
+    }
+
+    useEffect(() => {
+        fetchLocation();
     }, []);
      const [cart, setcart] = useState<ICart[]| null>([]);
      const [subtotal, setsubtotal] = useState(0);
@@ -124,6 +128,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                 setIsAuth,
                 setLoading,
                 fetchUser,
+                fetchLocation,
                 location,
                 setLocation,
                 loadingLocation,

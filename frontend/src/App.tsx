@@ -16,8 +16,25 @@ import AddAddress from "./components/restaurant/AddAddress";
 import Checkout from "./pages/checkout";
 import PaymentSuccess from "./pages/paymentSucces";
 import ViewOrderDetails from "./components/restaurant/ViewOrderDetails";
+import Dashboard from "./components/rider/dashboard";
 function App() {
-  const { user } = useAppContext();
+  const { user ,loading} = useAppContext();
+    if(loading) {
+      return <div className="flex h-screen items-center justify-center">
+        Loading...
+      </div>
+    }
+
+  if(user?.role === "rider") {
+    return(
+      <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+      </Routes>
+        <Toaster />
+      </BrowserRouter>
+    )
+  }
 
   if(user?.role === "owner") {
     return (
