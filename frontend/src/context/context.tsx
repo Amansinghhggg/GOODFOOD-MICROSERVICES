@@ -64,11 +64,19 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                     setcity(data.address?.city || data.address?.town || data.address?.village || data.address?.county || "Unknown City");
                     setloadingLocation(false);
                 } catch (error) {
+                    const fallbackData = (axios.isAxiosError(error) ? error.response?.data?.data : undefined) as any;
                     setLocation({
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
-                        formattedAddress: "Current Location",
+                        formattedAddress: fallbackData?.display_name || "Current Location",
                     });
+                    setcity(
+                        fallbackData?.address?.city ||
+                        fallbackData?.address?.town ||
+                        fallbackData?.address?.village ||
+                        fallbackData?.address?.county ||
+                        "Unknown City"
+                    );
                   
                     console.log("Error fetching location data (possible CORS/network):", error);
                     setloadingLocation(false);

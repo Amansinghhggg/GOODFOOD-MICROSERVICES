@@ -15,6 +15,7 @@ import Cart from "./pages/Cart";
 import AddAddress from "./components/restaurant/AddAddress";
 import Checkout from "./pages/checkout";
 import PaymentSuccess from "./pages/paymentSucces";
+import ViewOrderDetails from "./components/restaurant/ViewOrderDetails";
 function App() {
   const { user } = useAppContext();
 
@@ -47,7 +48,7 @@ function App() {
         <Route path="/select-role" element={<SelectRoles />} />
         <Route path="/restaurant/:id" element={<CustomerResView/>} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/paymentsuccess/:paymentId" element={<PaymentSuccess/>} />
+        <Route path="/order/:orderId" element={<ViewOrderDetails/>} />
         </Route>
       </Routes>
       <Toaster />

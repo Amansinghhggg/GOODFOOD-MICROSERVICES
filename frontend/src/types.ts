@@ -69,3 +69,51 @@ export interface ICart extends Document {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface IOrder extends Document {
+    _id: string;
+    userId: String;
+    restaurantId: String;
+    restaurantName: String;
+    riderId: String |null;
+    riderPhone: String | null;
+    riderName: String | null;
+    distance:Number ;
+    riderAmount:Number;
+    items: {
+        itemId: String;
+        name: String;
+        price: Number;
+        quantity: Number;
+    }[];
+    subtotal: Number;
+    deliveryFee:Number;
+    platformFee:Number;
+    totalAmount:Number;
+    addressId:String;
+
+    deliveryAddress:{
+        formattedAddress:String;
+        mobile:Number;
+        latitude:Number;
+        longitude:Number;
+    };
+
+    status:
+| "placed"
+|"accepted"
+|"preparing"
+|"ready_for_rider"
+|"rider_assigned"
+|"picked_up"
+|"delivered"
+| "cancelled";
+
+paymentMethod: "razorpay" | "stripe";
+paymentStatus: "pending" | "paid" | "failed";
+
+expiresAt:Date;
+
+createdAt:Date;
+updatedAt:Date;
+}

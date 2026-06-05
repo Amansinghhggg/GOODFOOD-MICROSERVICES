@@ -6,13 +6,15 @@ import { useAppContext } from "../../context/context";
 import toast from "react-hot-toast";
 import AddItems from "./addItems";
 import AllMenuItems from "./allMenuItems";
+import ActiveOrders from "./OrdersTab";
 
 type Props = {
+  reload: boolean;
   restaurant: IRestaurant;
   onToggle?: (open: boolean) => Promise<void> | void;
 };
 
-const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
+const YourRestaurant: React.FC<Props> = ({ reload,restaurant, onToggle }) => {
   if (!restaurant) return null;
   const image = restaurant.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(
     restaurant.name || "Restaurant"
@@ -21,7 +23,7 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
 
   const formattedAddress = restaurant.autoLocation?.formattedAddress || "Address not available";
   const [isOpen, setIsOpen] = React.useState<boolean>(!!restaurant.isOpen);
-  const [active, setActive] = React.useState<"menu" | "add" | "sales">("menu"); 
+  const [active, setActive] = React.useState<"menu" | "add" | "orders">("menu");
   function gotoMenu(){
     setActive("menu");
   }
@@ -48,7 +50,7 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
     toast.success("Logged out successfully");
   }
 
- 
+  
 
   return (
     <div className="w-full px-4 py-8 sm:px-6 lg:px-8">
@@ -150,11 +152,12 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
                 Add Item
               </button>
               <button
-                onClick={() => setActive("sales")}
-                className={`px-4 py-2 rounded-md text-sm font-medium ${active === "sales" ? "bg-[#E23774] text-white" : "bg-slate-50 text-slate-700"}`}
+                onClick={() => setActive("orders")}
+                className={`px-4 py-2 rounded-md text-sm font-medium ${active === "orders" ? "bg-[#E23774] text-white" : "bg-slate-50 text-slate-700"}`}
               >
-                Sales
+                Orders
               </button>
+             
             </div>
             <div className="text-sm text-slate-500">Manage your restaurant</div>
           </div>
@@ -163,33 +166,13 @@ const YourRestaurant: React.FC<Props> = ({ restaurant, onToggle }) => {
             {active === "add" && <AddItems gotoMenu={gotoMenu} />}
             {active === "menu" && (
               <AllMenuItems
+              isOpen={isOpen}
                 restaurantId={restaurant._id}
                 restaurantOwner={restaurant.owner}
               />
             )}
+            {active === "orders" && <ActiveOrders reload={reload} restaurantId={restaurant._id}/>}
 
-            {active === "sales" && (
-              <div className="space-y-4">
-                <div className="rounded-2xl border bg-white p-6 shadow-sm">
-                  <h4 className="font-bold text-slate-900">Sales Summary</h4>
-                  <p className="mt-2 text-sm text-slate-500">
-                    No sales data available yet.
-                  </p>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="rounded-2xl border bg-white p-4 text-center">
-                    Orders
-                    <br />
-                    <span className="text-2xl font-bold">0</span>
-                  </div>
-                  <div className="rounded-2xl border bg-white p-4 text-center">
-                    Revenue
-                    <br />
-                    <span className="text-2xl font-bold">₹0</span>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

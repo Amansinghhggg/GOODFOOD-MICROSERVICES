@@ -121,11 +121,16 @@ export const fetchRestaurantOrders = tryCatch(async(req: AuthenticatedRequest,re
         orders });
 })
  
-const allowedStatus = ["accepted","preparing","ready for pickup"];
+const allowedStatus = ["accepted","preparing","ready_for_rider"];
+const normalizeStatus = (status: string) => {
+    if (status === "ready for pickup") return "ready_for_rider";
+    if (status === "preaparing") return "preparing";
+    return status;
+};
 export const updateOrderStatus = tryCatch(async(req: AuthenticatedRequest,res)=>{
     const user = req.user;
     const {orderId}= req.params;
-    const {status} = req.body;
+    const status = normalizeStatus(String(req.body.status || ""));
     if(!user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
@@ -146,22 +151,28 @@ export const updateOrderStatus = tryCatch(async(req: AuthenticatedRequest,res)=>
     if(restaurant.owner.toString() !== user._id.toString()){
         return res.status(403).json({ message: "you are not the owner of this restaurant" });
     }
-    order.status = status;
-    await order.save();
+    const updatedOrder = await Order.findByIdAndUpdate(
+        orderId,
+        { $set: { status } },
+        { new: true, runValidators: false }
+    );
+    if(!updatedOrder){
+        return res.status(404).json({ message: "Order not found" });
+    }
     {
         const realtimeUrl = process.env.REALTIME_SERVICE_URL;
         if (!realtimeUrl) {
-            console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', order._id);
+            console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', updatedOrder._id);
         } else {
             try {
                 await axios.post(
                     `${realtimeUrl}/api/v1/internal/emit`,
                     {
                         event: "order_status_updated",
-                        room: `user:${order.userId}`,
+                        room: `user:${updatedOrder.userId}`,
                         payload: {
-                            orderId: order._id,
-                            status: order.status,
+                            orderId: updatedOrder._id,
+                            status: updatedOrder.status,
                         },
                     },
                     {
@@ -175,7 +186,7 @@ export const updateOrderStatus = tryCatch(async(req: AuthenticatedRequest,res)=>
             }
         }
     }
-    res.json({ message: "Order status updated successfully" });
+    res.json({ message: "Order status updated successfully" ,updatedOrder});
 })
 
 export const getMyOrders = tryCatch(async(req: AuthenticatedRequest,res)=>{
@@ -183,7 +194,7 @@ export const getMyOrders = tryCatch(async(req: AuthenticatedRequest,res)=>{
     if(!user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
-    const orders = await Order.find({ userId: user._id }).sort({ createdAt: -1 });
+    const orders = await Order.find({ userId: user._id.toString() }).sort({ createdAt: -1 });
     res.json({ 
         success: true,
         count: orders.length,
@@ -200,7 +211,8 @@ export const fetchSingleOrder = tryCatch(async(req: AuthenticatedRequest,res)=>{
     if(!order){
         return res.status(404).json({ message: "Order not found" });
     }
-    if(order.userId.toString() !== user._id.toString()){
+    
+    if(order.userId.toString() !== user._id.toString() && user.role !== "owner"){
         return res.status(403).json({ message: "You are not authorized to view this order" });
     }
     res.json({ success: true, order }); 

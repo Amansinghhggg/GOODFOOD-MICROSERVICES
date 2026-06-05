@@ -4,8 +4,6 @@ import { useAppContext } from "../context/context";
 import type { IMenuItem, IRestaurant } from "../types";
 import { restaurantService } from "../main";
 import axios from "axios";
-import AddItems from "../components/restaurant/addItems";
-
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -194,12 +192,12 @@ const Cart = () => {
                     <span>Total Items Price</span>
                     <span className="font-semibold text-slate-900">{formatCurrency(subtotal)}</span>
                   </div>
-                  {subtotal > 250 && (
+                  
                   <div className="flex items-center justify-between text-sm text-slate-600">
                     <span>Delivery Fee</span>
-                    <span className="font-semibold text-slate-900">{formatCurrency(deliveryFee)}</span>
+                    <span className="font-semibold text-slate-900">{ subtotal>250?"Free":formatCurrency(deliveryFee) }</span>
                   </div>
-                  )}
+                  
                   <div className="flex items-center justify-between text-sm text-slate-600">
                     <span>Platform Service Fee</span>
                     <span className="font-semibold text-slate-900">{formatCurrency(platformServiceFee)}</span>

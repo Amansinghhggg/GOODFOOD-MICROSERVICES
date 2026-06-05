@@ -131,7 +131,7 @@ const payWithRazorpay = async()=>{
            orderId:orderId
           })
           toast.success("Payment successful");
-          navigate(`/paymentsuccess/${response.razorpay_payment_id}`);
+          navigate(`/order/${orderId}`);
         } catch (error) {
           console.log(error);
           toast.error("Payment verification failed");

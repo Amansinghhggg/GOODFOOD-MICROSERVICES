@@ -30,7 +30,7 @@ export interface IOrder extends Document {
     status:
 | "placed"
 |"accepted"
-|"preaparing"
+|"preparing"
 |"ready_for_rider"
 |"rider_assigned"
 |"picked_up"
@@ -47,7 +47,7 @@ updatedAt:Date;
 }
 
 const schema = new mongoose.Schema<IOrder>({
-    userId: { type: String, required: true },
+    userId: { type: String,required: true },
     restaurantId: { type: String, required: true },
     restaurantName: { type: String, required: true },
     riderId: { type: String, default: null },
@@ -78,7 +78,7 @@ const schema = new mongoose.Schema<IOrder>({
         type: String,
         enum: ["placed",
         "accepted",
-        "preaparing",
+        "preparing",
         "ready_for_rider",
         "rider_assigned",
         "picked_up",
