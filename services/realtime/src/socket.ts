@@ -40,6 +40,19 @@ export const initSocket = (server: http.Server) => {
         if(user.restaurantId){
             socket.join(`restaurant:${user.restaurantId}`);
         }
+socket.join(`user:${userId}`);
+
+console.log("User data:", user);
+
+// ADD THIS
+if(user.role === "rider"){
+    socket.join(`rider:${userId}`);
+    console.log(`Joined rider room rider:${userId}`);
+}
+
+if(user.restaurantId){
+    socket.join(`restaurant:${user.restaurantId}`);
+}
         console.log(`✅ User connected: ${user.name} (ID: ${user.id})`);
 
         // allow client to request joining additional rooms when needed

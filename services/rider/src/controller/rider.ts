@@ -117,3 +117,97 @@ export const toggleAvailability = tryCatch(async(req:AuthenticatedRequest,res)=>
         rider
     })
 })
+
+export const acceptOrder = tryCatch(async(req:AuthenticatedRequest,res)=>{
+    const riderUserId = req.user?._id;
+    const {orderId} = req.params;
+    if(!riderUserId){
+        return res.status(401).json({
+            message:"Unauthorized"
+        })
+    }
+    const rider = await Rider.findOne({userId:riderUserId});
+    if(!rider){
+        return res.status(404).json({
+            message:"Rider profile not found"
+        })
+    }
+    try {
+        const {data} = await axios.put(`${process.env.RESTAURANT_SERVICE_URL}/api/order/assign/rider`,{
+            orderId,
+            riderId:rider._id.toString(),
+            riderUserId:riderUserId,
+            riderName:rider.picture,
+            riderPhone:rider.phoneNumber
+        },{
+            headers:{
+                "x-internal-key": process.env.INTERNAL_SERVICE_KEY!
+            }
+        });
+        if(data.success){
+            const riderDetails = await Rider.findOneAndUpdate({
+                userId:riderUserId,isAvailable:true
+            },{isAvailable:false},{new:true});
+            res.json({
+                message:"Order accepted successfully",
+                order:data.order,
+                rider:riderDetails
+            })
+        } 
+    } catch (error) {
+        return res.status(500).json({
+            message:"Error occurred while assigning order"
+        })
+    }
+})
+
+export const fetchMyCurrentOrder = tryCatch(async(req:AuthenticatedRequest,res)=>{
+    const riderUserId = req.user?._id;
+    if(!riderUserId){
+        return res.status(401).json({ message:"Unauthorized" });
+    }
+    const rider = await Rider.findOne({userId:riderUserId});
+    if(!rider){
+        return res.status(404).json({ message:"Rider profile not found" });
+    }
+    try {
+        const {data} = await axios.get(`${process.env.RESTAURANT_SERVICE_URL}/api/order/current/rider?riderId=${rider._id}`,{
+            headers:{
+                "x-internal-key": process.env.INTERNAL_SERVICE_KEY!
+            }
+        });
+        if(data.success){
+            res.json({order:data.order})
+        }
+        } catch (error: any) {
+            return res.status(500).json({
+                message:error.response.data.message
+            })
+         }
+})
+
+export const updateOrderStatus = tryCatch(async(req:AuthenticatedRequest,res)=>{
+    const UserId = req.user?._id;
+    if(!UserId){
+        return res.status(401).json({ message:"Unauthorized" });
+    }
+    const rider = await Rider.findOne({userId:UserId});
+    if(!rider){
+        return res.status(404).json({ message:"Rider profile not found" });
+    }
+    const {orderId} = req.params;
+    try {
+        const {data} = await axios.put(`${process.env.RESTAURANT_SERVICE_URL}/api/order/update/status`,{
+            orderId,},
+            {
+            headers:{
+                "x-internal-key": process.env.INTERNAL_SERVICE_KEY!
+            }
+        });
+        res.json({success:true, message:"Order status updated successfully", order:data.order});
+    } catch (error) {
+        return res.status(500).json({
+            message:"Error occurred while updating order status"
+        })
+    }
+})

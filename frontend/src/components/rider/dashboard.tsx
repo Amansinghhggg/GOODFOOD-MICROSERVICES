@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../../context/context";
 import { useSocket } from "../../context/socketContext";
 import { riderService } from "../../main";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import riderNotifySound from "../../Assets/johnnybacon156-i-got-this-467997.mp3";
 
 interface IRider {
     _id: string;
@@ -24,6 +25,80 @@ const Dashboard = () => {
     const [togggling,setToggling] = useState<boolean>(false);
     const [picture, setPicture] = useState<File | null>(null);
     const navigate = useNavigate();
+     const [incomingOrder, setIncomingOrder] = useState<any>([]);
+     const [currentOrder, setCurrentOrder] = useState<any>(null);
+      const [audioUnlocked, setAudioUnlocked] = useState<boolean>(() => {
+        try {
+            return localStorage.getItem("audioEnabled") === "true";
+        } catch {
+            return false;
+        }
+    });
+     const [showAudioPrompt, setShowAudioPrompt] = useState<boolean>(() => {
+        try {
+            return localStorage.getItem("audioPromptDismissed") !== "true";
+        } catch {
+            return true;
+        }
+    });
+     const [toastMsg, setToastMsg] = useState<string | null>(null);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+    useEffect(() => {
+        audioRef.current = new Audio(riderNotifySound);
+        audioRef.current.preload = "auto";
+        audioRef.current.preload = "auto";
+        audioRef.current.volume = 1;
+        audioRef.current.muted = false;
+    }, []);
+      const unlockAudio = async () => {
+        try {
+          if (!audioRef.current) return;
+          await audioRef.current.play();
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+          setAudioUnlocked(true);
+          toast.success("Sound Enabled");
+        } catch (error) {
+          toast.error("Tap again to enable sound");
+        }
+      };
+
+    useEffect(()=>{
+        if(!socket) return;
+        console.log("Setting up socket listener for order availability...");
+        const onOrderAvailable = ({orderId}: {orderId: string})=>{
+          console.log("order available for rider ", orderId);
+        setIncomingOrder((prev:any)=>prev.includes(orderId) ? prev : [...prev,orderId]);
+          if(audioUnlocked &&audioRef.current){
+          audioRef.current.currentTime = 0;
+          audioRef.current.play().catch((e)=>console.log("Error playing sound:",e));
+        }
+        setTimeout(() => {
+          setIncomingOrder((prev:any)=>prev.filter((id:string)=>id!==orderId));
+        }, 10000);
+        };
+        socket.on("order_ready_for_rider", onOrderAvailable);
+        return ()=>{
+            socket.off("order_ready_for_rider", onOrderAvailable);
+        };
+    }, [socket,audioUnlocked]);
+    const fetchCurrentOrder = async()=>{
+        try {
+            const response = await axios.get(`${riderService}/api/rider/order/current`,{
+                headers:{
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            setCurrentOrder(response.data.order);
+        } catch (error) {
+            console.error("Error fetching current order:", error);
+        }
+    };
+    useEffect(()=>{
+        if(profile){
+            fetchCurrentOrder();
+        }
+    },[profile]);
     const [formData, setFormData] = useState({
       phoneNumber: "",
       aadharNumber: "",
@@ -222,6 +297,44 @@ const Dashboard = () => {
     }
     
     return <div>
+      {!audioUnlocked && showAudioPrompt && (
+                <div className="relative flex items-start gap-4 p-4 rounded-md bg-white shadow-md border border-gray-200">
+                    <div className="flex-1">
+                        <p className="text-sm font-semibold text-gray-900">
+                            Enable notifications for new orders
+                        </p>
+
+                        <p className="mt-1 text-sm text-gray-600">
+                            Allow sound so you'll immediately hear new incoming
+                            orders.
+                        </p>
+
+                        <button
+                            onClick={unlockAudio}
+                            className="mt-3 px-3 py-2 bg-green-600 text-white rounded"
+                        >
+                            Enable Sound
+                        </button>
+                    </div>
+
+                    <button
+                        onClick={() => {
+                            setShowAudioPrompt(false);
+
+                            try {
+                                localStorage.setItem(
+                                    "audioPromptDismissed",
+                                    "true"
+                                );
+                            } catch {}
+                        }}
+                        className="absolute top-2 right-2"
+                    >
+                        ×
+                    </button>
+                </div>
+            )}
+
         <div className="mx-auto max-w-3xl p-6">
   <div className="rounded-3xl border border-yellow-500/20 bg-black/40 p-8 backdrop-blur-sm">
 
@@ -327,6 +440,30 @@ const Dashboard = () => {
       </button>
 
     </div>
+    {profile.isAvailable && incomingOrder.length > 0 && (
+        <div className="mt-6 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4">
+          <p className="text-sm text-yellow-400">New order available!</p>
+           {incomingOrder.map((orderId:string)=>(
+            <div key={orderId} className="mt-2 flex items-center justify-between rounded-md border border-yellow-500/20 bg-yellow-500/20 p-3">
+              <p className="text-white">Order ID: {orderId}</p>
+              <button
+                onClick={() => {
+                  navigate(`/rider/order/${orderId}`);
+                }}
+                className="rounded-md bg-green-600 px-3 py-1 text-sm font-medium text-white hover:bg-green-500"
+              >
+                View Details
+              </button>
+            </div>
+          ))}
+         </div>
+    )}
+    {currentOrder && (
+        <div className="mt-6 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4">
+          <p className="text-sm text-yellow-400">Current Order</p>
+          <p className="text-white">Order ID: {currentOrder._id}</p>
+        </div>
+      )}
   </div>
 </div>
     </div>;

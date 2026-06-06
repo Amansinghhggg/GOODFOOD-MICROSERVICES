@@ -5,7 +5,7 @@ import { restaurantService } from "../main";
 import CreateRestaurant from "../components/restaurant/createRestaurant";
 import YourRestaurant from "../components/restaurant/YourRestaurant";
 import { useSocket } from "../context/socketContext";
-import restaurantNotify from "../Assets/50986408-what-meme-388653.mp3";
+import restaurantNotifySound from "../Assets/50986408-what-meme-388653.mp3";
 import toast from "react-hot-toast";
 const Restaurant = () => {
     const [restaurant, setRestaurant] = useState<IRestaurant | null>(null);
@@ -60,8 +60,7 @@ const Restaurant = () => {
     }, []);
 
     useEffect(() => {
-        audioRef.current = new Audio(restaurantNotify);
-        audioRef.current.preload = "auto";
+        audioRef.current = new Audio(restaurantNotifySound);
         audioRef.current.load();
         audioRef.current.volume = 1;
         audioRef.current.muted = false;
@@ -145,6 +144,7 @@ const Restaurant = () => {
         };
     }, [socket, restaurant?._id]);
 
+    
     if (loading) {
         return (
             <div className="h-16 flex items-center justify-center bg-gray-200">
