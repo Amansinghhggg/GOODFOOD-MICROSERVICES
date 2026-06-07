@@ -17,6 +17,7 @@ import Checkout from "./pages/checkout";
 import PaymentSuccess from "./pages/paymentSucces";
 import ViewOrderDetails from "./components/restaurant/ViewOrderDetails";
 import Dashboard from "./components/rider/dashboard";
+import { Admin } from "./pages/Admin";
 function App() {
   const { user ,loading} = useAppContext();
     if(loading) {
@@ -47,6 +48,9 @@ function App() {
     <Toaster />
     </BrowserRouter>
     )
+  }
+  if(user?.role === "admin") {
+    return <Admin />
   }
   return (
     <BrowserRouter>
