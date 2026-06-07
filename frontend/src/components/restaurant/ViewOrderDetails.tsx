@@ -1,9 +1,11 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { restaurantService } from "../../main";
 import { useParams } from "react-router-dom";
 import type { IOrder } from "../../types";
 import { useSocket } from "../../context/socketContext";
+import OrderMap from "../rider/OrderMap";
+import { UserOrderMap } from "./UserOrderMap";
 
 type NumericValue = number | Number | null | undefined;
 
@@ -53,8 +55,6 @@ const ViewOrderDetails = () => {
     orderId: string;
     status: string;
   }) => {
-    console.log("Status Update:", data);
-
     if (data.orderId === orderId) {
       setOrder((prev) =>
         prev ? { ...prev, status: data.status as any } : prev
@@ -68,7 +68,41 @@ const ViewOrderDetails = () => {
 
     },[socket, orderId]);
 
+    useEffect(()=>{
+      if(!socket|| !orderId) return
+      socket.emit("join_room",`order_${orderId}`)
+
+      return ()=>{
+        socket.emit("leave",`order_${orderId}`)
+      }
+    },[socket,orderId])
+    const [riderLocation, setriderLocation] = useState<[number, number] | null>(null);
     
+    useEffect(() => {
+      if(!socket) return;
+      const onRiderLoationUpdate = ({latitude,longitude}: { latitude: number; longitude: number })=>{
+        console.log("Rider location update:", latitude, longitude);
+        setriderLocation([latitude, longitude]);
+      };
+      socket.on("riderLocationUpdate", onRiderLoationUpdate);
+
+      return () => {
+        socket.off("riderLocationUpdate", onRiderLoationUpdate);
+      };
+    }, [socket]);
+    
+    useEffect(() => {
+  if (!socket) return;
+
+  socket.onAny((event, ...args) => {
+    console.log("EVENT aaya hai:", event, args);
+  });
+
+  return () => {
+    socket.offAny();
+  };
+}, [socket]);
+
     React.useEffect(() => {
         fetchOrderDetails();
     }, [orderId]);
@@ -171,6 +205,17 @@ const ViewOrderDetails = () => {
             </div>
           )}
         </div>
+        {(order?.status ==="rider_assigned" || order?.status === "picked_up") && riderLocation ? (
+          <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 className="mb-4 text-xl font-semibold text-slate-900">Rider's Current Location</h2>
+              <UserOrderMap riderLocation={riderLocation} deliveryLocation={[Number(order.deliveryAddress.latitude), Number(order.deliveryAddress.longitude)]} />
+          </div>
+        ) : order?.status === "rider_assigned" && !riderLocation ? (
+          <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm text-center text-slate-500">
+            Waiting for rider location...
+          </div>
+        ) : null
+      }
       </div>
     );
 };
@@ -187,6 +232,8 @@ const ViewOrderDetails = () => {
       <span className={strong ? "font-semibold text-slate-900" : "text-slate-600"}>{label}</span>
       <span className={strong ? "text-base font-semibold text-slate-950" : "font-medium text-slate-900"}>{value}</span>
     </div>
+
   );
+
 
 export default ViewOrderDetails;
