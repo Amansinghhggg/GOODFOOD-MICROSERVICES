@@ -233,15 +233,29 @@ export const assignRiderToOrder = tryCatch(async(req: AuthenticatedRequest,res)=
         return res.status(401).json({ message: "Unauthorized" });
     }
     const {orderId, riderId,riderName,riderPhone} = req.body;
+    const orderAvailable = await Order.findOne({riderId,status:{$ne:"delivered"}});
+        if(orderAvailable){
+            return res.status(400).json({ message: "Rider is already assigned to another order" });
+        }
     const order = await Order.findById(orderId);
     if(order?.riderId!==null){
         return res.status(400).json({ message: "Rider is already assigned to this order" });
     }
-    const updatedOrder = await Order.findByIdAndUpdate(
-        {orderId,riderId:null},
-        {riderId,riderName,riderPhone,status:"rider_assigned"},
-        {new:true}
-    );
+    const updatedOrder = await Order.findOneAndUpdate(
+    {
+        _id: orderId,
+        riderId: null
+    },
+    {
+        riderId,
+        riderName,
+        riderPhone,
+        status: "rider_assigned"
+    },
+    {
+        new: true
+    }
+);
     if(!updatedOrder){
         return res.status(404).json({ message: "Order not found or rider already assigned" });
     }
@@ -308,7 +322,7 @@ export const getCurrentOrderForRider = tryCatch(
       });
     }
 
-    return res.json(order);
+    return res.json({success:true, order});
   }
 );
 export const updateOrderStatusByRider = tryCatch(async(req: AuthenticatedRequest,res)=>{
@@ -321,8 +335,14 @@ export const updateOrderStatusByRider = tryCatch(async(req: AuthenticatedRequest
         return res.status(404).json({ message: "Order not found" });
     }
     if(order.status==="rider_assigned"){
-        order.status="picked_up"
-    await order.save();
+       const newOrder = await Order.findByIdAndUpdate(
+   orderId,
+   {
+      status: "picked_up"
+   },{
+    returnDocument:"after"
+   }
+);
     const realtimeUrl = process.env.REALTIME_SERVICE_URL;
         if (!realtimeUrl) {
             console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', order._id);
@@ -333,7 +353,7 @@ export const updateOrderStatusByRider = tryCatch(async(req: AuthenticatedRequest
                     {
                         event: "rider_assigned",
                         room: `user:${order.userId}`,
-                        payload: order,
+                        payload: newOrder,
                     },
                     {
                         headers: {
@@ -346,7 +366,7 @@ export const updateOrderStatusByRider = tryCatch(async(req: AuthenticatedRequest
                     {
                         event: "rider_assigned",
                         room: `restaurant:${order.restaurantId}`,
-                        payload: order,
+                        payload: newOrder,
                     },
                     {
                         headers: {
@@ -361,8 +381,14 @@ export const updateOrderStatusByRider = tryCatch(async(req: AuthenticatedRequest
         res.json({ success: true, message: "Order status updated successfully", order });
     }
      if(order.status==="picked_up"){
-        order.status="delivered"
-    await order.save();
+       const newOrder = await Order.findByIdAndUpdate(
+   orderId,
+   {
+      status: "delivered"
+   },{
+    returnDocument:"after"
+   }
+);
     const realtimeUrl = process.env.REALTIME_SERVICE_URL;
         if (!realtimeUrl) {
             console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', order._id);
@@ -373,7 +399,7 @@ export const updateOrderStatusByRider = tryCatch(async(req: AuthenticatedRequest
                     {
                         event: "rider_assigned",
                         room: `user:${order.userId}`,
-                        payload: order,
+                        payload: newOrder,
                     },
                     {
                         headers: {
@@ -386,7 +412,7 @@ export const updateOrderStatusByRider = tryCatch(async(req: AuthenticatedRequest
                     {
                         event: "rider_assigned",
                         room: `restaurant:${order.restaurantId}`,
-                        payload: order,
+                        payload: newOrder,
                     },
                     {
                         headers: {

@@ -3,6 +3,7 @@ const SEARCH_DURATION = 10;
 const formatMoney = (value: any) => `₹${Number(value ?? 0).toFixed(2)}`;
 
 interface Props {
+  isCompleted: boolean;
   order: any;
   showAction: boolean;
   updateStatus: (order: any) => void;
@@ -23,6 +24,7 @@ const cardButtonLabel = (status: string): string => {
 };
  
 export default function RessingleOrderTab({
+  isCompleted,
   order,
   showAction,
   updateStatus,
@@ -60,10 +62,8 @@ export default function RessingleOrderTab({
   return (
     <li className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
- 
         {/* ── Left: Order Details ── */}
         <div className="flex-1 space-y-4">
- 
           {/* Header */}
           <div className="flex flex-wrap items-center gap-3">
             <p className="text-sm font-medium text-slate-400">
@@ -72,13 +72,17 @@ export default function RessingleOrderTab({
             </p>
             <span
               className={`inline-flex rounded-full px-3 py-1 text-xs font-bold tracking-wide capitalize ${
-                statusTone[order.status] ?? "bg-slate-100 text-slate-700"
+                isCompleted
+                  ? "bg-green-100 text-green-700"
+                  : (statusTone[order.status] ?? "bg-slate-100 text-slate-700")
               }`}
             >
-              {order.status.replace(/_/g, " ")}
+              { order.status.replace(/_/g, " ")}
+              {/* {isCompleted ? "Dispatched" : order.status.replace(/_/g, " ")} */}
+              
             </span>
           </div>
- 
+
           {/* Items */}
           <div className="space-y-2">
             {(order.items ?? []).length === 0 ? (
@@ -91,7 +95,9 @@ export default function RessingleOrderTab({
                 >
                   <p className="text-sm font-semibold text-slate-800">
                     {item.name}{" "}
-                    <span className="font-normal text-slate-500">× {item.quantity}</span>
+                    <span className="font-normal text-slate-500">
+                      × {item.quantity}
+                    </span>
                   </p>
                   <p className="text-sm font-medium text-slate-600">
                     {formatMoney(item.price * item.quantity)}
@@ -100,7 +106,7 @@ export default function RessingleOrderTab({
               ))
             )}
           </div>
- 
+
           {/* Footer */}
           <div className="flex flex-wrap gap-4 text-sm text-slate-500">
             <span>
@@ -117,19 +123,17 @@ export default function RessingleOrderTab({
             </span>
           </div>
         </div>
- 
+
         {/* ── Right: Action Button ── */}
         {showAction && (
           <div className="flex-shrink-0 sm:pt-1">
- 
             {/* Case 1: rider assigned via socket → permanently disabled */}
             {isRiderAssigned ? (
               <span className="inline-flex rounded-lg bg-violet-100 px-4 py-2 text-sm font-medium text-violet-500">
                 Rider Assigned ✓
               </span>
- 
-            /* Case 2: searching for rider (10s window) */
-            ) : isSearchingRider ? (
+            ) : /* Case 2: searching for rider (10s window) */
+            isSearchingRider ? (
               <div className="w-44 space-y-1.5">
                 <div className="flex items-center justify-between text-xs text-slate-500">
                   <span className="animate-pulse font-medium text-amber-600">
@@ -145,27 +149,24 @@ export default function RessingleOrderTab({
                   />
                 </div>
               </div>
- 
-            /* Case 3: ready_for_rider but timer expired → retry button */
-            ) : order.status === "ready_for_rider" ? (
+            ) : /* Case 3: ready_for_rider but timer expired → retry button */
+            order.status === "ready_for_rider" ? (
               <button
                 onClick={() => updateStatus(order)}
                 className="inline-flex rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-amber-600 active:scale-95"
               >
                 Retry Find Rider
               </button>
- 
-            /* Case 4: normal next-status button */
-            ) : next ? (
+            ) : /* Case 4: normal next-status button */
+            next ? (
               <button
                 onClick={() => updateStatus(order)}
                 className="inline-flex rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-700 active:scale-95"
               >
                 {cardButtonLabel(order.status)}
               </button>
- 
-            /* Case 5: no next status */
             ) : (
+              /* Case 5: no next status */
               <span className="inline-flex rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-400">
                 Completed
               </span>

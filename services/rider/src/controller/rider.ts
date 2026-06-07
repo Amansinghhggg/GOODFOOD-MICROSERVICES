@@ -97,6 +97,7 @@ export const toggleAvailability = tryCatch(async(req:AuthenticatedRequest,res)=>
             message:"Rider profile not found"
         })
     }
+
     const {isAvailable,latitude,longitude} = req.body;
     if(latitude===undefined||!longitude===undefined){
         return res.status(400).json({message:"location is required"})
@@ -154,11 +155,16 @@ export const acceptOrder = tryCatch(async(req:AuthenticatedRequest,res)=>{
                 rider:riderDetails
             })
         } 
-    } catch (error) {
-        return res.status(500).json({
-            message:"Error occurred while assigning order"
-        })
-    }
+    } catch (error:any) {
+    console.log("ASSIGN ORDER ERROR:");
+    console.log(error?.response?.data);
+    console.log(error?.message);
+
+    return res.status(500).json({
+        message:"Error occurred while assigning order",
+        error: error?.response?.data || error?.message
+    })
+}
 })
 
 export const fetchMyCurrentOrder = tryCatch(async(req:AuthenticatedRequest,res)=>{
@@ -197,16 +203,17 @@ export const updateOrderStatus = tryCatch(async(req:AuthenticatedRequest,res)=>{
     }
     const {orderId} = req.params;
     try {
-        const {data} = await axios.put(`${process.env.RESTAURANT_SERVICE_URL}/api/order/update/status`,{
+        const {data} = await axios.put(`${process.env.RESTAURANT_SERVICE_URL}/api/order/update/status/${orderId}`,{
             orderId,},
             {
             headers:{
-                "x-internal-key": process.env.INTERNAL_SERVICE_KEY!
+                "x-internal-key": process.env.INTERNAL_SERVICE_KEY
             }
         });
         res.json({success:true, message:"Order status updated successfully", order:data.order});
     } catch (error) {
         return res.status(500).json({
+            error,
             message:"Error occurred while updating order status"
         })
     }

@@ -105,7 +105,7 @@ const Restaurant = () => {
         }
     };
 
-    useEffect(() => {
+     useEffect(() => {
         if (!socket || !restaurant?._id) return;
 
         try {
@@ -138,13 +138,11 @@ const Restaurant = () => {
         };
 
         socket.on("order_new", newOrder);
-
         return () => {
             socket.off("order_new", newOrder);
         };
     }, [socket, restaurant?._id]);
 
-    
     if (loading) {
         return (
             <div className="h-16 flex items-center justify-center bg-gray-200">

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { restaurantService } from "../../main";
 import { useSocket } from "../../context/socketContext";
 import RessingleOrderTab from "./RessingleOrderTab";
+import toast from "react-hot-toast";
  
 const ACTIVE_STATUS    = ["placed", "accepted", "preparing", "preaparing", "ready_for_rider"];
 const COMPLETED_STATUS = ["rider_assigned", "picked_up", "delivered", "cancelled"];
@@ -62,22 +63,21 @@ const ActiveOrders = ({ reload, restaurantId }: Props) => {
   // Socket: rider accepted → stop searching, update order
   useEffect(() => {
     if (!socket) return;
- 
     const onRiderAssigned = (updatedOrder: any) => {
-      // clear searching state for this order
+      toast.success("Rider assigned for order  " + updatedOrder._id);
+      console.log("RIDER ASSIGNED", updatedOrder);
       setSearchingOrders((prev) => {
         const next = new Set(prev);
         next.delete(updatedOrder._id);
         return next;
       });
-      // update order in list
       setOrders((prev) =>
         prev.map((o) => (o._id === updatedOrder._id ? updatedOrder : o))
       );
     };
  
-    socket.on("order:rider_assigned", onRiderAssigned);
-    return () => { socket.off("order:rider_assigned", onRiderAssigned); };
+    socket.on("rider_assigned", onRiderAssigned);
+    return () => { socket.off("rider_assigned", onRiderAssigned); };
   }, [socket]);
  
   /**
@@ -176,6 +176,7 @@ const ActiveOrders = ({ reload, restaurantId }: Props) => {
         <ul className="space-y-3">
           {ordersToShow.map((order) => (
             <RessingleOrderTab
+              isCompleted ={COMPLETED_STATUS.includes(order.status)}
               key={order._id}
               order={order}
               showAction={activeTab === "active"}

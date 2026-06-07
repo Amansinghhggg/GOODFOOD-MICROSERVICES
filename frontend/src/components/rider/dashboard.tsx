@@ -6,6 +6,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import riderNotifySound from "../../Assets/johnnybacon156-i-got-this-467997.mp3";
+import IncomingOrderCart from "./iIncomingOrderCart";
+import CurrentOrder from "./CurrentOrder";
+import OrderMap from "./OrderMap";
 
 interface IRider {
     _id: string;
@@ -51,6 +54,7 @@ const Dashboard = () => {
         audioRef.current.muted = false;
     }, []);
       const unlockAudio = async () => {
+        if(currentOrder) return
         try {
           if (!audioRef.current) return;
           await audioRef.current.play();
@@ -83,17 +87,24 @@ const Dashboard = () => {
         };
     }, [socket,audioUnlocked]);
     const fetchCurrentOrder = async()=>{
-        try {
-            const response = await axios.get(`${riderService}/api/rider/order/current`,{
+    try {
+
+        const response = await axios.get(
+            `${riderService}/api/rider/order/current`,
+            {
                 headers:{
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
-            });
-            setCurrentOrder(response.data.order);
-        } catch (error) {
-            console.error("Error fetching current order:", error);
-        }
-    };
+            }
+        );
+        setCurrentOrder(response.data.order);
+        console.log("Current order fetched successfully:", response.data.order);
+    } catch (error:any) {
+        console.log("4. Error occurred");
+        console.log(error);
+        console.log(error?.response);
+    }
+};
     useEffect(()=>{
         if(profile){
             fetchCurrentOrder();
@@ -418,8 +429,8 @@ const Dashboard = () => {
 
     {/* Actions */}
     <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-
-      <button
+      {profile.isVerified && !currentOrder && (
+        <button
         onClick={() => {toggleAvailability()}}
         className={`flex-1 rounded-xl py-3 font-semibold text-white transition ${
           profile.isAvailable
@@ -431,6 +442,8 @@ const Dashboard = () => {
           ? "Go Offline"
           : "Go Online"}
       </button>
+      )}
+      
 
       <button
         onClick={()=>{handleLogout()}}
@@ -440,29 +453,32 @@ const Dashboard = () => {
       </button>
 
     </div>
-    {profile.isAvailable && incomingOrder.length > 0 && (
-        <div className="mt-6 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4">
-          <p className="text-sm text-yellow-400">New order available!</p>
-           {incomingOrder.map((orderId:string)=>(
-            <div key={orderId} className="mt-2 flex items-center justify-between rounded-md border border-yellow-500/20 bg-yellow-500/20 p-3">
-              <p className="text-white">Order ID: {orderId}</p>
-              <button
-                onClick={() => {
-                  navigate(`/rider/order/${orderId}`);
-                }}
-                className="rounded-md bg-green-600 px-3 py-1 text-sm font-medium text-white hover:bg-green-500"
-              >
-                View Details
-              </button>
-            </div>
-          ))}
-         </div>
-    )}
+   {!currentOrder &&
+  profile.isAvailable &&
+  incomingOrder.length > 0 && (
+    <div className="mt-6 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4">
+      <p className="text-sm text-yellow-400">New order available!</p>
+
+      {incomingOrder.map((orderId: string) => (
+        <IncomingOrderCart
+          key={orderId}
+          orderId={orderId}
+          onAccepted={() => {
+            fetchProfile();
+            fetchCurrentOrder();
+          }}
+        />
+      ))}
+    </div>
+)}
     {currentOrder && (
-        <div className="mt-6 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4">
-          <p className="text-sm text-yellow-400">Current Order</p>
-          <p className="text-white">Order ID: {currentOrder._id}</p>
-        </div>
+        <div className="mx-auto max-w-md px-4 space-y-4">
+          <CurrentOrder order={currentOrder} 
+            onstatusUpdate={fetchCurrentOrder}
+          />
+          <OrderMap order={currentOrder} />
+          </div>
+
       )}
   </div>
 </div>

@@ -28,7 +28,26 @@ const ViewOrderDetails = () => {
             setLoading(false);
         }
     };
-    useEffect(()=>{
+    
+
+   useEffect(() => {
+  if (!socket) return;
+
+  const handleOrderUpdate = (order: any) => {
+    console.log("ORDER UPDATED:", order);
+
+    setOrder(order);
+  };
+
+  socket.on("rider_assigned", handleOrderUpdate);
+
+  return () => {
+    socket.off("rider_assigned", handleOrderUpdate);
+  };
+}, [socket]);
+
+
+      useEffect(() => {
         if (!socket) return;
          const handleStatusUpdate = (data: {
     orderId: string;
@@ -41,12 +60,11 @@ const ViewOrderDetails = () => {
         prev ? { ...prev, status: data.status as any } : prev
       );
     }
-  };
+  };    
         socket.on("order_status_updated", handleStatusUpdate);
         return () => {
             socket.off("order_status_updated", handleStatusUpdate);
         };
-
 
     },[socket, orderId]);
 

@@ -48,7 +48,7 @@ updatedAt:Date;
 
 const schema = new mongoose.Schema<IOrder>({
     userId: { type: String,required: true },
-    restaurantId: { type: String, required: true },
+    restaurantId: { type: String, required: true , ref: "Restaurant"},
     restaurantName: { type: String, required: true },
     riderId: { type: String, default: null },
     riderPhone: { type: String, default: null },
