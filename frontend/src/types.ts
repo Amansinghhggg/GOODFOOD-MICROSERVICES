@@ -114,7 +114,8 @@ paymentMethod: "razorpay" | "stripe";
 paymentStatus: "pending" | "paid" | "failed";
 
 expiresAt:Date;
-
+otp:String;
+otphash:String;
 createdAt:Date;
 updatedAt:Date;
 }

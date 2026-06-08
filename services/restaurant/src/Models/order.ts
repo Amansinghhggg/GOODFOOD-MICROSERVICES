@@ -41,7 +41,8 @@ paymentMethod: "razorpay" | "stripe";
 paymentStatus: "pending" | "paid" | "failed";
 
 expiresAt:Date;
-
+otp:String;
+otphash:String;
 createdAt:Date;
 updatedAt:Date;
 }
@@ -97,6 +98,8 @@ const schema = new mongoose.Schema<IOrder>({
         default: "pending",
     },
     expiresAt: { type: Date, index:{ expires:'0'}, required: true },
+    otp: { type: String, required: true },
+    otphash: { type: String, required: true },
 }, { timestamps: true });
 
 export const Order = mongoose.model<IOrder>("Order", schema);

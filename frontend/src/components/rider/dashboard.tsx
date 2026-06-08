@@ -156,7 +156,7 @@ const Dashboard = () => {
                 }
             });
             fetchProfile();
-            toast.success(profile?.isAvailable ? "You are now available for deliveries" : "You are now Offline ");
+            toast.success(profile?.isAvailable ?"You are now Offline":"You are now Online and available for deliveries");
         } catch (error) {
             toast.error("Error toggling availability:");
             console.error("Error toggling availability:", error);

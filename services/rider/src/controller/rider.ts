@@ -218,3 +218,38 @@ export const updateOrderStatus = tryCatch(async(req:AuthenticatedRequest,res)=>{
         })
     }
 })
+
+export const verifyOtp = tryCatch(async(req:AuthenticatedRequest,res)=>{
+    const UserId = req.user?._id;
+    if(!UserId){
+        return res.status(401).json({ message:"Unauthorized" });
+    }
+    const rider = await Rider.findOne({userId:UserId});
+    if(!rider){
+        return res.status(404).json({ message:"Rider profile not found" });
+    }
+    const {orderId} = req.params;
+    const {otp} = req.body;
+    if(!otp){
+        return res.status(400).json({message:"OTP is required"})
+    }
+    try { const {data} = await axios.post(`${process.env.RESTAURANT_SERVICE_URL}/api/order/verify/otp/${orderId}`,{
+            otp,
+            riderId:rider._id.toString()
+        },{
+            headers:{
+                "x-internal-key": process.env.INTERNAL_SERVICE_KEY
+            }
+        });
+        if(data.success){
+            res.json({ success:true, message:"OTP verified successfully"})
+        } else {
+            res.status(400).json({message:"Invalid OTP"})
+        }
+    } catch (error) {
+        return res.status(500).json({
+            error,
+            message:"(rider)Error occurred while verifying OTP"
+        })
+    }
+})

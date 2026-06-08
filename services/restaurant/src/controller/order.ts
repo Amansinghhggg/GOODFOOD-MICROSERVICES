@@ -7,7 +7,7 @@ import { IMenuItem } from "../Models/MenuItems.js";
 import { Order } from "../Models/order.js";
 import Restaurant from "../Models/restaurant.js";
 import { publishEvent } from "../config/order.publisher.js";
-
+import bcrypt from "bcrypt";
 export const createOrder = tryCatch(async (req: AuthenticatedRequest, res) => {
     const user = req.user;
     if(!user) {
@@ -62,6 +62,8 @@ export const createOrder = tryCatch(async (req: AuthenticatedRequest, res) => {
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
     const [longitude,latitude] =  Address.location.coordinates;
     const riderAmount = Math.ceil(distance)*17 ;
+    const otp = Math.floor( 1000 + Math.random() * 9000).toString();
+    const hashedOtp = await bcrypt.hash(otp, 10);
     const order = await Order.create({
         userId: user._id,
         restaurantId: restaurant._id.toString(),
@@ -85,6 +87,8 @@ export const createOrder = tryCatch(async (req: AuthenticatedRequest, res) => {
         paymentStatus: "pending",
         status: "placed",
         expiresAt: expiresAt,
+        otp: otp,
+        otphash: hashedOtp
     });
 
     await Cart.deleteMany({ userId: user._id });
@@ -380,51 +384,107 @@ export const updateOrderStatusByRider = tryCatch(async(req: AuthenticatedRequest
         }
         res.json({ success: true, message: "Order status updated successfully", order });
     }
-     if(order.status==="picked_up"){
-       const newOrder = await Order.findByIdAndUpdate(
-   orderId,
-   {
-      status: "delivered"
-   },{
-    returnDocument:"after"
-   }
-);
+//      if(order.status==="picked_up"){
+//        const newOrder = await Order.findByIdAndUpdate(
+//    orderId,
+//    {
+//       status: "delivered"
+//    },{
+//     returnDocument:"after"
+//    }
+// );
+//     const realtimeUrl = process.env.REALTIME_SERVICE_URL;
+//         if (!realtimeUrl) {
+//             console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', order._id);
+//         } else {
+//             try {
+//                 await axios.post(
+//                     `${realtimeUrl}/api/v1/internal/emit`,
+//                     {
+//                         event: "rider_assigned",
+//                         room: `user:${order.userId}`,
+//                         payload: newOrder,
+//                     },
+//                     {
+//                         headers: {
+//                             "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "",
+//                         },
+//                     }
+//                 );
+//                 await axios.post(
+//                     `${realtimeUrl}/api/v1/internal/emit`,
+//                     {
+//                         event: "rider_assigned",
+//                         room: `restaurant:${order.restaurantId}`,
+//                         payload: newOrder,
+//                     },
+//                     {
+//                         headers: {
+//                             "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "",
+//                         },
+//                     }
+//                 );
+//             } catch (err) {
+//                 console.error('Failed to notify realtime service about order status update', err);
+//             }
+//         }
+//         res.json({ success: true, message: "Order status updated successfully", order });
+//     }
+
+})
+
+export const verifyotp = tryCatch(async(req: AuthenticatedRequest,res)=>{
+    if(req.headers["x-internal-key"] !== process.env.INTERNAL_SERVICE_KEY){
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+    const {orderId} = req.params;
+    const {otp} = req.body;
+    if(!otp){
+        return res.status(400).json({message:"(res) OTP is required"})
+    }
+    const order = await Order.findById(orderId);
+    if(!order){
+        return res.status(404).json({ message: "Order not found" });
+    }
+    if(order.riderId?.toString() !== req.body.riderId){
+        return res.status(403).json({ message: "You are not assigned to this order" });
+    }
+    const isValidOtp = await bcrypt.compare(otp, String(order.otphash));
+    if(!isValidOtp){
+        return res.status(400).json({ message: "Invalid OTP" });
+    }
+    const updatedOrder = await Order.findByIdAndUpdate(
+        orderId,
+        { status: "delivered" },
+        { returnDocument: "after" }
+    );
+    if(!updatedOrder){
+        return res.status(404).json({ message: "Order not found" });
+    }
     const realtimeUrl = process.env.REALTIME_SERVICE_URL;
         if (!realtimeUrl) {
-            console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', order._id);
+            console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', updatedOrder._id);
         } else {
-            try {
-                await axios.post(
+            try {                await axios.post(
                     `${realtimeUrl}/api/v1/internal/emit`,
-                    {
+                     {
                         event: "rider_assigned",
                         room: `user:${order.userId}`,
-                        payload: newOrder,
+                        payload: updatedOrder,
                     },
                     {
-                        headers: {
-                            "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "",
-                        },
+                        headers: { "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "" },
                     }
                 );
                 await axios.post(
                     `${realtimeUrl}/api/v1/internal/emit`,
-                    {
-                        event: "rider_assigned",
-                        room: `restaurant:${order.restaurantId}`,
-                        payload: newOrder,
-                    },
-                    {
-                        headers: {
-                            "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "",
-                        },
-                    }
+                    { event: "rider_assigned", room: `restaurant:${order.restaurantId}`, payload: updatedOrder },
+                    { headers: { "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "" } }
                 );
-            } catch (err) {
+            }
+                catch (err) {
                 console.error('Failed to notify realtime service about order status update', err);
             }
-        }
-        res.json({ success: true, message: "Order status updated successfully", order });
-    }
-
+        } 
+        res.json({ success: true, message: "OTP verified and order marked as delivered", order: updatedOrder });
 })
