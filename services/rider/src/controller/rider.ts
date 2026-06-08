@@ -253,3 +253,51 @@ export const verifyOtp = tryCatch(async(req:AuthenticatedRequest,res)=>{
         })
     }
 })
+
+export const todayRiderEarnings = tryCatch(async(req:AuthenticatedRequest,res)=>{
+       const UserId = req.user?._id;
+    if(!UserId){
+        return res.status(401).json({ message:"Unauthorized" });
+    }
+    const rider = await Rider.findOne({userId:UserId});
+    if(!rider){
+        return res.status(404).json({ message:"Rider profile not found" });
+    } 
+    try { const {data} = await axios.get(`${process.env.RESTAURANT_SERVICE_URL}/api/order/rider/today/earnings/${rider._id}`,{
+            headers:{
+                "x-internal-key": process.env.INTERNAL_SERVICE_KEY
+            }
+        });
+            res.json({ success:true, totalOrders: data.totalOrders, totalEarnings: data.totalEarnings })
+    } catch (error) {
+        return res.status(500).json({
+            error,
+            message:"(rider)Error occurred while verifying OTP"
+        })
+    }
+})
+
+export const fetchRiderTotalEarnings = tryCatch(async(req:AuthenticatedRequest,res)=>{
+    const UserId = req.user?._id;
+    if(!UserId){
+        return res.status(401).json({ message:"Unauthorized" });
+    }
+    const rider = await Rider.findOne({userId:UserId});
+    if(!rider){
+        return res.status(404).json({ message:"Rider profile not found" });
+    }
+    try { const {data} = await axios.get(`${process.env.RESTAURANT_SERVICE_URL}/api/order/rider/total/earnings/${rider._id}`,{
+            headers:{
+                "x-internal-key": process.env.INTERNAL_SERVICE_KEY
+            }        });
+            res.json({ success:true, TotalOrders: data.totalOrders, TotalEarnings: data.totalEarnings })
+    } catch (error) {
+        return res.status(500).json({
+            error,
+            message:"(rider)Error occurred while fetching total earnings"
+        })
+    }
+})
+
+
+

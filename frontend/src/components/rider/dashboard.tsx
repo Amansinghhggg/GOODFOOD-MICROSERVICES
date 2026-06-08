@@ -9,6 +9,7 @@ import riderNotifySound from "../../Assets/johnnybacon156-i-got-this-467997.mp3"
 import IncomingOrderCart from "./iIncomingOrderCart";
 import CurrentOrder from "./CurrentOrder";
 import OrderMap from "./OrderMap";
+import EarningsTab from "./EarningsTab";
 
 interface IRider {
     _id: string;
@@ -22,6 +23,7 @@ interface IRider {
 }
 const Dashboard = () => {
     const {user,location,fetchLocation,city,loadingLocation} = useAppContext();
+    const [earnTab,setEarnTab] = useState<any>(false);
     const {socket} = useSocket();
     const [profile,setProfile] = useState<IRider|null>(null);
     const[loading,setLoading] = useState<boolean>(true);
@@ -306,6 +308,8 @@ const Dashboard = () => {
     </div>
   );
     }
+
+    
     
     return <div>
       {!audioUnlocked && showAudioPrompt && (
@@ -451,8 +455,16 @@ const Dashboard = () => {
       >
         Logout
       </button>
+      <button
+        onClick={()=>setEarnTab(true)}
+        className="flex-1 rounded-xl bg-purple-600 py-3 font-semibold text-white transition hover:bg-purple-500"
+      >
+        Earnings
+      </button>
 
     </div>
+          {earnTab && <EarningsTab  closeTab={() => setEarnTab(false)} riderId={profile._id} />}
+
    {!currentOrder &&
   profile.isAvailable &&
   incomingOrder.length > 0 && (
@@ -471,6 +483,7 @@ const Dashboard = () => {
       ))}
     </div>
 )}
+   
     {currentOrder && (
         <div className="mx-auto max-w-md px-4 space-y-4">
           <CurrentOrder order={currentOrder} 

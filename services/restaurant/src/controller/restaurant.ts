@@ -165,3 +165,5 @@ export const fetchSingleRestaurant = tryCatch(async(req:AuthenticatedRequest,res
     }
     res.json({restaurant})
 })
+
+ 

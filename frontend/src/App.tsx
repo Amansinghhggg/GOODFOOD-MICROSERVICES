@@ -18,6 +18,8 @@ import PaymentSuccess from "./pages/paymentSucces";
 import ViewOrderDetails from "./components/restaurant/ViewOrderDetails";
 import Dashboard from "./components/rider/dashboard";
 import { Admin } from "./pages/Admin";
+import { Ear } from "lucide-react";
+import EarningsTab from "./components/rider/EarningsTab";
 function App() {
   const { user ,loading} = useAppContext();
     if(loading) {

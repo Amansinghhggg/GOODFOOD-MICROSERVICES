@@ -488,3 +488,124 @@ export const verifyotp = tryCatch(async(req: AuthenticatedRequest,res)=>{
         } 
         res.json({ success: true, message: "OTP verified and order marked as delivered", order: updatedOrder });
 })
+
+export const getRiderTodayEarnings = tryCatch(async(req:AuthenticatedRequest,res)=>{
+    const {id} = req.params as {id:string};
+    const orders = await Order.find({
+        riderId: id,
+        status: "delivered",
+        updatedAt: {
+            $gte: new Date(new Date().setHours(0, 0, 0, 0)),
+            $lte: new Date(new Date().setHours(23, 59, 59, 999)),
+        },
+    });
+    const totalEarnings = orders.reduce((sum, order) => sum + (Number(order.riderAmount)|| 0), 0);
+    res.json({ success: true, totalOrders: orders.length, totalEarnings });
+})
+export const getRiderTotalEarnings = tryCatch(async(req:AuthenticatedRequest,res)=>{
+    const {id} = req.params as {id:string};
+    const orders = await Order.find({
+        riderId: id,
+        status: "delivered",
+    });
+    const totalEarnings = orders.reduce((sum, order) => sum + (Number(order.riderAmount)|| 0), 0);
+    res.json({ success: true, totalOrders: orders.length, totalEarnings });
+})
+
+export const getRestaurantTodayEarnings = tryCatch(async(req:AuthenticatedRequest,res)=>{
+    const user = req.user;
+    if(!user) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+    const restaurant = await Restaurant.findOne({owner:user._id});
+    if(!restaurant){
+        return res.status(404).json({ message: "Restaurant not found" });
+    }
+    const orders = await Order.find({
+        restaurantId: restaurant._id.toString(),
+        paymentStatus: "paid",
+        updatedAt: {
+            $gte: new Date(new Date().setHours(0, 0, 0, 0)),
+            $lte: new Date(new Date().setHours(23, 59, 59, 999)),
+        },
+    });
+    const totalEarnings = orders.reduce((sum, order) => sum + (Number(order.subtotal)|| 0), 0);
+    res.json({ success: true, totalOrders: orders.length, totalEarnings:totalEarnings*0.93 });
+})
+
+export const getRestaurantTotalEarnings = tryCatch(async(req:AuthenticatedRequest,res)=>{
+    const user = req.user;
+    if(!user) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+    const restaurant = await Restaurant.findOne({owner:user._id});
+    if(!restaurant){
+        return res.status(404).json({ message: "Restaurant not found" });
+    }
+    const orders = await Order.find({
+        restaurantId: restaurant._id.toString(),
+        paymentStatus: "paid",
+    });
+    const totalEarnings = orders.reduce((sum, order) => sum + (Number(order.subtotal)|| 0), 0);
+    res.json({ success: true, totalOrders: orders.length, totalEarnings:totalEarnings*0.93});
+})
+
+export const getTopItems = tryCatch(async (req: AuthenticatedRequest, res) => {
+    const user = req.user;
+    if (!user) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const restaurant = await Restaurant.findOne({ owner: user._id });
+
+    if (!restaurant) {
+        return res.status(404).json({ message: "Restaurant not found" });
+    }
+
+    const orders = await Order.find({
+        restaurantId: restaurant._id.toString(),
+        paymentStatus: "paid",
+        status: "delivered"
+    });
+
+    const itemMap: Record<
+        string,
+        {
+            name: string;
+            quantity: number;
+            revenue: number;
+        }
+    > = {};
+
+    orders.forEach((order) => {
+        order.items.forEach((item) => {
+            const itemId = String(item.itemId);
+
+            if (!itemMap[itemId]) {
+                itemMap[itemId] = {
+                    name: String(item.name),
+                    quantity: 0,
+                    revenue: 0,
+                };
+            }
+
+            itemMap[itemId].quantity += Number(item.quantity);
+            itemMap[itemId].revenue += Number(item.price) * Number(item.quantity);
+
+        });
+    });
+
+    const topItems = Object.entries(itemMap)
+        .map(([itemId, data]) => ({
+            itemId,
+            name: data.name,
+            quantity: data.quantity,
+            revenue: data.revenue,
+        }))
+        .sort((a, b) => b.quantity - a.quantity)
+        .slice(0, 5);
+    return res.json({
+        success: true,
+        topItems,
+    });
+});

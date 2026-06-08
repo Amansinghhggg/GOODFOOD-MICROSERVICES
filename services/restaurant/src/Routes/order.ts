@@ -1,6 +1,6 @@
 import express from "express";
 import isAuth from "../middleware/isAuth.js";
-import { assignRiderToOrder, createOrder, fetchOrders, fetchRestaurantOrders, fetchSingleOrder, getCurrentOrderForRider, getMyOrders, updateOrderStatus, updateOrderStatusByRider, verifyotp } from "../controller/order.js";
+import { assignRiderToOrder, createOrder, fetchOrders, fetchRestaurantOrders, fetchSingleOrder, getCurrentOrderForRider, getMyOrders, getRestaurantTodayEarnings, getRestaurantTotalEarnings, getRiderTodayEarnings, getRiderTotalEarnings, getTopItems, updateOrderStatus, updateOrderStatusByRider, verifyotp } from "../controller/order.js";
 const router = express.Router();
 router.get("/customer/my",isAuth,getMyOrders);
 router.post("/new",isAuth,createOrder);
@@ -12,4 +12,9 @@ router.put("/assign/rider",assignRiderToOrder);
 router.get("/current/rider",getCurrentOrderForRider)
 router.put("/update/status/:orderId",updateOrderStatusByRider);
 router.post("/verify/otp/:orderId",verifyotp);
+router.get("/rider/today/earnings/:id",getRiderTodayEarnings);
+router.get("/rider/total/earnings/:id",getRiderTotalEarnings);
+router.get("/restaurant/today/earnings",isAuth,getRestaurantTodayEarnings);
+router.get("/restaurant/total/earnings",isAuth,getRestaurantTotalEarnings);
+router.get("/restaurant/top/items",isAuth,getTopItems);
 export default router;

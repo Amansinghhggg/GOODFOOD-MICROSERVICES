@@ -4,45 +4,43 @@ import { restaurantService } from "../../main";
 import { useSocket } from "../../context/socketContext";
 import RessingleOrderTab from "./RessingleOrderTab";
 import toast from "react-hot-toast";
- 
+
 const ACTIVE_STATUS    = ["placed", "accepted", "preparing", "preaparing", "ready_for_rider"];
 const COMPLETED_STATUS = ["rider_assigned", "picked_up", "delivered", "cancelled"];
- 
+
 export const STATUS_TONE: Record<string, string> = {
-  placed:          "bg-amber-100 text-amber-800",
-  accepted:        "bg-blue-100 text-blue-800",
-  preparing:       "bg-indigo-100 text-indigo-800",
-  preaparing:      "bg-indigo-100 text-indigo-800",
-  ready_for_rider: "bg-emerald-100 text-emerald-800",
-  rider_assigned:  "bg-violet-100 text-violet-800",
-  picked_up:       "bg-violet-100 text-violet-800",
+  placed:          "bg-amber-100 text-amber-700 ring-1 ring-amber-200",
+  accepted:        "bg-blue-100 text-blue-700 ring-1 ring-blue-200",
+  preparing:       "bg-indigo-100 text-indigo-700 ring-1 ring-indigo-200",
+  preaparing:      "bg-indigo-100 text-indigo-700 ring-1 ring-indigo-200",
+  ready_for_rider: "bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200",
+  rider_assigned:  "bg-violet-100 text-violet-700 ring-1 ring-violet-200",
+  picked_up:       "bg-violet-100 text-violet-700 ring-1 ring-violet-200",
 };
- 
+
 export function nextStatus(status: string): string | null {
   switch (status) {
-    case "placed":     return "accepted";
-    case "accepted":   return "preparing";
-    case "preparing":  return "ready_for_rider";
+    case "placed":          return "accepted";
+    case "accepted":        return "preparing";
+    case "preparing":       return "ready_for_rider";
     case "ready_for_rider": return "ready_for_rider";
-    default:           return null;
+    default:                return null;
   }
 }
- 
+
 interface Props {
   reload: boolean;
   restaurantId: string;
 }
- 
+
 const ActiveOrders = ({ reload, restaurantId }: Props) => {
-  const [loading, setLoading]   = useState(false);
-  const [orders, setOrders]     = useState<any[]>([]);
+  const [loading, setLoading]     = useState(false);
+  const [orders, setOrders]       = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<"active" | "completed">("active");
- 
-  // orderId → "searching" state (10s timer running)
   const [searchingOrders, setSearchingOrders] = useState<Set<string>>(new Set());
- 
+
   const { socket } = useSocket();
- 
+
   const fetchOrders = useCallback(async () => {
     setLoading(true);
     try {
@@ -57,15 +55,13 @@ const ActiveOrders = ({ reload, restaurantId }: Props) => {
       setLoading(false);
     }
   }, [restaurantId]);
- 
+
   useEffect(() => { fetchOrders(); }, [fetchOrders, reload]);
- 
-  // Socket: rider accepted → stop searching, update order
+
   useEffect(() => {
     if (!socket) return;
     const onRiderAssigned = (updatedOrder: any) => {
-      toast.success("Rider assigned for order  " + updatedOrder._id);
-      console.log("RIDER ASSIGNED", updatedOrder);
+      toast.success("Rider assigned for order " + updatedOrder._id);
       setSearchingOrders((prev) => {
         const next = new Set(prev);
         next.delete(updatedOrder._id);
@@ -75,26 +71,17 @@ const ActiveOrders = ({ reload, restaurantId }: Props) => {
         prev.map((o) => (o._id === updatedOrder._id ? updatedOrder : o))
       );
     };
- 
     socket.on("rider_assigned", onRiderAssigned);
     return () => { socket.off("rider_assigned", onRiderAssigned); };
   }, [socket]);
- 
-  /**
-   * Called when restaurant clicks any action button.
-   * For ready_for_rider → rider_assigned: sends API + starts 10s timer.
-   * If timer expires with no socket response, removes from searching (retry enabled).
-   */
+
   const updateStatus = async (order: any) => {
     const next = nextStatus(order.status);
     if (!next) return;
- 
-    const isRiderSearch = order.status === "ready_for_rider" ;
- 
+    const isRiderSearch = order.status === "ready_for_rider";
     if (isRiderSearch) {
       setSearchingOrders((prev) => new Set(prev).add(order._id));
     }
- 
     try {
       const { data } = await axios.put(
         `${restaurantService}/api/order/${order._id}`,
@@ -107,7 +94,6 @@ const ActiveOrders = ({ reload, restaurantId }: Props) => {
       );
     } catch (error) {
       console.error("Error updating order status:", error);
-      // on API failure also clear searching
       setSearchingOrders((prev) => {
         const next = new Set(prev);
         next.delete(order._id);
@@ -115,12 +101,10 @@ const ActiveOrders = ({ reload, restaurantId }: Props) => {
       });
       return;
     }
- 
     if (isRiderSearch) {
-      // 10s timeout — if socket hasn't cleared it, enable retry
       setTimeout(() => {
         setSearchingOrders((prev) => {
-          if (!prev.has(order._id)) return prev; // already cleared by socket
+          if (!prev.has(order._id)) return prev;
           const next = new Set(prev);
           next.delete(order._id);
           return next;
@@ -128,55 +112,76 @@ const ActiveOrders = ({ reload, restaurantId }: Props) => {
       }, 10_000);
     }
   };
- 
+
   const activeOrders    = orders.filter((o) => o && ACTIVE_STATUS.includes(o.status));
   const completedOrders = orders.filter((o) => o && COMPLETED_STATUS.includes(o.status));
   const ordersToShow    = activeTab === "active" ? activeOrders : completedOrders;
- 
-  const tabClass = (tab: "active" | "completed") =>
-    `rounded-full px-4 py-2 text-sm font-semibold transition ${
-      activeTab === tab
-        ? "bg-slate-900 text-white"
-        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-    }`;
- 
+
   if (loading) {
     return (
-      <div className="flex h-16 items-center justify-center rounded-xl bg-gray-100 text-sm text-gray-500">
-        Loading Orders…
+      <div className="flex h-32 items-center justify-center rounded-2xl bg-rose-50">
+        <div className="flex items-center gap-3 text-sm text-rose-400">
+          <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+          </svg>
+          Loading orders…
+        </div>
       </div>
     );
   }
- 
+
   return (
-    <div className="space-y-4">
-      {/* Tabs */}
-      <div className="flex items-center gap-2">
-        <button type="button" onClick={() => setActiveTab("active")} className={tabClass("active")}>
-          Active Orders
+    <div className="space-y-5">
+      {/* Sub-tabs */}
+      <div className="flex items-center gap-2 rounded-2xl bg-slate-100 p-1 w-fit">
+        <button
+          type="button"
+          onClick={() => setActiveTab("active")}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-all ${
+            activeTab === "active"
+              ? "bg-white text-slate-900 shadow-sm"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          Active
           {activeOrders.length > 0 && (
-            <span className="ml-2 rounded-full bg-green-500 px-1.5 py-0.5 text-xs text-white">
+            <span className="rounded-full bg-[#E23774] px-2 py-0.5 text-[11px] font-bold text-white">
               {activeOrders.length}
             </span>
           )}
         </button>
-        <button type="button" onClick={() => setActiveTab("completed")} className={tabClass("completed")}>
-          Completed Orders
+        <button
+          type="button"
+          onClick={() => setActiveTab("completed")}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-all ${
+            activeTab === "completed"
+              ? "bg-white text-slate-900 shadow-sm"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          Completed
+          {completedOrders.length > 0 && (
+            <span className="rounded-full bg-slate-400 px-2 py-0.5 text-[11px] font-bold text-white">
+              {completedOrders.length}
+            </span>
+          )}
         </button>
       </div>
- 
-      {/* Order List */}
+
+      {/* Order list */}
       {ordersToShow.length === 0 ? (
-        <p className="text-sm text-gray-400">
-          {activeTab === "active"
-            ? "No active orders at the moment."
-            : "No completed orders yet."}
-        </p>
+        <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-rose-100 bg-rose-50/50 py-14 text-center">
+          <div className="mb-3 text-4xl">🍽️</div>
+          <p className="text-sm font-medium text-slate-500">
+            {activeTab === "active" ? "No active orders right now" : "No completed orders yet"}
+          </p>
+        </div>
       ) : (
         <ul className="space-y-3">
           {ordersToShow.map((order) => (
             <RessingleOrderTab
-              isCompleted ={COMPLETED_STATUS.includes(order.status)}
+              isCompleted={COMPLETED_STATUS.includes(order.status)}
               key={order._id}
               order={order}
               showAction={activeTab === "active"}
@@ -191,5 +196,5 @@ const ActiveOrders = ({ reload, restaurantId }: Props) => {
     </div>
   );
 };
- 
+
 export default ActiveOrders;
