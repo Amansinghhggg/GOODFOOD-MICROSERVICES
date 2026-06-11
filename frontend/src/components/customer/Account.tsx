@@ -1,7 +1,7 @@
 import { useAppContext } from "../../context/context";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { ArrowRight, Home, Mail, Package, ShieldCheck, LogOut, MapPin, User, ChevronRight, Clock } from "lucide-react";
+import {  Home, Mail, Package, ShieldCheck, LogOut, MapPin, User, ChevronRight, Clock } from "lucide-react";
 import { useEffect, useState } from "react";
 import { restaurantService } from "../../main";
 import axios from "axios";

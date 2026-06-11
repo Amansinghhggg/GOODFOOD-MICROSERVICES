@@ -155,7 +155,7 @@ const YourRestaurant: React.FC<Props> = ({ reload, restaurant, onToggle }) => {
               {/* Meta — top-right corner */}
               <div className="shrink-0 text-right text-xs text-white/60 sm:ml-auto">
                 <p>Since {new Date(restaurant.createdAt).toLocaleDateString("en-IN", { year: "numeric", month: "short", day: "numeric" })}</p>
-                <p className="mt-1 font-mono">ID: {(restaurant as any).owner?.slice(-8) || "—"}</p>
+                <p className="mt-1 font-mono">ID: {(restaurant as any).owner}</p>
               </div>
             </div>
           </div>

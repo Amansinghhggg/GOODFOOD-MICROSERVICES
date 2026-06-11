@@ -1,16 +1,36 @@
-import { useLocation , Navigate, Outlet} from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAppContext } from "../context/context";
-const ProtectedRoute = () => {
+
+interface ProtectedRouteProps {
+  roles?: string[];
+}
+
+const ProtectedRoute = ({ roles }: ProtectedRouteProps) => {
+  const { isAuth, user, loading } = useAppContext();
   const location = useLocation();
-  const { isAuth, user,loading } = useAppContext();
-  if(loading) return null
 
-  if(!isAuth) return <Navigate to="/login" replace />;
+  if (loading) return null;
 
-  if(!user?.role && location.pathname !== "/select-role") return <Navigate to="/select-role" replace />;
-  if(user?.role && location.pathname ==="/select-role") return <Navigate to="/" replace />;
-return <Outlet />;
+  if (!isAuth) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // User authenticated but role not selected
+  if (!user?.role && location.pathname !== "/select-role") {
+    return <Navigate to="/select-role" replace />;
+  }
+
+  // Already selected role
+  if (user?.role && location.pathname === "/select-role") {
+    return <Navigate to="/" replace />;
+  }
+
+  // Role restriction
+  if (roles && user?.role && !roles.includes(user.role)) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default ProtectedRoute;
-
