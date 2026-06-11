@@ -149,6 +149,9 @@ export const updateOrderStatus = tryCatch(async(req: AuthenticatedRequest,res)=>
     if(order.paymentStatus !== "paid"){
         return res.status(400).json({ message: "Only paid orders can be updated" });
     }
+    if(order.status==="rider_assigned"){
+        return res.status(400).json({ message: "Cannot update order after rider is assigned" });
+    }
     const restaurant = await Restaurant.findById(order.restaurantId);
     if(!restaurant){
         return res.status(404).json({ message: "Restaurant not found" });
@@ -156,6 +159,7 @@ export const updateOrderStatus = tryCatch(async(req: AuthenticatedRequest,res)=>
     if(restaurant.owner.toString() !== user._id.toString()){
         return res.status(403).json({ message: "you are not the owner of this restaurant" });
     }
+
     const updatedOrder = await Order.findByIdAndUpdate(
         orderId,
         { $set: { status } },
@@ -327,7 +331,7 @@ export const getCurrentOrderForRider = tryCatch(
         message: "order not found",
       });
     }
-
+    order.otp = "none";
     return res.json({success:true, order});
   }
 );

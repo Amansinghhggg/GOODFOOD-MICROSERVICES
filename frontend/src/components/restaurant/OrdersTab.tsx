@@ -61,7 +61,9 @@ const ActiveOrders = ({ reload, restaurantId }: Props) => {
   useEffect(() => {
     if (!socket) return;
     const onRiderAssigned = (updatedOrder: any) => {
-      toast.success("Rider assigned for order " + updatedOrder._id);
+      if(updatedOrder.status === "rider_assigned"){
+        toast.success("Rider assigned for order " + updatedOrder._id);
+      }
       setSearchingOrders((prev) => {
         const next = new Set(prev);
         next.delete(updatedOrder._id);

@@ -126,7 +126,7 @@ export const isOpenRestaurant = tryCatch(async(req:AuthenticatedRequest,res)=>{
     res.json({message:`Restaurant is now ${restaurant.isOpen ? "open" : "closed"}`})
 })
 export const getnearbyRestaurants = tryCatch(async(req:AuthenticatedRequest,res)=>{
-    const {latitude,longitude,search="",radius=5000} = req.query;
+    const {latitude,longitude,search="",radius=10000} = req.query;
     if(!latitude || !longitude){
         res.status(400).json({message:"latitude and longitude are required"})
         return;
