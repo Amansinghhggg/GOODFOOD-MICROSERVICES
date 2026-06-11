@@ -150,7 +150,7 @@ const currentStep = STATUS_STEPS.findIndex(
             <div>
               <p className="text-xs uppercase tracking-widest text-slate-400">Order Details</p>
               <h2 className="mt-1 text-xl font-black text-slate-900">{order?.restaurantName ?? "Your Order"}</h2>
-              <p className="mt-0.5 font-mono text-xs text-slate-400">#{orderId?.slice(-12)}</p>
+              <p className="mt-0.5 font-mono text-xs text-slate-400">#{orderId}</p>
             </div>
             {order && (
               <span className={`inline-flex w-fit rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest ${STATUS_COLORS[order.status] ?? "bg-slate-100 text-slate-600"}`}>

@@ -5,21 +5,19 @@ import Login from "./pages/Login";
 import PublicRoute from "./components/publicRoute";
 import ProtectedRoute from "./components/protectedRoute";
 import SelectRoles from "./pages/select-roles";
-import Navbar from "./components/Navbar";
-import Account from "./components/Account";
+import Navbar from "./components/customer/Navbar";
+import Account from "./components/customer/Account";
 import { useAppContext } from "./context/context";
 import Restaurant from "./pages/restaurant";
 import EditRestaurant from "./components/restaurant/editrestauran";
-import CustomerResView from "./components/restaurant/customerResView";
+import CustomerResView from "./components/customer/customerResView";
 import Cart from "./pages/Cart";
-import AddAddress from "./components/restaurant/AddAddress";
+import AddAddress from "./components/customer/AddAddress";
 import Checkout from "./pages/checkout";
 import PaymentSuccess from "./pages/paymentSucces";
-import ViewOrderDetails from "./components/restaurant/ViewOrderDetails";
+import ViewOrderDetails from "./components/customer/ViewOrderDetails";
 import Dashboard from "./components/rider/dashboard";
 import { Admin } from "./pages/Admin";
-import { Ear } from "lucide-react";
-import EarningsTab from "./components/rider/EarningsTab";
 function App() {
   const { user ,loading} = useAppContext();
     if(loading) {

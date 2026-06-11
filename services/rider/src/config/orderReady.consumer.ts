@@ -16,14 +16,14 @@ export const startOrderReadyConsumer =async () => {
                 channel.ack(msg);
                 return;                
             }
-            const { orderId, restaurantId, location } = event.data;
+            const { orderId,distance,amount, restaurantId, reslocation } = event.data;
             console.log(`searching for riders near restaurant ${restaurantId} for order ${orderId}`);
             const Riders = await Rider.find({
                 isAvailable: true,
                 isVerified: true,
                 location: {
                     $near: {
-                        $geometry: location,
+                        $geometry: reslocation,
                         $maxDistance: 5000,
                     },
                 },
@@ -41,7 +41,10 @@ export const startOrderReadyConsumer =async () => {
                         room:`rider:${rider.userId}`,
                         payload:{
                             orderId,
+                            amount: amount,
+                            distance,
                             restaurantId,
+                            reslocation
                         }
                     },{
                             headers:{

@@ -195,8 +195,10 @@ export const updateOrderStatus = tryCatch(async(req: AuthenticatedRequest,res)=>
         console.log('🚴🚴‍♀️Emitting order ready event for order', updatedOrder._id);
         await publishEvent("ORDER_READY_FOR_RIDER", 
             { orderId: updatedOrder._id.toString(),
+                amount: updatedOrder.riderAmount,
+                distance: updatedOrder.distance,
                 restaurantId: restaurant._id.toString(),
-                location: restaurant.autoLocation,
+                reslocation: restaurant.autoLocation,
          });
          console.log('Event published for order Successfully');
     }
@@ -237,7 +239,7 @@ export const assignRiderToOrder = tryCatch(async(req: AuthenticatedRequest,res)=
         return res.status(401).json({ message: "Unauthorized" });
     }
     const {orderId, riderId,riderName,riderPhone} = req.body;
-    const orderAvailable = await Order.findOne({riderId,status:{$ne:"delivered"}});
+    const orderAvailable = await Order.findOne({riderId,status: { $nin: ["delivered","rider_assigned"] }});
         if(orderAvailable){
             return res.status(400).json({ message: "Rider is already assigned to another order" });
         }

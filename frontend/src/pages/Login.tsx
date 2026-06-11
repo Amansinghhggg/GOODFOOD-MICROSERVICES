@@ -19,11 +19,7 @@ const Login = () => {
   const { setUser, setIsAuth } = useAppContext();
 
   const isLogin = mode === "login";
-
-  const title = useMemo(
-    () => (isLogin ? "Welcome back" : "Create your account"),
-    [isLogin]
-  );
+  const title = useMemo(() => (isLogin ? "Welcome back" : "Create account"), [isLogin]);
 
   const responseGoogle = async (authResult: any) => {
     setLoading(true);
@@ -34,11 +30,10 @@ const Login = () => {
       localStorage.setItem("token", result.data.token);
       setUser(result.data.user);
       setIsAuth(true);
-      toast.success(`Login successful, Welcome back! ${result.data.user.name}`);
+      toast.success(`Welcome back, ${result.data.user.name}!`);
       navigate("/", { replace: true });
-    } catch (error) {
-      console.log(error);
-      toast.error("Login failed,Please try again");
+    } catch {
+      toast.error("Google login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -50,26 +45,25 @@ const Login = () => {
     flow: "auth-code",
   });
 
-   async function handleLoginSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleLoginSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-      if (!loginForm.email || !loginForm.password) {
-        toast.error("Please fill all fields");
-        return;
-      }
-      try {
+    if (!loginForm.email || !loginForm.password) {
+      toast.error("Please fill all fields");
+      return;
+    }
+    try {
       const result = await axios.post(`${authService}/api/auth/user/login`, {
         email: loginForm.email,
         password: loginForm.password,
-      })
+      });
       localStorage.setItem("token", result.data.token);
       setUser(result.data.user);
       setIsAuth(true);
       navigate("/", { replace: true });
-      toast.success(`Login successful, Welcome back! ${result.data.user.name}`);
-      } catch (error) {
-        toast.error("Login failed,Please Check Your Credentials");
-      }
-
+      toast.success(`Welcome back, ${result.data.user.name}!`);
+    } catch {
+      toast.error("Invalid credentials. Please check and try again.");
+    }
   }
 
   async function handleSignupSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -78,7 +72,7 @@ const Login = () => {
       toast.error("Please fill all fields");
       return;
     }
-    try {   
+    try {
       const result = await axios.post(`${authService}/api/auth/user/signup`, {
         name: signupForm.username,
         email: signupForm.email,
@@ -88,42 +82,70 @@ const Login = () => {
       setUser(result.data.user);
       setIsAuth(true);
       navigate("/", { replace: true });
-      toast.success("Account created successfully");
-      setMode("login");
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to create account");
+      toast.success("Account created successfully!");
+    } catch {
+      toast.error("Failed to create account. Please try again.");
     }
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-[#120f17] via-[#1b1220] to-[#2d1624] px-4 py-8 text-white sm:px-6 lg:px-8">
-      <div className="mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl items-center gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="space-y-6">
-          <div className="space-y-4">
-            <h1 className="max-w-2xl text-4xl font-black leading-tight sm:text-5xl xl:text-6xl">
-              GOODFOOD
+    <div className="min-h-screen bg-[#0a0a0f] px-4 py-8 text-white sm:px-6 lg:px-8">
+      {/* Ambient blobs */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="absolute -left-20 top-1/4 h-80 w-80 rounded-full bg-[#E23774]/10 blur-[120px]" />
+        <div className="absolute -right-20 bottom-1/4 h-80 w-80 rounded-full bg-purple-900/20 blur-[120px]" />
+      </div>
+
+      <div className="relative mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+        {/* Left — Brand */}
+        <div className="space-y-6 hidden lg:block">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/25">Food delivery</p>
+            <h1 className="mt-3 text-7xl font-black leading-none tracking-tight">
+              GOOD
+              <span className="text-[#E23774]">FOOD</span>
             </h1>
-            <p className="max-w-xl text-base leading-7 text-white/75 sm:text-lg">
-              Good food, great mood.
-            </p>
-            <p className="max-w-xl text-sm leading-7 text-white/55 sm:text-base">
-              Crave it. Discover it. Enjoy it.
-            </p>
+          </div>
+          <p className="max-w-sm text-lg leading-relaxed text-white/50">
+            Crave it. Discover it. Enjoy it — delivered right to your door.
+          </p>
+
+          {/* Floating feature pills */}
+          <div className="flex flex-wrap gap-3 pt-4">
+            {["🍕 1000+ restaurants", "⚡ 30 min delivery", "🎯 Live tracking"].map((f) => (
+              <span
+                key={f}
+                className="rounded-full border border-white/5 bg-white/[0.04] px-4 py-2 text-sm text-white/40"
+              >
+                {f}
+              </span>
+            ))}
           </div>
         </div>
 
-        <div className="rounded-4xl border border-white/10 bg-white/10 p-5 shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:p-7">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold">{title}</h2>
+        {/* Right — Auth card */}
+        <div className="rounded-3xl border border-white/5 bg-white/[0.04] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:p-8">
+          {/* Mobile logo */}
+          <div className="mb-6 lg:hidden text-center">
+            <h1 className="text-3xl font-black">GOOD<span className="text-[#E23774]">FOOD</span></h1>
           </div>
 
-          <div className="mb-6 grid grid-cols-2 rounded-2xl border border-white/10 bg-white/5 p-1">
+          <div className="mb-6">
+            <h2 className="text-2xl font-black">{title}</h2>
+            <p className="mt-1 text-sm text-white/40">
+              {isLogin ? "Sign in to your account" : "Join GOODFOOD today"}
+            </p>
+          </div>
+
+          {/* Tab switcher */}
+          <div className="mb-6 grid grid-cols-2 rounded-2xl border border-white/5 bg-white/[0.04] p-1">
             <button
               type="button"
               onClick={() => setMode("login")}
-              className={`rounded-xl px-4 py-3 text-sm font-semibold transition ${
-                isLogin ? "bg-white text-[#E23774] shadow" : "text-white/70 hover:text-white"
+              className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+                isLogin
+                  ? "bg-[#E23774] text-white shadow-lg shadow-[#E23774]/20"
+                  : "text-white/40 hover:text-white"
               }`}
             >
               Login
@@ -131,8 +153,10 @@ const Login = () => {
             <button
               type="button"
               onClick={() => setMode("signup")}
-              className={`rounded-xl px-4 py-3 text-sm font-semibold transition ${
-                !isLogin ? "bg-white text-[#E23774] shadow" : "text-white/70 hover:text-white"
+              className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+                !isLogin
+                  ? "bg-[#E23774] text-white shadow-lg shadow-[#E23774]/20"
+                  : "text-white/40 hover:text-white"
               }`}
             >
               Sign up
@@ -141,119 +165,116 @@ const Login = () => {
 
           {isLogin ? (
             <form onSubmit={handleLoginSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="login-email" className="mb-2 block text-sm font-medium text-white/80">
-                  Email
-                </label>
-                <input
-                  id="login-email"
-                  name="email"
-                  type="email"
-                  value={loginForm.email}
-                  onChange={(e) => setLoginForm((prev) => ({ ...prev, email: e.target.value }))}
-                  placeholder="you@example.com"
-                  className="w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none placeholder:text-white/35 focus:border-[#ff6c9e]"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="login-password" className="mb-2 block text-sm font-medium text-white/80">
-                  Password
-                </label>
-                <input
-                  id="login-password"
-                  name="password"
-                  type="password"
-                  value={loginForm.password}
-                  onChange={(e) => setLoginForm((prev) => ({ ...prev, password: e.target.value }))}
-                  placeholder="Your password"
-                  className="w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none placeholder:text-white/35 focus:border-[#ff6c9e]"
-                />
-              </div>
-
+              <Field
+                id="login-email"
+                label="Email"
+                type="email"
+                value={loginForm.email}
+                placeholder="you@example.com"
+                onChange={(v) => setLoginForm((p) => ({ ...p, email: v }))}
+              />
+              <Field
+                id="login-password"
+                label="Password"
+                type="password"
+                value={loginForm.password}
+                placeholder="Your password"
+                onChange={(v) => setLoginForm((p) => ({ ...p, password: v }))}
+              />
               <button
                 type="submit"
-                className="w-full rounded-2xl bg-[#ff5f8d] px-4 py-3 font-semibold text-white transition hover:bg-[#ff4a7d]"
+                className="w-full rounded-2xl bg-[#E23774] px-4 py-3 font-semibold text-white transition hover:bg-[#c72d65] hover:-translate-y-0.5"
               >
                 Login
               </button>
             </form>
           ) : (
             <form onSubmit={handleSignupSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="signup-username" className="mb-2 block text-sm font-medium text-white/80">
-                  Username
-                </label>
-                <input
-                  id="signup-username"
-                  name="username"
-                  type="text"
-                  value={signupForm.username}
-                  onChange={(e) => setSignupForm((prev) => ({ ...prev, username: e.target.value }))}
-                  placeholder="Enter username"
-                  className="w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none placeholder:text-white/35 focus:border-[#ff6c9e]"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="signup-email" className="mb-2 block text-sm font-medium text-white/80">
-                  Email
-                </label>
-                <input
-                  id="signup-email"
-                  name="email"
-                  type="email"
-                  value={signupForm.email}
-                  onChange={(e) => setSignupForm((prev) => ({ ...prev, email: e.target.value }))}
-                  placeholder="you@example.com"
-                  className="w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none placeholder:text-white/35 focus:border-[#ff6c9e]"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="signup-password" className="mb-2 block text-sm font-medium text-white/80">
-                  Password
-                </label>
-                <input
-                  id="signup-password"
-                  name="password"
-                  type="password"
-                  value={signupForm.password}
-                  onChange={(e) => setSignupForm((prev) => ({ ...prev, password: e.target.value }))}
-                  placeholder="Create password"
-                  className="w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none placeholder:text-white/35 focus:border-[#ff6c9e]"
-                />
-              </div>
-
+              <Field
+                id="signup-username"
+                label="Username"
+                type="text"
+                value={signupForm.username}
+                placeholder="Your name"
+                onChange={(v) => setSignupForm((p) => ({ ...p, username: v }))}
+              />
+              <Field
+                id="signup-email"
+                label="Email"
+                type="email"
+                value={signupForm.email}
+                placeholder="you@example.com"
+                onChange={(v) => setSignupForm((p) => ({ ...p, email: v }))}
+              />
+              <Field
+                id="signup-password"
+                label="Password"
+                type="password"
+                value={signupForm.password}
+                placeholder="Create a strong password"
+                onChange={(v) => setSignupForm((p) => ({ ...p, password: v }))}
+              />
               <button
                 type="submit"
-                className="w-full rounded-2xl bg-[#ff5f8d] px-4 py-3 font-semibold text-white transition hover:bg-[#ff4a7d]"
+                className="w-full rounded-2xl bg-[#E23774] px-4 py-3 font-semibold text-white transition hover:bg-[#c72d65] hover:-translate-y-0.5"
               >
                 Create account
               </button>
             </form>
           )}
 
-          <div className="my-6 flex items-center gap-4 text-white/45">
-            <span className="h-px flex-1 bg-white/10" />
-            <span className="text-xs uppercase tracking-[0.25em]">or</span>
-            <span className="h-px flex-1 bg-white/10" />
+          <div className="my-5 flex items-center gap-4">
+            <span className="h-px flex-1 bg-white/5" />
+            <span className="text-xs uppercase tracking-[0.2em] text-white/25">or</span>
+            <span className="h-px flex-1 bg-white/5" />
           </div>
 
           <button
-            onClick={googleLogin}
+            onClick={() => googleLogin()}
             disabled={loading}
-            className="flex w-full items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white px-4 py-3 font-semibold text-slate-800 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-70"
+            className="flex w-full items-center justify-center gap-3 rounded-2xl border border-white/5 bg-white px-4 py-3 font-semibold text-slate-800 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <FcGoogle size={20} />
             {loading ? "Signing in..." : "Continue with Google"}
           </button>
 
-          <p className="mt-5 text-center text-xs leading-6 text-white/50">Taste first. Tap later.</p>
+          <p className="mt-5 text-center text-xs text-white/20">
+            Taste first. Tap later.
+          </p>
         </div>
       </div>
     </div>
   );
 };
+
+const Field = ({
+  id,
+  label,
+  type,
+  value,
+  placeholder,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  type: string;
+  value: string;
+  placeholder: string;
+  onChange: (v: string) => void;
+}) => (
+  <div>
+    <label htmlFor={id} className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.15em] text-white/40">
+      {label}
+    </label>
+    <input
+      id={id}
+      type={type}
+      value={value}
+      placeholder={placeholder}
+      onChange={(e) => onChange(e.target.value)}
+      className="w-full rounded-xl border border-white/5 bg-white/[0.06] px-4 py-3 text-sm text-white outline-none placeholder:text-white/20 focus:border-[#E23774]/50 focus:bg-white/[0.08] transition"
+    />
+  </div>
+);
 
 export default Login;
