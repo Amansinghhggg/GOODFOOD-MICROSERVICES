@@ -2,10 +2,10 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { restaurantService } from "../../main";
 import toast from "react-hot-toast";
-import { Edit2, Trash2, ToggleLeft, ToggleRight, X, Divide, ShoppingCart } from "lucide-react";
+import { Edit2, Trash2, ToggleLeft, ToggleRight, X, ShoppingCart } from "lucide-react";
 import { useAppContext } from "../../context/context";
 
-const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen }: { restaurantId: string; restaurantOwner: string; isOpen: boolean }) => {
+const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { restaurantId: string; restaurantOwner: string; isOpen: boolean }) => {
     const [menuItems, setMenuItems] = React.useState<any[]>([]);
   const [editingItem, setEditingItem] = React.useState<any | null>(null);
   const [editName, setEditName] = React.useState("");
@@ -150,155 +150,169 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen }: { restaurantId:
   }
 
 
-  return( <div>
-              <div className="space-y-4">
-                {menuItems.length === 0 ? (
-                  <div className="rounded-2xl border border-dashed border-orange-100 bg-orange-50/40 p-6 text-center">
-                    <p className="font-medium text-slate-800">No menu items yet</p>
-                    <p className="mt-1 text-sm text-slate-500">Use the Add Item tab to create dishes.</p>
+  return (
+    <div>
+      <div className="space-y-4">
+        {menuItems.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-brand-border bg-brand-cream/35 p-8 text-center shadow-premium-sm">
+            <p className="font-serif text-sm font-bold text-brand-charcoal">No menu items yet</p>
+            <p className="mt-1 text-xs text-brand-muted">Use the Add Item tab to create dishes.</p>
+          </div>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2">
+            {menuItems.map((it) => (
+              <div
+                key={it._id}
+                className={`flex items-center gap-4 rounded-2xl border p-4 shadow-premium-sm transition-colors duration-200 ${
+                  it.isAvailable
+                    ? "border-brand-border/60 bg-brand-card"
+                    : "border-brand-border bg-brand-cream-dark/35 opacity-70"
+                }`}
+              >
+                <div
+                  className={`h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-brand-border/40 ${
+                    it.isAvailable ? "bg-brand-cream-dark/40" : "bg-brand-cream-dark/80"
+                  }`}
+                >
+                  {it.image ? <img src={it.image} className={`h-full w-full object-cover ${it.isAvailable ? "" : "grayscale"}`} /> : null}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <h4 className={`font-serif text-sm font-bold truncate ${it.isAvailable ? "text-brand-charcoal" : "text-brand-muted"}`}>
+                        {it.name}
+                      </h4>
+                      <p className="mt-1 line-clamp-1 text-xs text-brand-muted leading-relaxed">{it.description}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className={`font-bold text-xs ${it.isAvailable ? "text-brand-primary" : "text-brand-muted"}`}>
+                        ₹{it.price}
+                      </div>
+                      <div className={`mt-1 inline-flex rounded-full px-2 py-0.5 text-[9px] font-bold ${it.isAvailable ? "bg-brand-secondary/15 text-brand-secondary" : "bg-brand-cream-dark text-brand-muted"}`}>
+                        {it.isAvailable ? "Available" : "Unavailable"}
+                      </div>
+                    </div>
                   </div>
-                ) : (
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {menuItems.map((it) => (
-                      <div
-                        key={it._id}
-                        className={`flex items-center gap-4 rounded-2xl border p-4 shadow-sm transition-colors ${
-                          it.isAvailable
-                            ? "border-emerald-100 bg-emerald-50/40"
-                            : "border-slate-200 bg-slate-50 opacity-75"
-                        }`}
+                  {isOwner ? (
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => startEdit(it)}
+                        className="inline-flex items-center gap-1.5 rounded-xl border border-brand-border bg-brand-card px-3 py-1.5 text-xs font-bold text-brand-charcoal hover:bg-brand-cream-dark/30 hover:border-brand-primary/30 transition duration-150"
                       >
-                        <div
-                          className={`h-16 w-16 shrink-0 overflow-hidden rounded-lg ${
-                            it.isAvailable ? "bg-emerald-100" : "bg-slate-200"
-                          }`}
+                        <Edit2 size={12} />
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => toggleAvailability(it._id)}
+                        className="inline-flex items-center gap-1.5 rounded-xl border border-brand-border bg-brand-card px-3 py-1.5 text-xs font-bold text-brand-charcoal hover:bg-brand-cream-dark/30 transition duration-150"
+                      >
+                        {it.isAvailable ? <ToggleLeft size={13} className="text-brand-muted" /> : <ToggleRight size={13} className="text-brand-primary" />}
+                        {it.isAvailable ? "Set Unavailable" : "Set Available"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => deleteItem(it._id)}
+                        className="inline-flex items-center gap-1.5 rounded-xl border border-brand-border bg-brand-card px-3 py-1.5 text-xs font-bold text-brand-error hover:bg-brand-error/5 hover:border-brand-error/30 transition duration-150"
+                      >
+                        <Trash2 size={12} />
+                        Delete
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="mt-3 flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() => addtocart(it._id)}
+                        className="flex items-center justify-center p-2 rounded-full border border-brand-border bg-brand-card text-brand-primary hover:bg-brand-primary/5 hover:border-brand-primary/30 transition duration-150"
+                        aria-label={`Add ${it.name} to cart`}
+                      >
+                        <ShoppingCart size={14} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {editingItem ? (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-brand-charcoal/40 backdrop-blur-sm px-4">
+                    <div className="w-full max-w-lg rounded-3xl bg-brand-card p-6 shadow-premium-lg border border-brand-border/60">
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <h3 className="font-serif text-base font-bold text-brand-charcoal">Edit menu item</h3>
+                          <p className="text-xs text-brand-muted">Update the item details and save changes.</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={closeEdit}
+                          className="rounded-xl p-1.5 text-brand-muted hover:bg-brand-cream-dark/40"
                         >
-                          {it.image ? <img src={it.image} className={`h-full w-full object-cover ${it.isAvailable ? "" : "grayscale"}`} /> : null}
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between gap-3">
-                            <div>
-                              <h4 className={`font-medium ${it.isAvailable ? "text-slate-900" : "text-slate-500"}`}>
-                                {it.name}
-                              </h4>
-                              <p className="mt-1 text-sm text-slate-500">{it.description}</p>
-                            </div>
-                            <div className="text-right">
-                              <div className={`font-semibold ${it.isAvailable ? "text-emerald-700" : "text-slate-500"}`}>
-                                ₹{it.price}
-                              </div>
-                              <div className={`mt-1 inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${it.isAvailable ? "bg-emerald-100 text-emerald-700" : "bg-slate-200 text-slate-600"}`}>
-                                {it.isAvailable ? "Available" : "Unavailable"}
-                              </div>
-                            </div>
-                          </div>
-                            {isOwner?(
-                          <div className="mt-3 flex flex-wrap gap-2">
-                            <button
-                              type="button"
-                              onClick={() => startEdit(it)}
-                              className="inline-flex items-center gap-2 rounded-full border border-sky-200 px-3 py-1.5 text-sm font-medium text-sky-700 hover:bg-sky-50"
-                            >
-                              <Edit2 size={16} />
-                              Edit
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => toggleAvailability(it._id)}
-                              className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                            >
-                              {it.isAvailable ? <ToggleLeft size={16} /> : <ToggleRight size={16} />}
-                              {it.isAvailable ? "Mark unavailable" : "Mark available"}
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => deleteItem(it._id)}
-                              className="inline-flex items-center gap-2 rounded-full border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50"
-                            >
-                              <Trash2 size={16} />
-                              Delete
-                            </button>
-                          </div>
-                            ):(<button
-                              type="button"
-                              onClick={() => addtocart(it._id)}
-                              className="flex h-full w-full items-center justify-center text-red-400"
-                              aria-label={`Add ${it.name} to cart`}
-                            >
-                              <ShoppingCart size={20} />
-                            </button>)}
-                        </div>
+                          <X size={15} />
+                        </button>
+                      </div>
 
-                  {editingItem ? (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-                      <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl">
-                        <div className="flex items-center justify-between gap-4">
-                          <div>
-                            <h3 className="text-lg font-semibold text-slate-900">Edit menu item</h3>
-                            <p className="text-sm text-slate-500">Update the item details and save changes.</p>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={closeEdit}
-                            className="rounded-full p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700"
-                          >
-                            <X size={18} />
-                          </button>
-                        </div>
-
-                        <form onSubmit={saveEdit} className="mt-5 space-y-3">
+                      <form onSubmit={saveEdit} className="mt-5 space-y-3">
+                        <div>
                           <input
                             value={editName}
                             onChange={(e) => setEditName(e.target.value)}
                             placeholder="Item name"
-                            className="w-full rounded-md border border-gray-200 px-3 py-2"
+                            className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs text-brand-charcoal outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition"
                           />
+                        </div>
+                        <div>
                           <input
                             value={editPrice}
                             onChange={(e) => setEditPrice(e.target.value)}
                             placeholder="Price"
                             type="number"
-                            className="w-full rounded-md border border-gray-200 px-3 py-2"
+                            className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs text-brand-charcoal outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition"
                           />
+                        </div>
+                        <div>
                           <textarea
                             value={editDesc}
                             onChange={(e) => setEditDesc(e.target.value)}
                             placeholder="Description"
-                            className="w-full rounded-md border border-gray-200 px-3 py-2"
+                            rows={3}
+                            className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs text-brand-charcoal outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition resize-none"
                           />
+                        </div>
+                        <div>
                           <input
                             type="file"
                             accept="image/*"
                             onChange={(e) => setEditFile(e.target.files?.[0] ?? null)}
-                            className="w-full"
+                            className="w-full text-xs text-brand-muted file:mr-4 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20"
                           />
-                          <div className="flex justify-end gap-3 pt-2">
-                            <button
-                              type="button"
-                              onClick={closeEdit}
-                              className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                            >
-                              Cancel
-                            </button>
-                            <button
-                              type="submit"
-                              disabled={savingEdit}
-                              className="rounded-full bg-[#E23774] px-4 py-2 text-sm font-semibold text-white shadow disabled:cursor-not-allowed disabled:opacity-70"
-                            >
-                              {savingEdit ? "Saving..." : "Save changes"}
-                            </button>
-                          </div>
-                        </form>
-                      </div>
+                        </div>
+                        <div className="flex justify-end gap-3 pt-2">
+                          <button
+                            type="button"
+                            onClick={closeEdit}
+                            className="rounded-xl border border-brand-border bg-brand-card px-4 py-2 text-xs font-bold text-brand-muted hover:bg-brand-cream-dark/30 transition"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            disabled={savingEdit}
+                            className="rounded-xl bg-brand-primary px-5 py-2 text-xs font-bold text-white shadow-premium hover:bg-brand-primary-hover disabled:cursor-not-allowed disabled:opacity-70 transition"
+                          >
+                            {savingEdit ? "Saving..." : "Save changes"}
+                          </button>
+                        </div>
+                      </form>
                     </div>
-                  ) : null}
-                      </div>
-                      
-                    ))}
                   </div>
-                )}
+                ) : null}
               </div>
-            </div>)
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default AllMenuItems;

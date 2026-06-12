@@ -1,1 +1,56 @@
 @import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+
+  /* Premium Warm Color System */
+  --color-brand-primary: #D43F29;      /* Tomato Red / Terracotta */
+  --color-brand-primary-hover: #B7321F;
+  --color-brand-secondary: #1E3A2F;    /* Deep Forest Green */
+  --color-brand-secondary-hover: #152B22;
+  --color-brand-gold: #E5A93B;         /* Soft Honey Gold */
+  --color-brand-cream: #FAF7F2;        /* Soft Cream Background */
+  --color-brand-cream-dark: #F3ECE0;   /* Muted Cream Card Bg */
+  --color-brand-charcoal: #1C1A17;     /* Warm Dark Gray/Charcoal Text */
+  --color-brand-muted: #70685E;        /* Muted Brownish Gray for Descriptions */
+  --color-brand-border: #E8E1D5;       /* Delicate Warm Border */
+  --color-brand-success: #2A7E3E;
+  --color-brand-error: #B32626;
+
+  /* High-end Tactile Shadows */
+  --shadow-premium-sm: 0 2px 8px rgba(28, 26, 23, 0.03);
+  --shadow-premium: 0 8px 24px rgba(28, 26, 23, 0.05);
+  --shadow-premium-lg: 0 16px 40px rgba(28, 26, 23, 0.07);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-brand-cream);
+    color: var(--color-brand-charcoal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Custom premium scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-brand-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-muted);
+}
+.leaflet-routing-container h2,
+.leaflet-routing-container h3,
+.leaflet-routing-container td {
+  color: #000 !important;
+}

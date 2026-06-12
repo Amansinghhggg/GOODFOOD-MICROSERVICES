@@ -21,9 +21,14 @@ import { Admin } from "./pages/Admin";
 function App() {
   const { user ,loading} = useAppContext();
     if(loading) {
-      return <div className="flex h-screen items-center justify-center">
-        Loading...
-      </div>
+      return (
+        <div className="flex h-screen items-center justify-center bg-brand-cream">
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-primary border-t-transparent" />
+            <span className="font-serif text-lg tracking-wide text-brand-charcoal">GOODFOOD</span>
+          </div>
+        </div>
+      );
     }
 
   if(user?.role === "rider") {

@@ -117,22 +117,21 @@ const AddAddressPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-orange-50 px-4 py-8 sm:px-6">
-      <div className="mx-auto max-w-2xl space-y-5">
+    <div className="min-h-screen bg-brand-cream px-4 py-8 sm:px-6">
+      <div className="mx-auto max-w-2xl space-y-6">
 
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-black text-slate-800">Delivery Address</h1>
-          <p className="text-sm text-slate-500">Pin your location on the map to add a new address</p>
+          <h1 className="font-serif text-2xl font-black text-brand-charcoal">Delivery Address</h1>
+          <p className="text-xs text-brand-muted">Pin your location on the map to add a new address</p>
         </div>
 
         {/* Map card */}
-        <div className="overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-rose-100">
-          <div className="h-1.5 bg-gradient-to-r from-[#E23774] via-[#f65d95] to-[#ff8a5c]" />
+        <div className="overflow-hidden rounded-3xl bg-brand-card shadow-premium border border-brand-border/60">
           <div className="p-5 space-y-4">
 
             {/* Map */}
-            <div className="relative h-64 overflow-hidden rounded-2xl border border-slate-100 shadow-inner">
+            <div className="relative h-64 overflow-hidden rounded-2xl border border-brand-border shadow-inner">
               <MapContainer
                 center={[latitude || 19.076, longitude || 72.8777]}
                 zoom={13}
@@ -149,48 +148,48 @@ const AddAddressPage = () => {
               </MapContainer>
             </div>
 
-            <p className="text-xs text-rose-500 font-medium">
+            <p className="text-xs text-brand-primary font-semibold">
               📍 Tap "Use my location" or click anywhere on the map to set your delivery point
             </p>
 
             {/* Selected address preview */}
             {formattedAddress && (
-              <div className="flex items-start gap-2 rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-3">
-                <MapPin size={14} className="mt-0.5 shrink-0 text-emerald-500" />
-                <p className="text-xs font-medium text-emerald-800">{formattedAddress}</p>
+              <div className="flex items-start gap-2 rounded-2xl border border-brand-secondary/30 bg-brand-secondary/5 px-4 py-3">
+                <MapPin size={14} className="mt-0.5 shrink-0 text-brand-secondary" />
+                <p className="text-xs font-semibold text-brand-secondary">{formattedAddress}</p>
               </div>
             )}
 
             {/* House/flat input */}
             <div>
-              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-brand-muted">
                 Flat / Building / Area
               </label>
               <div className="relative">
-                <Home size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <Home size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
                 <input
                   type="text"
                   placeholder="Room No, Building, Landmark…"
                   value={inputAddress}
                   onChange={(e) => setInputAddress(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-800 outline-none transition focus:border-[#E23774] focus:ring-2 focus:ring-rose-100"
+                  className="w-full rounded-xl border border-brand-border bg-white py-2.5 pl-9 pr-3 text-xs text-brand-charcoal outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10"
                 />
               </div>
             </div>
 
             {/* Mobile */}
             <div>
-              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-brand-muted">
                 Mobile Number
               </label>
               <div className="relative">
-                <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
                 <input
                   type="number"
                   placeholder="10-digit mobile"
                   value={mobile}
                   onChange={(e) => setMobile(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-800 outline-none transition focus:border-[#E23774] focus:ring-2 focus:ring-rose-100"
+                  className="w-full rounded-xl border border-brand-border bg-white py-2.5 pl-9 pr-3 text-xs text-brand-charcoal outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10"
                 />
               </div>
             </div>
@@ -199,7 +198,7 @@ const AddAddressPage = () => {
             <button
               disabled={adding}
               onClick={addAddress}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#E23774] py-3 text-sm font-bold text-white shadow-lg shadow-rose-200 transition hover:bg-[#c92e63] disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-primary py-3 text-xs font-bold text-white shadow-premium transition hover:bg-brand-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
             >
               {adding ? <BiLoader className="animate-spin" size={16} /> : <BiPlus size={16} />}
               {adding ? "Saving…" : "Save Address"}
@@ -208,41 +207,41 @@ const AddAddressPage = () => {
         </div>
 
         {/* Saved addresses */}
-        <div className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-rose-100">
+        <div className="rounded-3xl bg-brand-card p-5 shadow-premium border border-brand-border/60">
           <div className="mb-4 flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#E23774]/10 text-[#E23774]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-secondary/10 text-brand-secondary">
               <Home size={15} />
             </div>
-            <h2 className="text-sm font-bold text-slate-800">Saved Addresses</h2>
+            <h2 className="font-serif text-sm font-bold text-brand-charcoal">Saved Addresses</h2>
             {addresses.length > 0 && (
-              <span className="ml-auto rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-bold text-[#E23774]">{addresses.length}</span>
+              <span className="ml-auto rounded-full bg-brand-secondary/15 px-2.5 py-0.5 text-[10px] font-bold text-brand-secondary">{addresses.length}</span>
             )}
           </div>
 
           {loading ? (
-            <div className="flex items-center gap-2 text-sm text-slate-400">
+            <div className="flex items-center gap-2 text-xs text-brand-muted">
               <BiLoader className="animate-spin" /> Loading…
             </div>
           ) : addresses.length === 0 ? (
-            <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-rose-100 py-8">
-              <MapPin size={28} className="mb-2 text-rose-200" />
-              <p className="text-sm text-slate-400">No addresses saved yet</p>
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-brand-border/65 py-8 bg-brand-cream/35">
+              <MapPin size={28} className="mb-2 text-brand-muted/40" />
+              <p className="text-xs font-medium text-brand-muted">No addresses saved yet</p>
             </div>
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-3">
               {addresses.map((addr) => (
-                <div key={addr._id} className="flex items-start justify-between gap-3 rounded-2xl border border-slate-100 bg-slate-50/60 px-4 py-3">
+                <div key={addr._id} className="flex items-start justify-between gap-3 rounded-2xl border border-brand-border/50 bg-brand-cream/30 px-4 py-3">
                   <div className="flex items-start gap-2 min-w-0">
-                    <MapPin size={14} className="mt-0.5 shrink-0 text-[#E23774]" />
+                    <MapPin size={14} className="mt-0.5 shrink-0 text-brand-primary" />
                     <div>
-                      <p className="text-sm font-medium text-slate-800">{addr.formattedAddress}</p>
-                      <p className="mt-0.5 text-xs text-slate-500">📞 {addr.mobile}</p>
+                      <p className="text-xs font-semibold text-brand-charcoal leading-relaxed">{addr.formattedAddress}</p>
+                      <p className="mt-0.5 text-[10px] text-brand-muted font-medium">📞 {addr.mobile}</p>
                     </div>
                   </div>
                   <button
                     onClick={() => deleteAddress(addr._id)}
                     disabled={deletingId === addr._id}
-                    className="shrink-0 rounded-xl p-2 text-red-400 transition hover:bg-red-50 disabled:opacity-50"
+                    className="shrink-0 rounded-xl p-2 text-brand-error/65 transition hover:bg-brand-error/5 disabled:opacity-50"
                   >
                     {deletingId === addr._id
                       ? <BiLoader size={15} className="animate-spin" />

@@ -56,57 +56,52 @@ const Cart = () => {
   }
 
   return (
-    <main className="min-h-[calc(100vh-5rem)] bg-[#0a0a0f] px-4 py-8 sm:px-6 lg:px-8">
-      {/* Ambient glow */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-[#E23774]/5 blur-[120px]" />
-      </div>
-
+    <main className="min-h-[calc(100vh-5rem)] bg-brand-cream px-4 py-8 sm:px-6 lg:px-8">
       <div className="relative mx-auto max-w-7xl">
         {/* Header */}
         <div className="mb-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/30">Your selections</p>
-          <h1 className="mt-1 text-3xl font-black text-white">Cart</h1>
+          <p className="font-serif text-xs font-semibold uppercase tracking-[0.2em] text-brand-primary">Your selections</p>
+          <h1 className="mt-1 font-serif text-3xl font-black text-brand-charcoal">Cart</h1>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
           {/* Items */}
           <section className="space-y-4">
-            <div className="flex items-center justify-between rounded-2xl border border-white/5 bg-white/[0.03] px-5 py-4">
+            <div className="flex items-center justify-between rounded-2xl border border-brand-border/60 bg-brand-card px-5 py-4 shadow-premium-sm">
               <div>
-                <p className="text-sm font-semibold text-white">
+                <p className="text-sm font-bold text-brand-charcoal">
                   {cartItems.length} {cartItems.length === 1 ? "item" : "items"}
                 </p>
-                <p className="mt-0.5 text-xs text-white/40">Manage your cart below</p>
+                <p className="mt-0.5 text-xs text-brand-muted">Manage your cart below</p>
               </div>
               <button
                 onClick={clearCart}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-medium text-white/50 transition hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400"
+                className="inline-flex items-center gap-2 rounded-full border border-brand-border bg-brand-card px-4 py-2 text-xs font-bold text-brand-muted transition hover:border-brand-error/40 hover:bg-brand-error/5 hover:text-brand-error"
               >
-                <Trash2 size={14} />
+                <Trash2 size={13} />
                 Clear all
               </button>
             </div>
 
             {cartItems.length === 0 ? (
-              <div className="flex flex-col items-center gap-5 rounded-2xl border border-dashed border-white/10 bg-white/[0.02] py-20 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/5 text-white/20">
+              <div className="flex flex-col items-center gap-5 rounded-3xl border border-dashed border-brand-border bg-brand-card/45 py-20 text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-cream-dark/60 text-brand-muted">
                   <ShoppingBag size={28} />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-white">Your cart is empty</h2>
-                  <p className="mt-1 text-sm text-white/40">Add items from a restaurant to get started</p>
+                  <h2 className="font-serif text-xl font-bold text-brand-charcoal">Your cart is empty</h2>
+                  <p className="mt-1 text-sm text-brand-muted">Add items from a restaurant to get started</p>
                 </div>
                 <Link
                   to="/"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#E23774] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#E23774]/20 transition hover:-translate-y-0.5 hover:bg-[#c72d65]"
+                  className="inline-flex items-center gap-2 rounded-full bg-brand-primary px-5 py-2.5 text-xs font-bold text-white shadow-premium transition hover:bg-brand-primary-hover hover:-translate-y-0.5"
                 >
                   Browse restaurants
-                  <ArrowRight size={15} />
+                  <ArrowRight size={14} />
                 </Link>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {cartItems.map((cartItem) => {
                   const menuItem = cartItem.itemsId as IMenuItem | undefined;
                   const restaurant = cartItem.restaurantId as IRestaurant | undefined;
@@ -117,19 +112,19 @@ const Cart = () => {
                   return (
                     <article
                       key={cartItem._id}
-                      className="group overflow-hidden rounded-2xl border border-white/5 bg-white/[0.03] transition hover:border-white/10 hover:bg-white/[0.05]"
+                      className="group overflow-hidden rounded-2xl border border-brand-border/60 bg-brand-card transition hover:border-brand-primary/20 hover:shadow-premium-sm"
                     >
                       <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center">
                         {/* Image */}
-                        <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-white/5 bg-white/[0.04]">
+                        <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-brand-border bg-brand-cream-dark/30">
                           {menuItem?.image ? (
                             <img
                               src={menuItem.image}
                               alt={menuItem.name}
-                              className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                              className="h-full w-full object-cover transition duration-500 group-hover:scale-103"
                             />
                           ) : (
-                            <div className="flex h-full w-full items-center justify-center text-white/20">
+                            <div className="flex h-full w-full items-center justify-center text-brand-muted/30 bg-brand-cream-dark/50">
                               <ShoppingBag size={22} />
                             </div>
                           )}
@@ -138,43 +133,43 @@ const Cart = () => {
                         {/* Info */}
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-2">
-                            <h3 className="truncate text-base font-bold text-white">
+                            <h3 className="font-serif text-base font-bold text-brand-charcoal truncate">
                               {menuItem?.name ?? "Menu item"}
                             </h3>
-                            <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs font-medium text-white/50">
+                            <span className="rounded-full border border-brand-secondary/20 bg-brand-secondary/5 px-2.5 py-0.5 text-[10px] font-bold text-brand-secondary">
                               {restaurant?.name ?? "Restaurant"}
                             </span>
                           </div>
-                          <p className="mt-1 line-clamp-1 text-sm text-white/40">
+                          <p className="mt-1 line-clamp-1 text-xs text-brand-muted leading-relaxed">
                             {menuItem?.description ?? "No description available."}
                           </p>
-                          <div className="mt-2 flex flex-wrap items-center gap-3 text-sm">
-                            <span className="font-semibold text-white">{formatCurrency(price)}</span>
-                            <span className="text-white/30">×</span>
-                            <span className="text-white/50">{itemQuantity}</span>
-                            <span className="text-white/30">=</span>
-                            <span className="font-bold text-[#E23774]">{formatCurrency(itemTotal)}</span>
+                          <div className="mt-2 flex flex-wrap items-center gap-2.5 text-xs text-brand-muted">
+                            <span className="font-semibold text-brand-charcoal">{formatCurrency(price)}</span>
+                            <span>×</span>
+                            <span>{itemQuantity}</span>
+                            <span>=</span>
+                            <span className="font-bold text-brand-primary">{formatCurrency(itemTotal)}</span>
                           </div>
                         </div>
 
                         {/* Qty controls */}
-                        <div className="flex items-center gap-1 rounded-full border border-white/5 bg-white/[0.04] p-1 self-end sm:self-auto">
+                        <div className="flex items-center gap-1 rounded-full border border-brand-border bg-brand-cream-dark/30 p-1 self-end sm:self-auto">
                           <button
                             type="button"
                             onClick={() => removeItem(menuItem?._id, restaurant?._id)}
-                            className="flex h-9 w-9 items-center justify-center rounded-full text-white/50 transition hover:bg-white/10 hover:text-white"
+                            className="flex h-8 w-8 items-center justify-center rounded-full text-brand-muted hover:bg-brand-cream-dark/60 hover:text-brand-charcoal transition"
                           >
-                            <Minus size={14} />
+                            <Minus size={12} />
                           </button>
-                          <span className="min-w-[2rem] text-center text-sm font-bold text-white">
+                          <span className="min-w-[1.8rem] text-center text-xs font-bold text-brand-charcoal">
                             {itemQuantity}
                           </span>
                           <button
                             type="button"
                             onClick={() => addItems(menuItem?._id, restaurant?._id)}
-                            className="flex h-9 w-9 items-center justify-center rounded-full bg-[#E23774] text-white transition hover:bg-[#c72d65]"
+                            className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary text-white transition hover:bg-brand-primary-hover shadow-premium-sm"
                           >
-                            <Plus size={14} />
+                            <Plus size={12} />
                           </button>
                         </div>
                       </div>
@@ -187,48 +182,48 @@ const Cart = () => {
 
           {/* Summary sidebar */}
           <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-            <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-5">
-              <p className="text-sm font-bold text-white mb-5">Order summary</p>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between text-white/50">
+            <div className="rounded-2xl border border-brand-border/60 bg-brand-card p-5 shadow-premium">
+              <p className="font-serif text-sm font-bold text-brand-charcoal mb-4">Order summary</p>
+              <div className="space-y-3 text-xs">
+                <div className="flex justify-between text-brand-muted">
                   <span>Total items</span>
-                  <span className="text-white font-medium">{quantity}</span>
+                  <span className="text-brand-charcoal font-semibold">{quantity}</span>
                 </div>
-                <div className="flex justify-between text-white/50">
+                <div className="flex justify-between text-brand-muted">
                   <span>Items price</span>
-                  <span className="text-white font-medium">{formatCurrency(subtotal)}</span>
+                  <span className="text-brand-charcoal font-semibold">{formatCurrency(subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-white/50">
+                <div className="flex justify-between text-brand-muted">
                   <span>Delivery fee</span>
-                  <span className={subtotal > 250 ? "text-emerald-400 font-medium" : "text-white font-medium"}>
+                  <span className={subtotal > 250 ? "text-brand-success font-bold" : "text-brand-charcoal font-semibold"}>
                     {subtotal > 250 ? "Free" : formatCurrency(deliveryFee)}
                   </span>
                 </div>
-                <div className="flex justify-between text-white/50">
+                <div className="flex justify-between text-brand-muted">
                   <span>Platform fee</span>
-                  <span className="text-white font-medium">{formatCurrency(platformServiceFee)}</span>
+                  <span className="text-brand-charcoal font-semibold">{formatCurrency(platformServiceFee)}</span>
                 </div>
-                <div className="flex justify-between border-t border-white/5 pt-4 text-base font-black text-white">
+                <div className="flex justify-between border-t border-brand-border/60 pt-4 text-sm font-bold text-brand-charcoal font-serif">
                   <span>Total</span>
-                  <span className="text-[#E23774]">
+                  <span className="text-brand-primary font-serif text-base font-black">
                     {formatCurrency(subtotal + deliveryFee + platformServiceFee)}
                   </span>
                 </div>
               </div>
 
               {subtotal <= 250 && subtotal > 0 && (
-                <p className="mt-4 rounded-xl bg-amber-500/10 px-3 py-2.5 text-xs text-amber-400">
-                  Add {formatCurrency(250 - subtotal)} more for free delivery
-                </p>
+                <div className="mt-4 rounded-xl border border-brand-gold/30 bg-brand-gold/10 px-3 py-2 text-[11px] font-medium text-brand-muted leading-relaxed">
+                  Add <span className="font-bold text-brand-primary">{formatCurrency(250 - subtotal)}</span> more for free delivery
+                </div>
               )}
             </div>
 
             <Link
               to="/checkout"
-              className="flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#E23774] py-4 text-sm font-bold text-white shadow-lg shadow-[#E23774]/20 transition hover:-translate-y-0.5 hover:bg-[#c72d65]"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-primary py-3.5 text-xs font-bold text-white shadow-premium hover:bg-brand-primary-hover hover:-translate-y-0.5 transition"
             >
               Proceed to Checkout
-              <ArrowRight size={16} />
+              <ArrowRight size={14} />
             </Link>
           </aside>
         </div>

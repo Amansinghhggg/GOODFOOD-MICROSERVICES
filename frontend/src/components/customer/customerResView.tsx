@@ -66,17 +66,17 @@ const CustomerResView = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-orange-50">
+    <div className="min-h-screen bg-brand-cream text-brand-charcoal">
       {/* Hero */}
       <div className="relative overflow-hidden">
         {/* Banner image */}
-        <div className="h-52 w-full overflow-hidden sm:h-64">
+        <div className="h-52 w-full overflow-hidden sm:h-64 bg-brand-charcoal">
           <img
             src={restaurant.image}
             alt={restaurant.name}
-            className="h-full w-full object-cover blur-sm scale-105 opacity-60"
+            className="h-full w-full object-cover blur-[2px] scale-103 opacity-55"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-charcoal/20 via-brand-charcoal/45 to-brand-charcoal/80" />
         </div>
 
         {/* Content over banner */}
@@ -84,19 +84,19 @@ const CustomerResView = () => {
           <div className="w-full px-4 pb-6 sm:px-8">
             <div className="flex items-end gap-4">
               {/* Logo */}
-              <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl border-2 border-white/40 shadow-xl sm:h-24 sm:w-24">
-                <img src={restaurant.image} alt={restaurant.name} className="h-full w-full object-cover" />
+              <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl border-2 border-white/20 shadow-premium sm:h-24 sm:w-24">
+                <img src={restaurant.image} alt={restaurant.name} className="h-full w-full object-cover bg-brand-cream-dark" />
               </div>
 
               <div className="flex-1 text-white pb-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h1 className="text-2xl font-black drop-shadow sm:text-3xl">{restaurant.name}</h1>
-                  <span className={`rounded-full px-3 py-0.5 text-xs font-bold uppercase tracking-widest ${restaurant.isOpen ? "bg-emerald-400/90 text-white" : "bg-gray-500/80 text-white"}`}>
+                  <h1 className="font-serif text-2xl font-black drop-shadow sm:text-3xl">{restaurant.name}</h1>
+                  <span className={`rounded-full px-3 py-0.5 text-[9px] font-bold uppercase tracking-widest ${restaurant.isOpen ? "bg-brand-success text-white" : "bg-brand-muted text-white"}`}>
                     {restaurant.isOpen ? "● Open" : "○ Closed"}
                   </span>
                 </div>
                 {restaurant.description && (
-                  <p className="mt-1 max-w-lg text-sm text-white/80 drop-shadow">{restaurant.description}</p>
+                  <p className="mt-1 max-w-lg text-xs text-white/95 drop-shadow leading-relaxed">{restaurant.description}</p>
                 )}
               </div>
             </div>
@@ -105,20 +105,20 @@ const CustomerResView = () => {
       </div>
 
       {/* Info strip */}
-      <div className="border-b border-rose-100 bg-white px-4 py-3 shadow-sm sm:px-8">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-3 text-xs text-slate-500">
+      <div className="border-b border-brand-border bg-brand-card px-4 py-3 shadow-premium-sm sm:px-8">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-3 text-xs text-brand-muted font-medium">
           <div className="flex items-center gap-1.5">
-            <MapPin size={13} className="text-[#E23774]" />
+            <MapPin size={13} className="text-brand-primary" />
             <span className="max-w-xs truncate">{restaurant.autoLocation?.formattedAddress || "Address not available"}</span>
           </div>
-          <span className="text-slate-300">|</span>
-          <a href={`tel:+91${restaurant.phone}`} className="flex items-center gap-1.5 font-semibold text-slate-700 hover:text-[#E23774]">
-            <Phone size={13} className="text-[#E23774]" />
+          <span className="text-brand-border/60">|</span>
+          <a href={`tel:+91${restaurant.phone}`} className="flex items-center gap-1.5 font-bold text-brand-charcoal hover:text-brand-primary transition-colors">
+            <Phone size={13} className="text-brand-primary" />
             +91 {restaurant.phone}
           </a>
-          <span className="text-slate-300">|</span>
+          <span className="text-brand-border/60">|</span>
           <div className="flex items-center gap-1.5">
-            <Clock size={13} className="text-[#E23774]" />
+            <Clock size={13} className="text-brand-primary" />
             Since {new Date(restaurant.createdAt).toLocaleDateString("en-IN", { year: "numeric", month: "short" })}
           </div>
         </div>
@@ -126,7 +126,7 @@ const CustomerResView = () => {
 
       {/* Menu */}
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-8">
-        <h2 className="mb-4 text-lg font-black text-slate-800">Menu</h2>
+        <h2 className="mb-4 font-serif text-lg font-bold text-brand-charcoal">Menu</h2>
         <AllMenuItems
           restaurantId={restaurant._id}
           restaurantOwner={restaurant.owner}

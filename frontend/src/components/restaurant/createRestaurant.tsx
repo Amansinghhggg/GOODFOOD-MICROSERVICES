@@ -81,48 +81,48 @@ const CreateRestaurant = () => {
     }
 
     return (
-        <div className="max-w-3xl mx-auto my-10 rounded-lg bg-white p-6 shadow">
-            <h2 className="text-2xl font-bold mb-4">Create Restaurant</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="max-w-3xl mx-auto my-10 rounded-xl bg-white p-8 border border-brand-border shadow-premium">
+            <h2 className="text-3xl font-bold font-serif text-brand-charcoal mb-6">Create Restaurant</h2>
+            <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Name</label>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Name</label>
                     <input
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:ring-[#E23774] focus:border-[#E23774]"
+                        className="mt-1 block w-full rounded-lg border border-brand-border bg-white py-2.5 px-3 text-sm text-brand-charcoal shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                         placeholder="Restaurant name"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Description</label>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Description</label>
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         rows={4}
-                        className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:ring-[#E23774] focus:border-[#E23774]"
+                        className="mt-1 block w-full rounded-lg border border-brand-border bg-white py-2.5 px-3 text-sm text-brand-charcoal shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                         placeholder="Short description"
                     />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Latitude</label>
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Latitude</label>
                         <input
                             value={latitude}
                             onChange={(e) => setLatitude(e.target.value === "" ? "" : Number(e.target.value))}
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:ring-[#E23774] focus:border-[#E23774]"
+                            className="mt-1 block w-full rounded-lg border border-brand-border bg-white py-2.5 px-3 text-sm text-brand-charcoal shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                             placeholder="Latitude"
                             type="number"
                             step="any"
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Longitude</label>
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Longitude</label>
                         <input
                             value={longitude}
                             onChange={(e) => setLongitude(e.target.value === "" ? "" : Number(e.target.value))}
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:ring-[#E23774] focus:border-[#E23774]"
+                            className="mt-1 block w-full rounded-lg border border-brand-border bg-white py-2.5 px-3 text-sm text-brand-charcoal shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                             placeholder="Longitude"
                             type="number"
                             step="any"
@@ -131,39 +131,39 @@ const CreateRestaurant = () => {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Formatted address</label>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Formatted Address</label>
                     <input
                         value={formattedAddress}
                         onChange={(e) => setFormattedAddress(e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:ring-[#E23774] focus:border-[#E23774]"
+                        className="mt-1 block w-full rounded-lg border border-brand-border bg-white py-2.5 px-3 text-sm text-brand-charcoal shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                         placeholder="Address"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Phone</label>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Phone</label>
                     <input
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:ring-[#E23774] focus:border-[#E23774]"
+                        className="mt-1 block w-full rounded-lg border border-brand-border bg-white py-2.5 px-3 text-sm text-brand-charcoal shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                         placeholder="Contact phone"
                         type="number"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Image</label>
-                    <input type="file" accept="image/*" onChange={handleFileChange} className="mt-1" />
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Image</label>
+                    <input type="file" accept="image/*" onChange={handleFileChange} className="mt-2 block w-full text-sm text-brand-muted file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-cream file:text-brand-charcoal hover:file:bg-brand-cream-dark cursor-pointer" />
                     {previewUrl && (
-                        <img src={previewUrl} alt="preview" className="mt-2 h-40 w-auto rounded" />
+                        <img src={previewUrl} alt="preview" className="mt-4 h-40 w-auto rounded-xl border border-brand-border object-cover shadow-premium-sm" />
                     )}
                 </div>
 
-                <div className="flex items-center justify-end gap-3">
+                <div className="flex items-center justify-end pt-4 border-t border-brand-border/60">
                     <button
                         type="submit"
                         disabled={submitting}
-                        className="inline-flex items-center gap-2 rounded-full bg-[#E23774] px-6 py-2 text-sm font-semibold text-white shadow hover:bg-[#c72d65] disabled:opacity-60"
+                        className="inline-flex items-center gap-2 rounded-lg bg-brand-primary px-6 py-2.5 text-sm font-bold text-white shadow-premium-sm hover:bg-brand-primary-hover hover:shadow-premium transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                         {submitting ? "Creating..." : "Create Restaurant"}
                     </button>

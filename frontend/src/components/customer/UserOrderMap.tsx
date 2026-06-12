@@ -18,7 +18,7 @@ const riderIcon = new L.DivIcon({
 });
 
 const deliveryIcon = new L.DivIcon({
-  html: "📦",
+  html: "🏠",
   iconSize: [30, 30],
   className: "delivery-icon",
 });
@@ -52,7 +52,7 @@ export const UserOrderMap = ({ riderLocation, deliveryLocation }: UserOrderMapPr
         <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Live Tracking</p>
         <div className="flex items-center gap-3 text-xs text-slate-500">
           <span>🛵 Rider</span>
-          <span>📦 Your Door</span>
+          <span>🏠 Your Door</span>
         </div>
       </div>
       <MapContainer

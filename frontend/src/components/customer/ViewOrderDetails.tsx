@@ -127,12 +127,13 @@ const ViewOrderDetails = () => {
 const currentStep = STATUS_STEPS.findIndex(
   (step) => step.key === order?.status
 );
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-orange-50 px-4 py-8">
+      <div className="min-h-screen bg-brand-cream px-4 py-8">
         <div className="mx-auto max-w-3xl space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-24 animate-pulse rounded-2xl bg-white shadow-sm" />
+            <div key={i} className="h-24 animate-pulse rounded-2xl bg-brand-cream-dark/50 border border-brand-border/40" />
           ))}
         </div>
       </div>
@@ -140,20 +141,20 @@ const currentStep = STATUS_STEPS.findIndex(
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-orange-50 px-4 py-8 sm:px-6">
-      <div className="mx-auto max-w-3xl space-y-4">
+    <div className="min-h-screen bg-brand-cream px-4 py-8 sm:px-6">
+      <div className="mx-auto max-w-3xl space-y-5">
 
         {/* Header card */}
-        <div className="overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-rose-100">
-          <div className="h-1.5 bg-slate-900" />
+        <div className="overflow-hidden rounded-3xl bg-brand-card shadow-premium border border-brand-border/60">
+          <div className="h-1 bg-brand-charcoal" />
           <div className="flex flex-col gap-3 p-5 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p className="text-xs uppercase tracking-widest text-slate-400">Order Details</p>
-              <h2 className="mt-1 text-xl font-black text-slate-900">{order?.restaurantName ?? "Your Order"}</h2>
-              <p className="mt-0.5 font-mono text-xs text-slate-400">#{orderId}</p>
+              <p className="font-serif text-[10px] uppercase tracking-widest text-brand-muted">Order Details</p>
+              <h2 className="mt-1 font-serif text-xl font-bold text-brand-charcoal">{order?.restaurantName ?? "Your Order"}</h2>
+              <p className="mt-0.5 font-mono text-[10px] text-brand-muted">#{orderId}</p>
             </div>
             {order && (
-              <span className={`inline-flex w-fit rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest ${STATUS_COLORS[order.status] ?? "bg-slate-100 text-slate-600"}`}>
+              <span className={`inline-flex w-fit rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest ${STATUS_COLORS[order.status] ?? "bg-brand-cream-dark text-brand-muted"}`}>
                 {order.status.replace(/_/g, " ")}
               </span>
             )}
@@ -162,114 +163,114 @@ const currentStep = STATUS_STEPS.findIndex(
 
         {/* OTP card */}
         {order?.otp && order.status !== "delivered" && (
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-500 to-green-600 p-6 text-center text-white shadow-xl shadow-green-200">
-            <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/10" />
-            <p className="text-xs uppercase tracking-[0.4em] text-green-100">Delivery OTP</p>
-            <h1 className="mt-3 text-6xl font-black tracking-[0.5em] drop-shadow">{order.otp}</h1>
-            <p className="mt-3 text-sm text-green-100">Share this with your rider when they arrive</p>
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-secondary to-[#2c5343] p-6 text-center text-white shadow-premium">
+            <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/5" />
+            <p className="text-[10px] uppercase tracking-[0.4em] text-white/70">Delivery OTP</p>
+            <h1 className="mt-3 font-serif text-5xl font-black tracking-[0.5em] text-brand-gold">{order.otp}</h1>
+            <p className="mt-3 text-xs text-white/85">Share this with your rider when they arrive</p>
           </div>
         )}
 
         {order ? (
           <>
             {/* Progress tracker */}
-           {order.status !== "cancelled" && (
-  <div className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-rose-100">
-    <h3 className="mb-5 text-xs font-bold uppercase tracking-widest text-slate-400">
-      Order Progress
-    </h3>
+            {order.status !== "cancelled" && (
+              <div className="rounded-3xl bg-brand-card p-5 shadow-premium border border-brand-border/60">
+                <h3 className="mb-5 font-serif text-xs font-bold uppercase tracking-widest text-brand-muted">
+                  Order Progress
+                </h3>
 
-    <div className="flex items-start justify-between">
-      {STATUS_STEPS.map((step, idx) => {
-        const done = idx <= currentStep;
-        const active = idx === currentStep;
-        const isLast = idx === STATUS_STEPS.length - 1;
+                <div className="flex items-start justify-between">
+                  {STATUS_STEPS.map((step, idx) => {
+                    const done = idx <= currentStep;
+                    const active = idx === currentStep;
+                    const isLast = idx === STATUS_STEPS.length - 1;
 
-        const Icon = step.icon;
+                    const Icon = step.icon;
 
-        return (
-          <React.Fragment key={step.key}>
-            <div className="flex min-w-0 flex-col items-center">
-              <div
-                className={`flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300
-                ${
-                  done
-                    ? "bg-[#E23774] text-white shadow-lg shadow-rose-200"
-                    : "bg-slate-100 text-slate-400"
-                }
-                ${active ? "scale-110 ring-4 ring-rose-100" : ""}
-              `}
-              >
-                <Icon size={18} />
-              </div>
+                    return (
+                      <React.Fragment key={step.key}>
+                        <div className="flex min-w-0 flex-col items-center">
+                          <div
+                            className={`flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300
+                            ${
+                              done
+                                ? "bg-brand-primary text-white shadow-premium-sm"
+                                : "bg-brand-cream-dark text-brand-muted/50"
+                            }
+                            ${active ? "scale-110 ring-4 ring-brand-primary/10" : ""}
+                          `}
+                          >
+                            <Icon size={15} />
+                          </div>
 
-              <span
-                className={`mt-2 text-center text-[10px] font-semibold uppercase leading-tight
-                ${
-                  done
-                    ? "text-[#E23774]"
-                    : "text-slate-400"
-                }`}
-              >
-                {step.label}
-              </span>
-            </div>
+                          <span
+                            className={`mt-2 text-center text-[9px] font-bold uppercase leading-tight
+                            ${
+                              done
+                                ? "text-brand-primary"
+                                : "text-brand-muted/70"
+                            }`}
+                          >
+                            {step.label}
+                          </span>
+                        </div>
 
-            {!isLast && (
-              <div className="mt-5 flex-1 px-1">
-                <div
-                  className={`h-1 rounded-full transition-all duration-300 ${
-                    idx < currentStep
-                      ? "bg-[#E23774]"
-                      : "bg-slate-200"
-                  }`}
-                />
+                        {!isLast && (
+                          <div className="mt-4.5 flex-1 px-1">
+                            <div
+                              className={`h-0.75 rounded-full transition-all duration-300 ${
+                                idx < currentStep
+                                  ? "bg-brand-primary"
+                                  : "bg-brand-border"
+                              }`}
+                            />
+                          </div>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
+                </div>
               </div>
             )}
-          </React.Fragment>
-        );
-      })}
-    </div>
-  </div>
-)}
 
             {/* Summary pills */}
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {[
-                { icon: <IndianRupee size={14} />, label: "Total", value: formatMoney(order.totalAmount), highlight: true },
-                { icon: <CreditCard size={14} />, label: "Payment", value: order.paymentStatus },
-                { icon: <CreditCard size={14} />, label: "Method", value: order.paymentMethod },
-                { icon: <Clock size={14} />, label: "Placed", value: new Date(order.createdAt).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }) },
+                { icon: <IndianRupee size={12} />, label: "Total", value: formatMoney(order.totalAmount), highlight: true },
+                { icon: <CreditCard size={12} />, label: "Payment", value: order.paymentStatus },
+                { icon: <CreditCard size={12} />, label: "Method", value: order.paymentMethod },
+                { icon: <Clock size={12} />, label: "Placed", value: new Date(order.createdAt).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }) },
               ].map(({ icon, label, value, highlight }) => (
-                <div key={label} className={`rounded-2xl p-4 ${highlight ? "bg-slate-900 text-white" : "bg-white ring-1 ring-slate-100"}`}>
-                  <div className={`flex items-center gap-1.5 ${highlight ? "text-white/50" : "text-slate-400"}`}>
+                <div key={label} className={`rounded-2xl p-4 ${highlight ? "bg-brand-charcoal text-white" : "bg-brand-card border border-brand-border/60"}`}>
+                  <div className={`flex items-center gap-1.5 ${highlight ? "text-white/50" : "text-brand-muted"}`}>
                     {icon}
-                    <p className="text-[10px] uppercase tracking-wider">{label}</p>
+                    <p className="text-[9px] font-bold uppercase tracking-wider">{label}</p>
                   </div>
-                  <p className={`mt-1.5 text-sm font-black ${highlight ? "text-white" : "text-slate-800"}`}>{value}</p>
+                  <p className={`mt-1.5 text-xs font-bold ${highlight ? "text-brand-gold font-serif" : "text-brand-charcoal"}`}>{value}</p>
                 </div>
               ))}
             </div>
 
             {/* Items */}
-            <div className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-rose-100">
+            <div className="rounded-3xl bg-brand-card p-5 shadow-premium border border-brand-border/60">
               <div className="mb-4 flex items-center gap-2">
-                <Package size={15} className="text-[#E23774]" />
-                <h3 className="text-sm font-bold text-slate-800">Items Ordered</h3>
-                <span className="ml-auto rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold text-[#E23774]">{order.items?.length ?? 0}</span>
+                <Package size={15} className="text-brand-primary" />
+                <h3 className="font-serif text-sm font-bold text-brand-charcoal">Items Ordered</h3>
+                <span className="ml-auto rounded-full bg-brand-primary/10 px-2 py-0.5 text-xs font-bold text-brand-primary">{order.items?.length ?? 0}</span>
               </div>
               <div className="space-y-2">
                 {(order.items ?? []).map((item: any, index: number) => (
-                  <div key={index} className="flex items-center justify-between rounded-2xl bg-slate-50 px-4 py-3">
+                  <div key={index} className="flex items-center justify-between rounded-xl bg-brand-cream-dark/25 border border-brand-border/30 px-4 py-3">
                     <div>
-                      <p className="text-sm font-bold text-slate-800">{item.name}</p>
-                      <p className="text-xs text-slate-400">x {item.quantity}</p>
+                      <p className="text-xs font-bold text-brand-charcoal">{item.name}</p>
+                      <p className="text-[10px] text-brand-muted font-medium">x {item.quantity}</p>
                     </div>
-                    <p className="text-sm font-black text-slate-800">{formatMoney(item.price * item.quantity)}</p>
+                    <p className="text-xs font-bold text-brand-charcoal">{formatMoney(item.price * item.quantity)}</p>
                   </div>
                 ))}
                 {(order.items ?? []).length === 0 && (
-                  <p className="text-sm text-slate-400">No items found.</p>
+                  <p className="text-xs text-brand-muted">No items found.</p>
                 )}
               </div>
             </div>
@@ -277,67 +278,67 @@ const currentStep = STATUS_STEPS.findIndex(
             {/* Breakdown + Delivery */}
             <div className="grid gap-4 sm:grid-cols-2">
               {/* Payment breakdown */}
-              <div className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-rose-100">
+              <div className="rounded-3xl bg-brand-card p-5 shadow-premium border border-brand-border/60">
                 <div className="mb-4 flex items-center gap-2">
-                  <IndianRupee size={15} className="text-[#E23774]" />
-                  <h3 className="text-sm font-bold text-slate-800">Bill Summary</h3>
+                  <IndianRupee size={15} className="text-brand-primary" />
+                  <h3 className="font-serif text-sm font-bold text-brand-charcoal">Bill Summary</h3>
                 </div>
-                <div className="space-y-2 text-sm">
+                <div className="space-y-2.5 text-xs">
                   {[
                     { label: "Subtotal", value: formatMoney(order.subtotal) },
                     { label: "Delivery Fee", value: formatMoney(order.deliveryFee) },
                     { label: "Platform Fee", value: formatMoney(order.platformFee) },
                     { label: "Rider Amount", value: formatMoney(order.riderAmount) },
                   ].map(({ label, value }) => (
-                    <div key={label} className="flex justify-between text-slate-600">
+                    <div key={label} className="flex justify-between text-brand-muted">
                       <span>{label}</span>
-                      <span className="font-medium text-slate-800">{value}</span>
+                      <span className="font-semibold text-brand-charcoal">{value}</span>
                     </div>
                   ))}
-                  <div className="flex justify-between border-t border-slate-100 pt-2 font-black text-slate-900">
+                  <div className="flex justify-between border-t border-brand-border/60 pt-2 font-bold text-brand-charcoal font-serif">
                     <span>Total</span>
-                    <span className="text-[#E23774]">{formatMoney(order.totalAmount)}</span>
+                    <span className="text-brand-primary font-serif text-sm font-black">{formatMoney(order.totalAmount)}</span>
                   </div>
                 </div>
               </div>
 
               {/* Delivery details */}
-              <div className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-rose-100">
+              <div className="rounded-3xl bg-brand-card p-5 shadow-premium border border-brand-border/60">
                 <div className="mb-4 flex items-center gap-2">
-                  <MapPin size={15} className="text-[#E23774]" />
-                  <h3 className="text-sm font-bold text-slate-800">Delivery Info</h3>
+                  <MapPin size={15} className="text-brand-primary" />
+                  <h3 className="font-serif text-sm font-bold text-brand-charcoal">Delivery Info</h3>
                 </div>
-                <div className="space-y-3 text-sm">
+                <div className="space-y-3 text-xs">
                   <div className="flex items-start gap-2">
-                    <MapPin size={13} className="mt-0.5 shrink-0 text-slate-400" />
-                    <p className="text-slate-700">{order.deliveryAddress.formattedAddress}</p>
+                    <MapPin size={13} className="mt-0.5 shrink-0 text-brand-muted/70" />
+                    <p className="text-brand-charcoal font-medium leading-relaxed">{order.deliveryAddress.formattedAddress}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Phone size={13} className="shrink-0 text-slate-400" />
-                    <p className="text-slate-700">{formatCount(order.deliveryAddress.mobile)}</p>
+                    <Phone size={13} className="shrink-0 text-brand-muted/70" />
+                    <p className="text-brand-charcoal font-semibold">{formatCount(order.deliveryAddress.mobile)}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Navigation size={13} className="shrink-0 text-slate-400" />
-                    <p className="text-slate-700">{formatCount(order.distance).toFixed(1)} km</p>
+                    <Navigation size={13} className="shrink-0 text-brand-muted/70" />
+                    <p className="text-brand-charcoal font-semibold">{formatCount(order.distance).toFixed(1)} km</p>
                   </div>
                 </div>
               </div>
             </div>
           </>
         ) : (
-          <div className="rounded-3xl border-2 border-dashed border-rose-100 bg-white p-8 text-center text-slate-400">
+          <div className="rounded-3xl border border-dashed border-brand-border bg-brand-card/45 p-8 text-center text-brand-muted">
             Order not found.
           </div>
         )}
 
         {/* Map section */}
         {(order?.status === "rider_assigned" || order?.status === "picked_up") && riderLocation ? (
-          <div className="overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-rose-100">
-            <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-3">
-              <Bike size={15} className="text-[#E23774]" />
-              <h2 className="text-sm font-bold text-slate-800">Rider's Live Location</h2>
-              <span className="ml-auto flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-1 text-[10px] font-bold text-green-600">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500" />
+          <div className="overflow-hidden rounded-3xl bg-brand-card shadow-premium border border-brand-border/60">
+            <div className="flex items-center gap-2 border-b border-brand-border/50 px-5 py-3">
+              <Bike size={15} className="text-brand-primary" />
+              <h2 className="font-serif text-sm font-bold text-brand-charcoal">Rider's Live Location</h2>
+              <span className="ml-auto flex items-center gap-1 rounded-full bg-brand-success/10 px-2.5 py-1 text-[9px] font-bold text-brand-success">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-success" />
                 LIVE
               </span>
             </div>
@@ -350,8 +351,8 @@ const currentStep = STATUS_STEPS.findIndex(
             />
           </div>
         ) : order?.status === "rider_assigned" && !riderLocation ? (
-          <div className="flex items-center justify-center gap-3 rounded-3xl bg-white p-6 text-sm text-slate-400 shadow-sm ring-1 ring-rose-100">
-            <svg className="h-4 w-4 animate-spin text-[#E23774]" viewBox="0 0 24 24" fill="none">
+          <div className="flex items-center justify-center gap-3 rounded-3xl bg-brand-card p-6 text-xs text-brand-muted shadow-premium-sm border border-brand-border/60">
+            <svg className="h-4 w-4 animate-spin text-brand-primary" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
             </svg>
@@ -363,11 +364,6 @@ const currentStep = STATUS_STEPS.findIndex(
   );
 };
 
-const Row = ({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) => (
-  <div className="flex items-center justify-between gap-4">
-    <span className={strong ? "font-semibold text-slate-900" : "text-slate-600"}>{label}</span>
-    <span className={strong ? "text-base font-semibold text-slate-900" : "font-medium text-slate-900"}>{value}</span>
-  </div>
-);
+
 
 export default ViewOrderDetails;

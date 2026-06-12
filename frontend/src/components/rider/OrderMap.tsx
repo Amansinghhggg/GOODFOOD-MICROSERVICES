@@ -35,7 +35,7 @@ const Routing = ({ from, to }: { from: [number, number]; to: [number, number] })
     useEffect(() => {
         const control = L.Routing.control({
             waypoints: [L.latLng(from), L.latLng(to)],
-            lineOptions: { styles: [{ color: "#E23744", weight: 3 }] },
+            lineOptions: { styles: [{ color: "#D43F29", weight: 3 }] },
             addWaypoints: false,
             draggableWaypoints: false,
             show: false,
@@ -52,7 +52,7 @@ const OrderMap = ({ order }: IOrderMapProps) => {
 
     if (order.deliveryAddress.latitude == null || order.deliveryAddress.longitude == null) {
         return (
-            <div className="flex h-32 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-sm text-gray-500">
+            <div className="flex h-32 items-center justify-center rounded-xl border border-brand-border bg-white text-sm text-brand-muted">
                 Location data not available
             </div>
         );
@@ -90,17 +90,17 @@ const OrderMap = ({ order }: IOrderMapProps) => {
 
     if (!riderPosition) {
         return (
-            <div className="flex h-32 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-sm text-gray-500">
+            <div className="flex h-32 items-center justify-center rounded-xl border border-brand-border bg-white text-sm text-brand-primary font-semibold">
                 Fetching your location…
             </div>
         );
     }
 
     return (
-        <div className="overflow-hidden rounded-2xl border border-yellow-500/20 shadow-lg">
-            <div className="flex items-center justify-between bg-black/60 px-4 py-2.5 backdrop-blur-sm">
-                <p className="text-xs font-semibold uppercase tracking-widest text-yellow-400/80">Live Route</p>
-                <div className="flex items-center gap-3 text-xs text-gray-500">
+        <div className="overflow-hidden rounded-xl border border-brand-border shadow-premium">
+            <div className="flex items-center justify-between bg-brand-cream-dark border-b border-brand-border px-4 py-2.5">
+                <p className="text-xs font-bold uppercase tracking-wider text-brand-primary">Live Route</p>
+                <div className="flex items-center gap-3 text-xs text-brand-muted font-medium">
                     <span>🛵 You</span>
                     <span>📦 Drop</span>
                 </div>

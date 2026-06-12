@@ -52,9 +52,9 @@ const IncomingOrderCart = ({ orderId, onAccepted, distance, amount }: Props) => 
   const dashOffset = circumference - (secondsLeft / 10) * circumference;
 
   return (
-    <div className="mt-3 overflow-hidden rounded-2xl border border-yellow-500/30 bg-gradient-to-br from-yellow-500/10 to-orange-500/5 p-4 backdrop-blur-sm">
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+    <div className="mt-3 overflow-hidden rounded-xl border border-brand-primary/20 bg-brand-cream/60 p-4 shadow-premium-sm">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-4">
           {/* Countdown ring */}
           <div className="relative flex h-12 w-12 shrink-0 items-center justify-center">
             <svg
@@ -68,7 +68,7 @@ const IncomingOrderCart = ({ orderId, onAccepted, distance, amount }: Props) => 
                 cy="24"
                 r="20"
                 fill="none"
-                stroke="rgba(234,179,8,0.15)"
+                stroke="rgba(212,63,41,0.15)"
                 strokeWidth="4"
               />
               <circle
@@ -76,7 +76,7 @@ const IncomingOrderCart = ({ orderId, onAccepted, distance, amount }: Props) => 
                 cy="24"
                 r="20"
                 fill="none"
-                stroke="#eab308"
+                stroke="#D43F29"
                 strokeWidth="4"
                 strokeDasharray={circumference}
                 strokeDashoffset={dashOffset}
@@ -84,28 +84,28 @@ const IncomingOrderCart = ({ orderId, onAccepted, distance, amount }: Props) => 
                 style={{ transition: "stroke-dashoffset 0.8s linear" }}
               />
             </svg>
-            <span className="text-sm font-black text-yellow-400">
+            <span className="text-sm font-extrabold text-brand-primary">
               {secondsLeft}
             </span>
           </div>
           <div>
-            <p className="text-sm font-bold text-white">New Order!</p>
-            <p className="text-xs text-gray-400 font-mono">
+            <p className="text-sm font-bold text-brand-charcoal">New Order Available!</p>
+            <p className="text-xs text-brand-muted font-mono font-bold">
               #{orderId.slice(-8)}
             </p>
           </div>
-          <div className="mt-2 flex items-center gap-2">
-            <div className="rounded-lg border border-cyan-500/30 bg-cyan-500/10 px-3 py-1.5">
-              <p className="text-[10px] uppercase tracking-wider text-cyan-400">
+          <div className="flex items-center gap-2">
+            <div className="rounded-lg border border-brand-secondary/20 bg-brand-secondary/5 px-3 py-1.5 text-center">
+              <p className="text-[9px] font-bold uppercase tracking-wider text-brand-secondary">
                 Distance
               </p>
-              <p className="text-sm font-bold text-white">{distance.toFixed(2)} km</p>
+              <p className="text-xs font-extrabold text-brand-charcoal">{distance.toFixed(2)} km</p>
             </div>
-            <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-3 py-1.5">
-              <p className="text-[10px] uppercase tracking-wider text-yellow-400">
+            <div className="rounded-lg border border-brand-gold/20 bg-brand-gold/5 px-3 py-1.5 text-center">
+              <p className="text-[9px] font-bold uppercase tracking-wider text-[#b07c1e]">
                 Amount
               </p>
-              <p className="text-sm font-bold text-white">₹{amount.toFixed(2)}</p>
+              <p className="text-xs font-extrabold text-brand-charcoal">₹{amount.toFixed(2)}</p>
             </div>
           </div>
         </div>
@@ -113,7 +113,7 @@ const IncomingOrderCart = ({ orderId, onAccepted, distance, amount }: Props) => 
         <button
           onClick={acceptOrder}
           disabled={accepting}
-          className="flex items-center gap-2 rounded-xl bg-green-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-green-900/40 transition hover:bg-green-400 disabled:cursor-not-allowed disabled:opacity-50 active:scale-95"
+          className="flex items-center justify-center gap-2 rounded-lg bg-brand-secondary px-5 py-2.5 text-sm font-bold text-white shadow-premium-sm transition-all hover:bg-brand-secondary-hover disabled:cursor-not-allowed disabled:opacity-50 active:scale-95"
         >
           {accepting ? (
             <>

@@ -70,7 +70,6 @@ const Dashboard = () => {
         if (!socket) return;
         const onOrderAvailable = (payload:any) => {
             console.log("Received new order notification:", payload);
-            const { orderId } = payload;
             setIncomingOrder((prev: any[]) => {
   const exists = prev.some(
     (order) => order.orderId === payload.orderId
@@ -168,8 +167,8 @@ const Dashboard = () => {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-gray-950">
-                <div className="flex items-center gap-3 text-sm text-yellow-400">
+            <div className="flex min-h-screen items-center justify-center bg-brand-cream">
+                <div className="flex items-center gap-3 text-sm font-semibold text-brand-primary">
                     <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
@@ -210,25 +209,25 @@ const Dashboard = () => {
     // ── No profile: registration form ──
     if (!profile) {
         return (
-            <div className="min-h-screen bg-gray-950 px-4 py-10">
-                <div className="mx-auto max-w-lg">
+            <div className="min-h-screen bg-brand-cream px-4 py-10">
+                <div className="mx-auto max-w-md">
                     <div className="mb-8 text-center">
-                        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-pink-600/20 text-3xl">🛵</div>
-                        <h1 className="text-2xl font-black text-white">Become a Rider</h1>
-                        <p className="mt-1 text-sm text-gray-500">Fill in your details to start delivering</p>
+                        <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-xl bg-brand-primary/10 text-2xl">🛵</div>
+                        <h1 className="text-3xl font-black font-serif text-brand-charcoal">Become a Rider</h1>
+                        <p className="mt-1 text-sm text-brand-muted">Fill in your details to start delivering</p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="rounded-3xl border border-yellow-500/20 bg-black/60 p-6 backdrop-blur-sm space-y-5">
+                    <form onSubmit={handleSubmit} className="rounded-xl border border-brand-border bg-white p-6 shadow-premium space-y-5">
                         {/* Picture */}
                         <div>
-                            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">Profile Picture</label>
-                            <label className="group relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-yellow-500/20 bg-white/5 transition hover:border-yellow-500/50">
+                            <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-brand-muted">Profile Picture</label>
+                            <label className="group relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed border-brand-border bg-brand-cream/40 transition hover:border-brand-primary/50">
                                 {picturePreview ? (
-                                    <img src={picturePreview} alt="preview" className="h-36 w-full object-cover" />
+                                    <img src={picturePreview} alt="preview" className="h-36 w-full object-cover rounded-xl" />
                                 ) : (
-                                    <div className="flex flex-col items-center gap-2 py-8 text-yellow-500/30 group-hover:text-yellow-500/60">
+                                    <div className="flex flex-col items-center gap-2 py-8 text-brand-muted/40 group-hover:text-brand-primary/60">
                                         <ImagePlus size={28} />
-                                        <span className="text-xs font-medium text-gray-500">Upload photo</span>
+                                        <span className="text-xs font-semibold text-brand-muted">Upload photo</span>
                                     </div>
                                 )}
                                 <input type="file" accept="image/*" onChange={(e) => {
@@ -241,49 +240,49 @@ const Dashboard = () => {
 
                         {/* Phone */}
                         <div>
-                            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">Phone Number</label>
+                            <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-brand-muted">Phone Number</label>
                             <div className="relative">
-                                <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600" />
+                                <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
                                 <input
                                     type="tel" placeholder="9876543210"
                                     value={formData.phoneNumber}
                                     onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                                    className="w-full rounded-xl border border-yellow-500/20 bg-black/40 py-2.5 pl-9 pr-3 text-sm text-white outline-none transition focus:border-pink-500 focus:ring-1 focus:ring-pink-500/20"
+                                    className="w-full rounded-lg border border-brand-border bg-white py-2.5 pl-9 pr-3 text-sm text-brand-charcoal outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                                 />
                             </div>
                         </div>
 
                         {/* Aadhaar */}
                         <div>
-                            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">Aadhaar Number</label>
+                            <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-brand-muted">Aadhaar Number</label>
                             <div className="relative">
-                                <CreditCard size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600" />
+                                <CreditCard size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
                                 <input
                                     type="text" placeholder="XXXX XXXX XXXX"
                                     value={formData.aadharNumber}
                                     onChange={(e) => setFormData({ ...formData, aadharNumber: e.target.value })}
-                                    className="w-full rounded-xl border border-yellow-500/20 bg-black/40 py-2.5 pl-9 pr-3 text-sm text-white outline-none transition focus:border-pink-500 focus:ring-1 focus:ring-pink-500/20"
+                                    className="w-full rounded-lg border border-brand-border bg-white py-2.5 pl-9 pr-3 text-sm text-brand-charcoal outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                                 />
                             </div>
                         </div>
 
                         {/* DL */}
                         <div>
-                            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">Driving License</label>
+                            <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-brand-muted">Driving License</label>
                             <div className="relative">
-                                <Car size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600" />
+                                <Car size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
                                 <input
                                     type="text" placeholder="MHXXXXXXXXXXXX"
                                     value={formData.drivingLicenseNumber}
                                     onChange={(e) => setFormData({ ...formData, drivingLicenseNumber: e.target.value })}
-                                    className="w-full rounded-xl border border-yellow-500/20 bg-black/40 py-2.5 pl-9 pr-3 text-sm text-white outline-none transition focus:border-pink-500 focus:ring-1 focus:ring-pink-500/20"
+                                    className="w-full rounded-lg border border-brand-border bg-white py-2.5 pl-9 pr-3 text-sm text-brand-charcoal outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                                 />
                             </div>
                         </div>
 
                         <button
                             type="submit" disabled={creating}
-                            className="w-full rounded-xl bg-gradient-to-r from-pink-600 to-pink-500 py-3 text-sm font-bold text-white shadow-lg shadow-pink-900/30 transition hover:from-pink-500 hover:to-pink-400 disabled:cursor-not-allowed disabled:opacity-60"
+                            className="w-full rounded-lg bg-brand-primary py-3 text-sm font-bold text-white shadow-premium-sm hover:bg-brand-primary-hover hover:shadow-premium transition-all disabled:cursor-not-allowed disabled:opacity-60"
                         >
                             {creating ? (
                                 <span className="flex items-center justify-center gap-2">
@@ -303,17 +302,17 @@ const Dashboard = () => {
 
     // ── Main dashboard ──
     return (
-        <div className="min-h-screen bg-gray-950 px-4 py-6">
-            <div className="mx-auto max-w-lg space-y-4">
+        <div className="min-h-screen bg-brand-cream px-4 py-8">
+            <div className="mx-auto max-w-lg space-y-5">
 
                 {/* Audio prompt banner */}
                 {!audioUnlocked && showAudioPrompt && (
-                    <div className="relative flex items-start gap-3 rounded-2xl border border-yellow-500/20 bg-yellow-500/5 p-4">
-                        <Volume2 size={18} className="mt-0.5 shrink-0 text-yellow-400" />
+                    <div className="relative flex items-start gap-3 rounded-xl border border-brand-gold/30 bg-brand-gold/5 p-4 shadow-premium-sm">
+                        <Volume2 size={18} className="mt-0.5 shrink-0 text-brand-gold" />
                         <div className="flex-1">
-                            <p className="text-sm font-semibold text-white">Enable order notifications</p>
-                            <p className="mt-0.5 text-xs text-gray-500">Allow sound so you hear new incoming orders.</p>
-                            <button onClick={unlockAudio} className="mt-2 rounded-lg bg-yellow-500/20 px-3 py-1.5 text-xs font-bold text-yellow-400 transition hover:bg-yellow-500/30">
+                            <p className="text-sm font-bold text-brand-charcoal">Enable order notifications</p>
+                            <p className="mt-0.5 text-xs text-brand-muted font-medium">Allow sound so you hear new incoming orders.</p>
+                            <button onClick={unlockAudio} className="mt-2 rounded-lg bg-brand-gold/15 px-3 py-1.5 text-xs font-extrabold text-[#b07c1e] transition-all hover:bg-brand-gold/25">
                                 Enable Sound
                             </button>
                         </div>
@@ -322,7 +321,7 @@ const Dashboard = () => {
                                 setShowAudioPrompt(false);
                                 try { localStorage.setItem("audioPromptDismissed", "true"); } catch {}
                             }}
-                            className="text-gray-600 transition hover:text-gray-400"
+                            className="text-brand-muted transition hover:text-brand-charcoal"
                         >
                             <X size={15} />
                         </button>
@@ -330,78 +329,78 @@ const Dashboard = () => {
                 )}
 
                 {/* Profile card */}
-                <div className="rounded-3xl border border-yellow-500/20 bg-black/60 p-6 backdrop-blur-sm">
+                <div className="rounded-xl border border-brand-border bg-white p-6 shadow-premium">
                     {/* Avatar + name */}
                     <div className="flex items-center gap-4">
                         <div className="relative">
-                            <img src={profile.picture} alt="Rider" className="h-20 w-20 rounded-2xl border-2 border-pink-500/50 object-cover" />
-                            <span className={`absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-gray-950 ${profile.isAvailable ? "bg-green-400" : "bg-gray-600"}`} />
+                            <img src={profile.picture} alt="Rider" className="h-20 w-20 rounded-xl border border-brand-border object-cover shadow-premium-sm" />
+                            <span className={`absolute -bottom-1 -right-1 h-4.5 w-4.5 rounded-full border-2 border-white ${profile.isAvailable ? "bg-brand-success" : "bg-brand-muted"}`} />
                         </div>
                         <div>
-                            <h2 className="text-lg font-black text-white">Rider Profile</h2>
-                            <p className="text-sm text-gray-400">{profile.phoneNumber}</p>
-                            <span className={`mt-1 inline-block rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest ${profile.isAvailable ? "bg-green-500/15 text-green-400" : "bg-red-500/15 text-red-400"}`}>
+                            <h2 className="text-lg font-bold font-serif text-brand-charcoal">Rider Profile</h2>
+                            <p className="text-sm font-medium text-brand-muted">{profile.phoneNumber}</p>
+                            <span className={`mt-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider border ${profile.isAvailable ? "bg-brand-secondary/10 text-brand-secondary border-brand-secondary/20" : "bg-brand-primary/10 text-brand-primary border-brand-primary/20"}`}>
                                 {profile.isAvailable ? "● Online" : "○ Offline"}
                             </span>
                         </div>
                     </div>
 
                     {/* Stats grid */}
-                    <div className="mt-5 grid grid-cols-2 gap-3">
-                        <div className="rounded-2xl border border-white/5 bg-white/5 p-3">
-                            <div className="flex items-center gap-1.5 text-gray-500 mb-1">
+                    <div className="mt-6 grid grid-cols-2 gap-3">
+                        <div className="rounded-xl border border-brand-border/60 bg-brand-cream/40 p-3">
+                            <div className="flex items-center gap-1.5 text-brand-muted mb-1">
                                 <ShieldCheck size={12} />
-                                <span className="text-[10px] uppercase tracking-wider">Verification</span>
+                                <span className="text-[10px] font-bold uppercase tracking-wider">Verification</span>
                             </div>
-                            <p className={`text-sm font-bold ${profile.isVerified ? "text-green-400" : "text-yellow-400"}`}>
+                            <p className={`text-sm font-extrabold ${profile.isVerified ? "text-brand-secondary" : "text-brand-gold"}`}>
                                 {profile.isVerified ? "Verified ✓" : "Pending"}
                             </p>
                         </div>
-                        <div className="rounded-2xl border border-white/5 bg-white/5 p-3">
-                            <div className="flex items-center gap-1.5 text-gray-500 mb-1">
+                        <div className="rounded-xl border border-brand-border/60 bg-brand-cream/40 p-3">
+                            <div className="flex items-center gap-1.5 text-brand-muted mb-1">
                                 <MapPin size={12} />
-                                <span className="text-[10px] uppercase tracking-wider">City</span>
+                                <span className="text-[10px] font-bold uppercase tracking-wider">City</span>
                             </div>
-                            <p className="text-sm font-bold text-white">{city || "Unknown"}</p>
+                            <p className="text-sm font-extrabold text-brand-charcoal">{city || "Unknown"}</p>
                         </div>
-                        <div className="rounded-2xl border border-white/5 bg-white/5 p-3">
-                            <div className="flex items-center gap-1.5 text-gray-500 mb-1">
+                        <div className="rounded-xl border border-brand-border/60 bg-brand-cream/40 p-3">
+                            <div className="flex items-center gap-1.5 text-brand-muted mb-1">
                                 <Clock size={12} />
-                                <span className="text-[10px] uppercase tracking-wider">Last Active</span>
+                                <span className="text-[10px] font-bold uppercase tracking-wider">Last Active</span>
                             </div>
-                            <p className="text-sm font-bold text-white">{new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</p>
+                            <p className="text-sm font-extrabold text-brand-charcoal">{new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</p>
                         </div>
-                        <div className="rounded-2xl border border-white/5 bg-white/5 p-3">
-                            <div className="flex items-center gap-1.5 text-gray-500 mb-1">
+                        <div className="rounded-xl border border-brand-border/60 bg-brand-cream/40 p-3">
+                            <div className="flex items-center gap-1.5 text-brand-muted mb-1">
                                 <TrendingUp size={12} />
-                                <span className="text-[10px] uppercase tracking-wider">Status</span>
+                                <span className="text-[10px] font-bold uppercase tracking-wider">Status</span>
                             </div>
-                            <p className={`text-sm font-bold ${profile.isAvailable ? "text-green-400" : "text-red-400"}`}>
+                            <p className={`text-sm font-extrabold ${profile.isAvailable ? "text-brand-secondary" : "text-brand-primary"}`}>
                                 {profile.isAvailable ? "Online" : "Offline"}
                             </p>
                         </div>
                     </div>
 
                     {/* Action buttons */}
-                    <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+                    <div className="mt-5 flex flex-col gap-2 sm:flex-row">
                         {profile.isVerified && !currentOrder && (
                             <button
                                 onClick={toggleAvailability}
                                 disabled={togggling}
-                                className={`flex-1 rounded-xl py-2.5 text-sm font-bold text-white transition ${profile.isAvailable ? "bg-red-600 hover:bg-red-500" : "bg-green-600 hover:bg-green-500"} disabled:opacity-60`}
+                                className={`flex-1 rounded-lg py-2.5 text-sm font-bold text-white transition-all shadow-premium-sm hover:shadow-premium ${profile.isAvailable ? "bg-brand-primary hover:bg-brand-primary-hover" : "bg-brand-secondary hover:bg-brand-secondary-hover"} disabled:opacity-60`}
                             >
                                 {togggling ? "Updating…" : profile.isAvailable ? "Go Offline" : "Go Online"}
                             </button>
                         )}
                         <button
                             onClick={() => setEarnTab((v: boolean) => !v)}
-                            className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-yellow-500/20 py-2.5 text-sm font-bold text-yellow-400 transition hover:bg-yellow-500/30"
+                            className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-brand-cream-dark border border-brand-border/60 py-2.5 text-sm font-bold text-brand-charcoal transition-all hover:bg-brand-border/40"
                         >
-                            <TrendingUp size={14} /> Earnings
+                            <TrendingUp size={14} className="text-brand-muted" /> Earnings
                         </button>
                         <button
                             onClick={handleLogout}
-                            className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-pink-600/20 py-2.5 text-sm font-bold text-pink-400 transition hover:bg-pink-600/30"
+                            className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-brand-primary/10 border border-brand-primary/20 py-2.5 text-sm font-bold text-brand-primary transition-all hover:bg-brand-primary/20"
                         >
                             <LogOut size={14} /> Logout
                         </button>
@@ -413,8 +412,8 @@ const Dashboard = () => {
 
                 {/* Incoming orders */}
                 {!currentOrder && profile.isAvailable && incomingOrder.length > 0 && (
-                    <div className="rounded-2xl border border-yellow-500/30 bg-yellow-500/5 px-4 pt-3 pb-4">
-                        <p className="text-xs font-bold uppercase tracking-widest text-yellow-400">🔔 New Order Available</p>
+                    <div className="rounded-xl border border-brand-primary/30 bg-brand-primary/5 px-4 pt-3.5 pb-4 shadow-premium-sm">
+                        <p className="text-xs font-extrabold uppercase tracking-wider text-brand-primary flex items-center gap-1.5 mb-1">🔔 New Order Available</p>
                         {incomingOrder.map((order: any) => (
                             <IncomingOrderCart
                                 amount={order.amount}
@@ -429,7 +428,7 @@ const Dashboard = () => {
 
                 {/* Current order + map */}
                 {currentOrder && (
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                         <CurrentOrder order={currentOrder} onstatusUpdate={fetchCurrentOrder} />
                         <OrderMap order={currentOrder} />
                     </div>
