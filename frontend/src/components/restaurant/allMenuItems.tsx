@@ -2,8 +2,15 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { restaurantService } from "../../main";
 import toast from "react-hot-toast";
-import { Edit2, Trash2, ToggleLeft, ToggleRight, X, ShoppingCart } from "lucide-react";
+import { Edit2, Trash2, ToggleLeft, ToggleRight, X, Plus, ShoppingCart } from "lucide-react";
 import { useAppContext } from "../../context/context";
+
+const formatCurrency = (value: number) =>
+  new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(value);
 
 const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { restaurantId: string; restaurantOwner: string; isOpen: boolean }) => {
     const [menuItems, setMenuItems] = React.useState<any[]>([]);
@@ -159,46 +166,55 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
             <p className="mt-1 text-xs text-brand-muted">Use the Add Item tab to create dishes.</p>
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="divide-y divide-brand-border/50">
             {menuItems.map((it) => (
               <div
                 key={it._id}
-                className={`flex items-center gap-4 rounded-2xl border p-4 shadow-premium-sm transition-colors duration-200 ${
-                  it.isAvailable
-                    ? "border-brand-border/60 bg-brand-card"
-                    : "border-brand-border bg-brand-cream-dark/35 opacity-70"
+                className={`group flex gap-5 py-6 first:pt-0 last:pb-0 transition-opacity duration-200 ${
+                  it.isAvailable ? "" : "opacity-55"
                 }`}
               >
-                <div
-                  className={`h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-brand-border/40 ${
-                    it.isAvailable ? "bg-brand-cream-dark/40" : "bg-brand-cream-dark/80"
-                  }`}
-                >
-                  {it.image ? <img src={it.image} className={`h-full w-full object-cover ${it.isAvailable ? "" : "grayscale"}`} /> : null}
-                </div>
+                {/* ── Left: Item Info ── */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <h4 className={`font-serif text-sm font-bold truncate ${it.isAvailable ? "text-brand-charcoal" : "text-brand-muted"}`}>
-                        {it.name}
-                      </h4>
-                      <p className="mt-1 line-clamp-1 text-xs text-brand-muted leading-relaxed">{it.description}</p>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <div className={`font-bold text-xs ${it.isAvailable ? "text-brand-primary" : "text-brand-muted"}`}>
-                        ₹{it.price}
-                      </div>
-                      <div className={`mt-1 inline-flex rounded-full px-2 py-0.5 text-[9px] font-bold ${it.isAvailable ? "bg-brand-secondary/15 text-brand-secondary" : "bg-brand-cream-dark text-brand-muted"}`}>
-                        {it.isAvailable ? "Available" : "Unavailable"}
-                      </div>
-                    </div>
+                  {/* Availability badge */}
+                  <div className="mb-2">
+                    {it.isAvailable ? (
+                      <span className="inline-flex items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                        Available
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 rounded-md border border-brand-border bg-brand-cream-dark px-2 py-0.5 text-[10px] font-bold text-brand-muted">
+                        <span className="h-1.5 w-1.5 rounded-full bg-brand-muted/50" />
+                        Unavailable
+                      </span>
+                    )}
                   </div>
-                  {isOwner ? (
+
+                  {/* Name */}
+                  <h4 className={`font-serif text-base font-bold leading-snug ${it.isAvailable ? "text-brand-charcoal" : "text-brand-muted"}`}>
+                    {it.name}
+                  </h4>
+
+                  {/* Price */}
+                  <p className={`mt-1 text-sm font-bold ${it.isAvailable ? "text-brand-charcoal" : "text-brand-muted"}`}>
+                    {formatCurrency(it.price)}
+                  </p>
+
+                  {/* Description */}
+                  {it.description && (
+                    <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-brand-muted font-medium">
+                      {it.description}
+                    </p>
+                  )}
+
+                  {/* Owner action buttons */}
+                  {isOwner && (
                     <div className="mt-3 flex flex-wrap gap-1.5">
                       <button
                         type="button"
                         onClick={() => startEdit(it)}
-                        className="inline-flex items-center gap-1.5 rounded-xl border border-brand-border bg-brand-card px-3 py-1.5 text-xs font-bold text-brand-charcoal hover:bg-brand-cream-dark/30 hover:border-brand-primary/30 transition duration-150"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-brand-border bg-white px-3 py-1.5 text-xs font-bold text-brand-charcoal hover:bg-brand-cream-dark/30 hover:border-brand-primary/30 transition duration-150"
                       >
                         <Edit2 size={12} />
                         Edit
@@ -206,7 +222,7 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
                       <button
                         type="button"
                         onClick={() => toggleAvailability(it._id)}
-                        className="inline-flex items-center gap-1.5 rounded-xl border border-brand-border bg-brand-card px-3 py-1.5 text-xs font-bold text-brand-charcoal hover:bg-brand-cream-dark/30 transition duration-150"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-brand-border bg-white px-3 py-1.5 text-xs font-bold text-brand-charcoal hover:bg-brand-cream-dark/30 transition duration-150"
                       >
                         {it.isAvailable ? <ToggleLeft size={13} className="text-brand-muted" /> : <ToggleRight size={13} className="text-brand-primary" />}
                         {it.isAvailable ? "Set Unavailable" : "Set Available"}
@@ -214,103 +230,131 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
                       <button
                         type="button"
                         onClick={() => deleteItem(it._id)}
-                        className="inline-flex items-center gap-1.5 rounded-xl border border-brand-border bg-brand-card px-3 py-1.5 text-xs font-bold text-brand-error hover:bg-brand-error/5 hover:border-brand-error/30 transition duration-150"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-brand-border bg-white px-3 py-1.5 text-xs font-bold text-brand-error hover:bg-brand-error/5 hover:border-brand-error/30 transition duration-150"
                       >
                         <Trash2 size={12} />
                         Delete
                       </button>
                     </div>
-                  ) : (
-                    <div className="mt-3 flex justify-end">
-                      <button
-                        type="button"
-                        onClick={() => addtocart(it._id)}
-                        className="flex items-center justify-center p-2 rounded-full border border-brand-border bg-brand-card text-brand-primary hover:bg-brand-primary/5 hover:border-brand-primary/30 transition duration-150"
-                        aria-label={`Add ${it.name} to cart`}
-                      >
-                        <ShoppingCart size={14} />
-                      </button>
-                    </div>
                   )}
                 </div>
 
-                {editingItem ? (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-brand-charcoal/40 backdrop-blur-sm px-4">
-                    <div className="w-full max-w-lg rounded-3xl bg-brand-card p-6 shadow-premium-lg border border-brand-border/60">
-                      <div className="flex items-center justify-between gap-4">
-                        <div>
-                          <h3 className="font-serif text-base font-bold text-brand-charcoal">Edit menu item</h3>
-                          <p className="text-xs text-brand-muted">Update the item details and save changes.</p>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={closeEdit}
-                          className="rounded-xl p-1.5 text-brand-muted hover:bg-brand-cream-dark/40"
-                        >
-                          <X size={15} />
-                        </button>
+                {/* ── Right: Image + Add Button ── */}
+                <div className="relative shrink-0 self-start">
+                  <div
+                    className={`h-28 w-28 overflow-hidden rounded-2xl border border-brand-border/60 shadow-premium-sm sm:h-32 sm:w-32 ${
+                      it.isAvailable ? "bg-brand-cream-dark/40" : "bg-brand-cream-dark/80"
+                    }`}
+                  >
+                    {it.image ? (
+                      <img
+                        src={it.image}
+                        alt={it.name}
+                        className={`h-full w-full object-cover transition duration-500 group-hover:scale-105 ${it.isAvailable ? "" : "grayscale"}`}
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-brand-muted/30">
+                        <ShoppingCart size={24} />
                       </div>
-
-                      <form onSubmit={saveEdit} className="mt-5 space-y-3">
-                        <div>
-                          <input
-                            value={editName}
-                            onChange={(e) => setEditName(e.target.value)}
-                            placeholder="Item name"
-                            className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs text-brand-charcoal outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition"
-                          />
-                        </div>
-                        <div>
-                          <input
-                            value={editPrice}
-                            onChange={(e) => setEditPrice(e.target.value)}
-                            placeholder="Price"
-                            type="number"
-                            className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs text-brand-charcoal outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition"
-                          />
-                        </div>
-                        <div>
-                          <textarea
-                            value={editDesc}
-                            onChange={(e) => setEditDesc(e.target.value)}
-                            placeholder="Description"
-                            rows={3}
-                            className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs text-brand-charcoal outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition resize-none"
-                          />
-                        </div>
-                        <div>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => setEditFile(e.target.files?.[0] ?? null)}
-                            className="w-full text-xs text-brand-muted file:mr-4 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20"
-                          />
-                        </div>
-                        <div className="flex justify-end gap-3 pt-2">
-                          <button
-                            type="button"
-                            onClick={closeEdit}
-                            className="rounded-xl border border-brand-border bg-brand-card px-4 py-2 text-xs font-bold text-brand-muted hover:bg-brand-cream-dark/30 transition"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            type="submit"
-                            disabled={savingEdit}
-                            className="rounded-xl bg-brand-primary px-5 py-2 text-xs font-bold text-white shadow-premium hover:bg-brand-primary-hover disabled:cursor-not-allowed disabled:opacity-70 transition"
-                          >
-                            {savingEdit ? "Saving..." : "Save changes"}
-                          </button>
-                        </div>
-                      </form>
-                    </div>
+                    )}
                   </div>
-                ) : null}
+
+                  {/* Add to cart button — customer view only */}
+                  {!isOwner && it.isAvailable && (
+                    <button
+                      type="button"
+                      onClick={() => addtocart(it._id)}
+                      className="absolute -bottom-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-lg border border-brand-primary/30 bg-white px-5 py-1.5 text-xs font-extrabold uppercase tracking-wide text-brand-primary shadow-premium-sm transition hover:bg-brand-primary hover:text-white hover:shadow-premium hover:-translate-y-0.5 active:scale-95"
+                    >
+                      <Plus size={14} strokeWidth={3} />
+                      Add
+                    </button>
+                  )}
+                  {!isOwner && !it.isAvailable && (
+                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 inline-flex items-center rounded-lg border border-brand-border bg-brand-cream-dark px-5 py-1.5 text-xs font-bold text-brand-muted shadow-premium-sm cursor-not-allowed">
+                      Unavailable
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
         )}
       </div>
+
+      {/* ── Edit Modal (unchanged logic) ── */}
+      {editingItem ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-brand-charcoal/40 backdrop-blur-sm px-4">
+          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-premium-lg border border-brand-border/60">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <h3 className="font-serif text-base font-bold text-brand-charcoal">Edit menu item</h3>
+                <p className="text-xs text-brand-muted">Update the item details and save changes.</p>
+              </div>
+              <button
+                type="button"
+                onClick={closeEdit}
+                className="rounded-xl p-1.5 text-brand-muted hover:bg-brand-cream-dark/40"
+              >
+                <X size={15} />
+              </button>
+            </div>
+
+            <form onSubmit={saveEdit} className="mt-5 space-y-3">
+              <div>
+                <input
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  placeholder="Item name"
+                  className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs text-brand-charcoal outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition"
+                />
+              </div>
+              <div>
+                <input
+                  value={editPrice}
+                  onChange={(e) => setEditPrice(e.target.value)}
+                  placeholder="Price"
+                  type="number"
+                  className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs text-brand-charcoal outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition"
+                />
+              </div>
+              <div>
+                <textarea
+                  value={editDesc}
+                  onChange={(e) => setEditDesc(e.target.value)}
+                  placeholder="Description"
+                  rows={3}
+                  className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs text-brand-charcoal outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition resize-none"
+                />
+              </div>
+              <div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setEditFile(e.target.files?.[0] ?? null)}
+                  className="w-full text-xs text-brand-muted file:mr-4 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20"
+                />
+              </div>
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={closeEdit}
+                  className="rounded-xl border border-brand-border bg-white px-4 py-2 text-xs font-bold text-brand-muted hover:bg-brand-cream-dark/30 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingEdit}
+                  className="rounded-xl bg-brand-primary px-5 py-2 text-xs font-bold text-white shadow-premium hover:bg-brand-primary-hover disabled:cursor-not-allowed disabled:opacity-70 transition"
+                >
+                  {savingEdit ? "Saving..." : "Save changes"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };
