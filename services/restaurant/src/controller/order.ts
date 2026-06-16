@@ -10,40 +10,40 @@ import { publishEvent } from "../config/order.publisher.js";
 import bcrypt from "bcrypt";
 export const createOrder = tryCatch(async (req: AuthenticatedRequest, res) => {
     const user = req.user;
-    if(!user) {
+    if (!user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const {paymentMethod,addressId,distance}= req.body;
+    const { paymentMethod, addressId, distance } = req.body;
 
-    if(!addressId){
+    if (!addressId) {
         return res.status(400).json({ message: "Address is required" });
     }
-    if(typeof distance !== "number" || Number.isNaN(distance) || distance < 0){
+    if (typeof distance !== "number" || Number.isNaN(distance) || distance < 0) {
         return res.status(400).json({ message: "Distance is required" });
     }
     const Address = await address.findById(addressId);
-    if(!Address){
+    if (!Address) {
         return res.status(404).json({ message: "Address not found" });
     }
-    const cartItems = await Cart.find({ userId: user._id }).populate<{itemsId: IMenuItem}>("itemsId").populate("restaurantId");
-    if(cartItems.length === 0){
+    const cartItems = await Cart.find({ userId: user._id }).populate<{ itemsId: IMenuItem }>("itemsId").populate("restaurantId");
+    if (cartItems.length === 0) {
         return res.status(400).json({ message: "Cart is empty" });
     }
-     const firstCartItem = cartItems[0];
-    if(!firstCartItem || !firstCartItem.restaurantId){
+    const firstCartItem = cartItems[0];
+    if (!firstCartItem || !firstCartItem.restaurantId) {
         return res.status(400).json({ message: "Invalid cart item" });
     }
     const restaurant = await Restaurant.findById(firstCartItem.restaurantId);
-    if(!restaurant){
+    if (!restaurant) {
         return res.status(404).json({ message: "Restaurant not found" });
     }
-    if(!restaurant.isOpen){
+    if (!restaurant.isOpen) {
         return res.status(400).json({ message: "Restaurant is closed for now" });
     }
     let subtotal = 0;
     const items = cartItems.map(cartItem => {
-        if(!cartItem.itemsId){
+        if (!cartItem.itemsId) {
             throw new Error("Invalid cart item");
         }
         const item = cartItem.itemsId;
@@ -56,13 +56,13 @@ export const createOrder = tryCatch(async (req: AuthenticatedRequest, res) => {
             quantity: cartItem.quantity,
         }
     });
-    const deliveryFee = subtotal <250 ? 49 : 0;
+    const deliveryFee = subtotal < 250 ? 49 : 0;
     const platformFee = 7
     const totalAmount = subtotal + deliveryFee + platformFee;
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
-    const [longitude,latitude] =  Address.location.coordinates;
-    const riderAmount = Math.ceil(distance)*17 ;
-    const otp = Math.floor( 1000 + Math.random() * 9000).toString();
+    const [longitude, latitude] = Address.location.coordinates;
+    const riderAmount = Math.ceil(distance) * 17;
+    const otp = Math.floor(1000 + Math.random() * 9000).toString();
     const hashedOtp = await bcrypt.hash(otp, 10);
     const order = await Order.create({
         userId: user._id,
@@ -93,70 +93,71 @@ export const createOrder = tryCatch(async (req: AuthenticatedRequest, res) => {
 
     await Cart.deleteMany({ userId: user._id });
 
-    res.json({ message: "Order placed successfully", orderId: order._id.toString(),amount: totalAmount });
+    res.json({ message: "Order placed successfully", orderId: order._id.toString(), amount: totalAmount });
 })
-export const fetchOrders = tryCatch(async(req,res)=>{
-    if(req.headers["x-internal-key"] !== process.env.INTERNAL_SERVICE_KEY){
+export const fetchOrders = tryCatch(async (req, res) => {
+    if (req.headers["x-internal-key"] !== process.env.INTERNAL_SERVICE_KEY) {
         return res.status(401).json({ message: "Unauthorized" });
     }
     const order = await Order.findById(req.params.id);
-    if(!order){
+    if (!order) {
         return res.status(404).json({ message: "Order not found" });
     }
-    if(order.paymentStatus !== "pending"){
+    if (order.paymentStatus !== "pending") {
         return res.status(400).json({ message: "Order is already paid " });
     }
     res.json({ orderId: order._id, amount: order.totalAmount, currency: "INR" });
 })
 
-export const fetchRestaurantOrders = tryCatch(async(req: AuthenticatedRequest,res)=>{
+export const fetchRestaurantOrders = tryCatch(async (req: AuthenticatedRequest, res) => {
     const user = req.user;
-    if(!user) {
+    if (!user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
     const restaurantId = req.params.restaurantId;
-    if(!restaurantId){
+    if (!restaurantId) {
         return res.status(400).json({ message: "User is not associated with any restaurant" });
     }
-    const limit= req.query.limit? Number(req.query.limit):0;
-    const orders = await Order.find({ restaurantId: restaurantId ,paymentStatus:"paid"}).sort({ createdAt: -1 }).limit(limit);
-    res.json({ 
+    const limit = req.query.limit ? Number(req.query.limit) : 0;
+    const orders = await Order.find({ restaurantId: restaurantId, paymentStatus: "paid" }).sort({ createdAt: -1 }).limit(limit);
+    res.json({
         success: true,
         count: orders.length,
-        orders });
+        orders
+    });
 })
- 
-const allowedStatus = ["accepted","preparing","ready_for_rider"];
+
+const allowedStatus = ["accepted", "preparing", "ready_for_rider"];
 const normalizeStatus = (status: string) => {
     if (status === "ready for pickup") return "ready_for_rider";
     if (status === "preaparing") return "preparing";
     return status;
 };
-export const updateOrderStatus = tryCatch(async(req: AuthenticatedRequest,res)=>{
+export const updateOrderStatus = tryCatch(async (req: AuthenticatedRequest, res) => {
     const user = req.user;
-    const {orderId}= req.params;
+    const { orderId } = req.params;
     const status = normalizeStatus(String(req.body.status || ""));
-    if(!user) {
+    if (!user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
-    if(!allowedStatus.includes(status)){
+    if (!allowedStatus.includes(status)) {
         return res.status(400).json({ message: "Invalid status" });
     }
     const order = await Order.findById(orderId);
-    if(!order){
+    if (!order) {
         return res.status(404).json({ message: "Order not found" });
     }
-    if(order.paymentStatus !== "paid"){
+    if (order.paymentStatus !== "paid") {
         return res.status(400).json({ message: "Only paid orders can be updated" });
     }
-    if(order.status==="rider_assigned"){
+    if (order.status === "rider_assigned") {
         return res.status(400).json({ message: "Cannot update order after rider is assigned" });
     }
     const restaurant = await Restaurant.findById(order.restaurantId);
-    if(!restaurant){
+    if (!restaurant) {
         return res.status(404).json({ message: "Restaurant not found" });
     }
-    if(restaurant.owner.toString() !== user._id.toString()){
+    if (restaurant.owner.toString() !== user._id.toString()) {
         return res.status(403).json({ message: "you are not the owner of this restaurant" });
     }
 
@@ -165,7 +166,7 @@ export const updateOrderStatus = tryCatch(async(req: AuthenticatedRequest,res)=>
         { $set: { status } },
         { new: true, runValidators: false }
     );
-    if(!updatedOrder){
+    if (!updatedOrder) {
         return res.status(404).json({ message: "Order not found" });
     }
     {
@@ -195,165 +196,167 @@ export const updateOrderStatus = tryCatch(async(req: AuthenticatedRequest,res)=>
             }
         }
     }
-    if(status === "ready_for_rider"){
+    if (status === "ready_for_rider") {
         console.log('🚴🚴‍♀️Emitting order ready event for order', updatedOrder._id);
-        await publishEvent("ORDER_READY_FOR_RIDER", 
-            { orderId: updatedOrder._id.toString(),
+        await publishEvent("ORDER_READY_FOR_RIDER",
+            {
+                orderId: updatedOrder._id.toString(),
                 amount: updatedOrder.riderAmount,
                 distance: updatedOrder.distance,
                 restaurantId: restaurant._id.toString(),
                 reslocation: restaurant.autoLocation,
-         });
-         console.log('Event published for order Successfully');
+            });
+        console.log('Event published for order Successfully');
     }
-    res.json({ message: "Order status updated successfully" ,updatedOrder});
+    res.json({ message: "Order status updated successfully", updatedOrder });
 })
 
-export const getMyOrders = tryCatch(async(req: AuthenticatedRequest,res)=>{
+export const getMyOrders = tryCatch(async (req: AuthenticatedRequest, res) => {
     const user = req.user;
-    if(!user) {
+    if (!user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
     const orders = await Order.find({ userId: user._id.toString() }).sort({ createdAt: -1 });
-    res.json({ 
+    res.json({
         success: true,
         count: orders.length,
-        orders });
+        orders
+    });
 })
 
-export const fetchSingleOrder = tryCatch(async(req: AuthenticatedRequest,res)=>{
+export const fetchSingleOrder = tryCatch(async (req: AuthenticatedRequest, res) => {
     const user = req.user;
-    const {orderId} = req.params;
-    if(!user) {
+    const { orderId } = req.params;
+    if (!user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
     const order = await Order.findById(orderId);
-    if(!order){
+    if (!order) {
         return res.status(404).json({ message: "Order not found" });
     }
-    
-    if(order.userId.toString() !== user._id.toString() && user.role !== "owner"){
+
+    if (order.userId.toString() !== user._id.toString() && user.role !== "owner") {
         return res.status(403).json({ message: "You are not authorized to view this order" });
     }
-    res.json({ success: true, order }); 
+    res.json({ success: true, order });
 })
 
-export const assignRiderToOrder = tryCatch(async(req: AuthenticatedRequest,res)=>{
-     if(req.headers["x-internal-key"] !== process.env.INTERNAL_SERVICE_KEY){
+export const assignRiderToOrder = tryCatch(async (req: AuthenticatedRequest, res) => {
+    if (req.headers["x-internal-key"] !== process.env.INTERNAL_SERVICE_KEY) {
         return res.status(401).json({ message: "Unauthorized" });
     }
-    const {orderId, riderId,riderName,riderPhone} = req.body;
-    const orderAvailable = await Order.findOne({riderId,status: { $nin: ["delivered","rider_assigned"] }});
-        if(orderAvailable){
-            return res.status(400).json({ message: "Rider is already assigned to another order" });
-        }
+    const { orderId, riderId, riderName, riderPhone } = req.body;
+    const orderAvailable = await Order.findOne({ riderId, status: { $nin: ["delivered", "rider_assigned"] } });
+    if (orderAvailable) {
+        return res.status(400).json({ message: "Rider is already assigned to another order" });
+    }
     const order = await Order.findById(orderId);
-    if(order?.riderId!==null){
+    if (order?.riderId !== null) {
         return res.status(400).json({ message: "Rider is already assigned to this order" });
     }
     const updatedOrder = await Order.findOneAndUpdate(
-    {
-        _id: orderId,
-        riderId: null
-    },
-    {
-        riderId,
-        riderName,
-        riderPhone,
-        status: "rider_assigned"
-    },
-    {
-        new: true
-    }
-);
-    if(!updatedOrder){
+        {
+            _id: orderId,
+            riderId: null
+        },
+        {
+            riderId,
+            riderName,
+            riderPhone,
+            status: "rider_assigned"
+        },
+        {
+            new: true
+        }
+    );
+    if (!updatedOrder) {
         return res.status(404).json({ message: "Order not found or rider already assigned" });
     }
     const realtimeUrl = process.env.REALTIME_SERVICE_URL;
-        if (!realtimeUrl) {
-            console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', updatedOrder._id);
-        } else {
-            try {
-                await axios.post(
-                    `${realtimeUrl}/api/v1/internal/emit`,
-                    {
-                        event: "rider_assigned",
-                        room: `user:${updatedOrder.userId}`,
-                        payload: updatedOrder,
+    if (!realtimeUrl) {
+        console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', updatedOrder._id);
+    } else {
+        try {
+            await axios.post(
+                `${realtimeUrl}/api/v1/internal/emit`,
+                {
+                    event: "rider_assigned",
+                    room: `user:${updatedOrder.userId}`,
+                    payload: updatedOrder,
+                },
+                {
+                    headers: {
+                        "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "",
                     },
-                    {
-                        headers: {
-                            "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "",
-                        },
-                    }
-                );
-                await axios.post(
-                    `${realtimeUrl}/api/v1/internal/emit`,
-                    {
-                        event: "rider_assigned",
-                        room: `restaurant:${updatedOrder.restaurantId}`,
-                        payload: updatedOrder,
+                }
+            );
+            await axios.post(
+                `${realtimeUrl}/api/v1/internal/emit`,
+                {
+                    event: "rider_assigned",
+                    room: `restaurant:${updatedOrder.restaurantId}`,
+                    payload: updatedOrder,
+                },
+                {
+                    headers: {
+                        "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "",
                     },
-                    {
-                        headers: {
-                            "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "",
-                        },
-                    }
-                );
-            } catch (err) {
-                console.error('Failed to notify realtime service about order status update', err);
-            }
+                }
+            );
+        } catch (err) {
+            console.error('Failed to notify realtime service about order status update', err);
         }
+    }
     res.json({ success: true, message: "Rider assigned to order successfully", order: updatedOrder });
 })
 
 export const getCurrentOrderForRider = tryCatch(
-  async (req: AuthenticatedRequest, res) => {
-    if (req.headers["x-internal-key"] !== process.env.INTERNAL_SERVICE_KEY) {
-      return res.status(401).json({ message: "Unauthorized" });
+    async (req: AuthenticatedRequest, res) => {
+        if (req.headers["x-internal-key"] !== process.env.INTERNAL_SERVICE_KEY) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        const { riderId } = req.query as { riderId?: string };
+
+        if (!riderId) {
+            return res.status(400).json({
+                message: "riderID is required",
+            });
+        }
+
+        const order = await Order.findOne({
+            riderId,
+            status: { $ne: "delivered" },
+        }).populate("restaurantId");
+
+        if (!order) {
+            return res.status(404).json({
+                message: "order not found",
+            });
+        }
+        order.otp = "none";
+        return res.json({ success: true, order });
     }
-
-    const { riderId } = req.query as { riderId?: string };
-
-    if (!riderId) {
-      return res.status(400).json({
-        message: "riderID is required",
-      });
-    }
-
-    const order = await Order.findOne({
-      riderId,
-      status: { $ne: "delivered" },
-    }).populate("restaurantId");
-
-    if (!order) {
-      return res.status(404).json({
-        message: "order not found",
-      });
-    }
-    order.otp = "none";
-    return res.json({success:true, order});
-  }
 );
-export const updateOrderStatusByRider = tryCatch(async(req: AuthenticatedRequest,res)=>{
-    if(req.headers["x-internal-key"] !== process.env.INTERNAL_SERVICE_KEY){
+export const updateOrderStatusByRider = tryCatch(async (req: AuthenticatedRequest, res) => {
+    if (req.headers["x-internal-key"] !== process.env.INTERNAL_SERVICE_KEY) {
         return res.status(401).json({ message: "Unauthorized" });
     }
-    const {orderId} = req.body;
+    const { orderId } = req.body;
     const order = await Order.findById(orderId);
-    if(!order){
+    if (!order) {
         return res.status(404).json({ message: "Order not found" });
     }
-    if(order.status==="rider_assigned"){
-       const newOrder = await Order.findByIdAndUpdate(
-   orderId,
-   {
-      status: "picked_up"
-   },{
-    returnDocument:"after"
-   }
-);
-    const realtimeUrl = process.env.REALTIME_SERVICE_URL;
+    if (order.status === "rider_assigned") {
+        const newOrder = await Order.findByIdAndUpdate(
+            orderId,
+            {
+                status: "picked_up"
+            }, {
+            returnDocument: "after"
+        }
+        );
+        const realtimeUrl = process.env.REALTIME_SERVICE_URL;
         if (!realtimeUrl) {
             console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', order._id);
         } else {
@@ -390,73 +393,73 @@ export const updateOrderStatusByRider = tryCatch(async(req: AuthenticatedRequest
         }
         res.json({ success: true, message: "Order status updated successfully", order });
     }
-//      if(order.status==="picked_up"){
-//        const newOrder = await Order.findByIdAndUpdate(
-//    orderId,
-//    {
-//       status: "delivered"
-//    },{
-//     returnDocument:"after"
-//    }
-// );
-//     const realtimeUrl = process.env.REALTIME_SERVICE_URL;
-//         if (!realtimeUrl) {
-//             console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', order._id);
-//         } else {
-//             try {
-//                 await axios.post(
-//                     `${realtimeUrl}/api/v1/internal/emit`,
-//                     {
-//                         event: "rider_assigned",
-//                         room: `user:${order.userId}`,
-//                         payload: newOrder,
-//                     },
-//                     {
-//                         headers: {
-//                             "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "",
-//                         },
-//                     }
-//                 );
-//                 await axios.post(
-//                     `${realtimeUrl}/api/v1/internal/emit`,
-//                     {
-//                         event: "rider_assigned",
-//                         room: `restaurant:${order.restaurantId}`,
-//                         payload: newOrder,
-//                     },
-//                     {
-//                         headers: {
-//                             "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "",
-//                         },
-//                     }
-//                 );
-//             } catch (err) {
-//                 console.error('Failed to notify realtime service about order status update', err);
-//             }
-//         }
-//         res.json({ success: true, message: "Order status updated successfully", order });
-//     }
+    //      if(order.status==="picked_up"){
+    //        const newOrder = await Order.findByIdAndUpdate(
+    //    orderId,
+    //    {
+    //       status: "delivered"
+    //    },{
+    //     returnDocument:"after"
+    //    }
+    // );
+    //     const realtimeUrl = process.env.REALTIME_SERVICE_URL;
+    //         if (!realtimeUrl) {
+    //             console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', order._id);
+    //         } else {
+    //             try {
+    //                 await axios.post(
+    //                     `${realtimeUrl}/api/v1/internal/emit`,
+    //                     {
+    //                         event: "rider_assigned",
+    //                         room: `user:${order.userId}`,
+    //                         payload: newOrder,
+    //                     },
+    //                     {
+    //                         headers: {
+    //                             "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "",
+    //                         },
+    //                     }
+    //                 );
+    //                 await axios.post(
+    //                     `${realtimeUrl}/api/v1/internal/emit`,
+    //                     {
+    //                         event: "rider_assigned",
+    //                         room: `restaurant:${order.restaurantId}`,
+    //                         payload: newOrder,
+    //                     },
+    //                     {
+    //                         headers: {
+    //                             "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "",
+    //                         },
+    //                     }
+    //                 );
+    //             } catch (err) {
+    //                 console.error('Failed to notify realtime service about order status update', err);
+    //             }
+    //         }
+    //         res.json({ success: true, message: "Order status updated successfully", order });
+    //     }
 
 })
 
-export const verifyotp = tryCatch(async(req: AuthenticatedRequest,res)=>{
-    if(req.headers["x-internal-key"] !== process.env.INTERNAL_SERVICE_KEY){
+export const verifyotp = tryCatch(async (req: AuthenticatedRequest, res) => {
+    if (req.headers["x-internal-key"] !== process.env.INTERNAL_SERVICE_KEY) {
         return res.status(401).json({ message: "Unauthorized" });
     }
-    const {orderId} = req.params;
-    const {otp} = req.body;
-    if(!otp){
-        return res.status(400).json({message:"(res) OTP is required"})
+    const { orderId } = req.params;
+    const { otp } = req.body;
+    if (!otp) {
+        return res.status(400).json({ message: "(res) OTP is required" })
     }
     const order = await Order.findById(orderId);
-    if(!order){
+    if (!order) {
         return res.status(404).json({ message: "Order not found" });
     }
-    if(order.riderId?.toString() !== req.body.riderId){
+    if (order.riderId?.toString() !== req.body.riderId) {
         return res.status(403).json({ message: "You are not assigned to this order" });
     }
     const isValidOtp = await bcrypt.compare(otp, String(order.otphash));
-    if(!isValidOtp){
+    if (!isValidOtp) {
         return res.status(400).json({ message: "Invalid OTP" });
     }
     const updatedOrder = await Order.findByIdAndUpdate(
@@ -464,39 +467,40 @@ export const verifyotp = tryCatch(async(req: AuthenticatedRequest,res)=>{
         { status: "delivered" },
         { returnDocument: "after" }
     );
-    if(!updatedOrder){
+    if (!updatedOrder) {
         return res.status(404).json({ message: "Order not found" });
     }
     const realtimeUrl = process.env.REALTIME_SERVICE_URL;
-        if (!realtimeUrl) {
-            console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', updatedOrder._id);
-        } else {
-            try {                await axios.post(
-                    `${realtimeUrl}/api/v1/internal/emit`,
-                     {
-                        event: "rider_assigned",
-                        room: `user:${order.userId}`,
-                        payload: updatedOrder,
-                    },
-                    {
-                        headers: { "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "" },
-                    }
-                );
-                await axios.post(
-                    `${realtimeUrl}/api/v1/internal/emit`,
-                    { event: "rider_assigned", room: `restaurant:${order.restaurantId}`, payload: updatedOrder },
-                    { headers: { "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "" } }
-                );
-            }
-                catch (err) {
-                console.error('Failed to notify realtime service about order status update', err);
-            }
-        } 
-        res.json({ success: true, message: "OTP verified and order marked as delivered", order: updatedOrder });
+    if (!realtimeUrl) {
+        console.error('REALTIME_SERVICE_URL not defined; cannot emit order status update for', updatedOrder._id);
+    } else {
+        try {
+            await axios.post(
+                `${realtimeUrl}/api/v1/internal/emit`,
+                {
+                    event: "rider_assigned",
+                    room: `user:${order.userId}`,
+                    payload: updatedOrder,
+                },
+                {
+                    headers: { "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "" },
+                }
+            );
+            await axios.post(
+                `${realtimeUrl}/api/v1/internal/emit`,
+                { event: "rider_assigned", room: `restaurant:${order.restaurantId}`, payload: updatedOrder },
+                { headers: { "x-internal-key": process.env.INTERNAL_SERVICE_KEY ?? "" } }
+            );
+        }
+        catch (err) {
+            console.error('Failed to notify realtime service about order status update', err);
+        }
+    }
+    res.json({ success: true, message: "OTP verified and order marked as delivered", order: updatedOrder });
 })
 
-export const getRiderTodayEarnings = tryCatch(async(req:AuthenticatedRequest,res)=>{
-    const {id} = req.params as {id:string};
+export const getRiderTodayEarnings = tryCatch(async (req: AuthenticatedRequest, res) => {
+    const { id } = req.params as { id: string };
     const orders = await Order.find({
         riderId: id,
         status: "delivered",
@@ -505,26 +509,26 @@ export const getRiderTodayEarnings = tryCatch(async(req:AuthenticatedRequest,res
             $lte: new Date(new Date().setHours(23, 59, 59, 999)),
         },
     });
-    const totalEarnings = orders.reduce((sum, order) => sum + (Number(order.riderAmount)|| 0), 0);
+    const totalEarnings = orders.reduce((sum, order) => sum + (Number(order.riderAmount) || 0), 0);
     res.json({ success: true, totalOrders: orders.length, totalEarnings });
 })
-export const getRiderTotalEarnings = tryCatch(async(req:AuthenticatedRequest,res)=>{
-    const {id} = req.params as {id:string};
+export const getRiderTotalEarnings = tryCatch(async (req: AuthenticatedRequest, res) => {
+    const { id } = req.params as { id: string };
     const orders = await Order.find({
         riderId: id,
         status: "delivered",
     });
-    const totalEarnings = orders.reduce((sum, order) => sum + (Number(order.riderAmount)|| 0), 0);
+    const totalEarnings = orders.reduce((sum, order) => sum + (Number(order.riderAmount) || 0), 0);
     res.json({ success: true, totalOrders: orders.length, totalEarnings });
 })
 
-export const getRestaurantTodayEarnings = tryCatch(async(req:AuthenticatedRequest,res)=>{
+export const getRestaurantTodayEarnings = tryCatch(async (req: AuthenticatedRequest, res) => {
     const user = req.user;
-    if(!user) {
+    if (!user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
-    const restaurant = await Restaurant.findOne({owner:user._id});
-    if(!restaurant){
+    const restaurant = await Restaurant.findOne({ owner: user._id });
+    if (!restaurant) {
         return res.status(404).json({ message: "Restaurant not found" });
     }
     const orders = await Order.find({
@@ -535,25 +539,25 @@ export const getRestaurantTodayEarnings = tryCatch(async(req:AuthenticatedReques
             $lte: new Date(new Date().setHours(23, 59, 59, 999)),
         },
     });
-    const totalEarnings = orders.reduce((sum, order) => sum + (Number(order.subtotal)|| 0), 0);
-    res.json({ success: true, totalOrders: orders.length, totalEarnings:totalEarnings*0.93 });
+    const totalEarnings = orders.reduce((sum, order) => sum + (Number(order.subtotal) || 0), 0);
+    res.json({ success: true, totalOrders: orders.length, totalEarnings: totalEarnings * 0.93 });
 })
 
-export const getRestaurantTotalEarnings = tryCatch(async(req:AuthenticatedRequest,res)=>{
+export const getRestaurantTotalEarnings = tryCatch(async (req: AuthenticatedRequest, res) => {
     const user = req.user;
-    if(!user) {
+    if (!user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
-    const restaurant = await Restaurant.findOne({owner:user._id});
-    if(!restaurant){
+    const restaurant = await Restaurant.findOne({ owner: user._id });
+    if (!restaurant) {
         return res.status(404).json({ message: "Restaurant not found" });
     }
     const orders = await Order.find({
         restaurantId: restaurant._id.toString(),
         paymentStatus: "paid",
     });
-    const totalEarnings = orders.reduce((sum, order) => sum + (Number(order.subtotal)|| 0), 0);
-    res.json({ success: true, totalOrders: orders.length, totalEarnings:totalEarnings*0.93});
+    const totalEarnings = orders.reduce((sum, order) => sum + (Number(order.subtotal) || 0), 0);
+    res.json({ success: true, totalOrders: orders.length, totalEarnings: totalEarnings * 0.93 });
 })
 
 export const getTopItems = tryCatch(async (req: AuthenticatedRequest, res) => {

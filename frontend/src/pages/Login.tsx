@@ -59,6 +59,7 @@ const Login = () => {
       localStorage.setItem("token", result.data.token);
       setUser(result.data.user);
       setIsAuth(true);
+
       navigate("/", { replace: true });
       toast.success(`Welcome back, ${result.data.user.name}!`);
     } catch {
@@ -136,22 +137,20 @@ const Login = () => {
             <button
               type="button"
               onClick={() => setMode("login")}
-              className={`rounded-xl px-4 py-2 text-xs font-bold transition duration-200 ${
-                isLogin
+              className={`rounded-xl px-4 py-2 text-xs font-bold transition duration-200 ${isLogin
                   ? "bg-brand-primary text-white shadow-premium-sm"
                   : "text-brand-muted hover:text-brand-charcoal"
-              }`}
+                }`}
             >
               Login
             </button>
             <button
               type="button"
               onClick={() => setMode("signup")}
-              className={`rounded-xl px-4 py-2 text-xs font-bold transition duration-200 ${
-                !isLogin
+              className={`rounded-xl px-4 py-2 text-xs font-bold transition duration-200 ${!isLogin
                   ? "bg-brand-primary text-white shadow-premium-sm"
                   : "text-brand-muted hover:text-brand-charcoal"
-              }`}
+                }`}
             >
               Sign up
             </button>

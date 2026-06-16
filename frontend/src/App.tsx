@@ -1,4 +1,4 @@
-import {BrowserRouter , Routes , Route} from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -18,63 +18,66 @@ import PaymentSuccess from "./pages/paymentSucces";
 import ViewOrderDetails from "./components/customer/ViewOrderDetails";
 import Dashboard from "./components/rider/dashboard";
 import { Admin } from "./pages/Admin";
-function App() {
-  const { user ,loading} = useAppContext();
-    if(loading) {
-      return (
-        <div className="flex h-screen items-center justify-center bg-brand-cream">
-          <div className="flex flex-col items-center gap-3">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-primary border-t-transparent" />
-            <span className="font-serif text-lg tracking-wide text-brand-charcoal">GOODFOOD</span>
-          </div>
-        </div>
-      );
-    }
 
-  if(user?.role === "rider") {
+function App() {
+  const { user, loading } = useAppContext();
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-[#f7f7f7]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-10 w-10 animate-spin rounded-full border-[3px] border-[#ff385c] border-t-transparent shadow-sm" />
+          <span className="font-serif text-xl font-bold tracking-wide text-[#111111]">GOODFOOD</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (user?.role === "rider") {
     return(
       <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+        </Routes>
         <Toaster />
       </BrowserRouter>
     )
   }
 
-  if(user?.role === "owner") {
+  if (user?.role === "owner") {
     return (
-    <BrowserRouter>
-    <Routes >
-      <Route></Route>
-      <Route path="/edit-restaurant" element={<EditRestaurant />} />
-      <Route path="/" element={<Restaurant />} />
-    </Routes>
-    <Toaster />
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes >
+          <Route></Route>
+          <Route path="/edit-restaurant" element={<EditRestaurant />} />
+          <Route path="/" element={<Restaurant />} />
+        </Routes>
+        <Toaster />
+      </BrowserRouter>
     )
   }
-  if(user?.role === "admin") {
+
+  if (user?.role === "admin") {
     return <Admin />
   }
+
   return (
     <BrowserRouter>
-      {/* {user?.role && <Navbar />} */}
       <Navbar />
       <Routes>
         <Route element={<PublicRoute/>}>
-        <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
         </Route>
         <Route element={<ProtectedRoute/>}>
-        <Route path="/" element={<Home />} />
-        <Route path="/AddAddress" element={<AddAddress/>} />
-        <Route path="/checkout" element={<Checkout/>} />
-        <Route path="/paymentsuccess/:paymentId" element={<PaymentSuccess />} />
-        <Route path="/account" element={<Account />} />
-        <Route path="/select-role" element={<SelectRoles />} />
-        <Route path="/restaurant/:id" element={<CustomerResView/>} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/order/:orderId" element={<ViewOrderDetails/>} />
+          <Route path="/" element={<Home />} />
+          <Route path="/AddAddress" element={<AddAddress/>} />
+          <Route path="/checkout" element={<Checkout/>} />
+          <Route path="/paymentsuccess/:paymentId" element={<PaymentSuccess />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/select-role" element={<SelectRoles />} />
+          <Route path="/restaurant/:id" element={<CustomerResView/>} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/order/:orderId" element={<ViewOrderDetails/>} />
         </Route>
       </Routes>
       <Toaster />
