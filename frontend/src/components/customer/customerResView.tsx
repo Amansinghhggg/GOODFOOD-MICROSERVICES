@@ -97,37 +97,37 @@ const CustomerResView = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f7f7] text-[#111111]">
+    <div className="min-h-screen bg-surface font-body-md text-on-surface pb-12">
       {/* Hero */}
       <div className="relative overflow-hidden">
         {/* Banner image */}
-        <div className="h-52 w-full overflow-hidden sm:h-64 bg-[#111111]">
+        <div className="h-[35vh] min-h-[280px] w-full overflow-hidden bg-surface-container-highest">
           <img
             src={restaurant.image}
             alt={restaurant.name}
-            className="h-full w-full object-cover blur-[2px] scale-103 opacity-55"
+            className="h-full w-full object-cover blur-[1px] scale-105 opacity-60"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/45 to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-surface/10" />
         </div>
 
         {/* Content over banner */}
         <div className="absolute inset-0 flex items-end">
-          <div className="w-full px-4 pb-6 sm:px-8">
-            <div className="flex items-end gap-4 max-w-5xl mx-auto">
+          <div className="w-full px-margin-mobile pb-6 md:px-gutter">
+            <div className="flex flex-col md:flex-row md:items-end gap-5 max-w-container-max mx-auto">
               {/* Logo */}
-              <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl border-2 border-white/20 shadow-xl sm:h-24 sm:w-24 bg-white">
+              <div className="h-24 w-24 md:h-32 md:w-32 shrink-0 overflow-hidden rounded-[24px] border-4 border-surface shadow-md bg-surface-container-lowest">
                 <img src={restaurant.image} alt={restaurant.name} className="h-full w-full object-cover" />
               </div>
 
-              <div className="flex-1 text-white pb-1">
-                <div className="flex flex-wrap items-center gap-3">
-                  <h1 className="font-serif text-3xl font-black drop-shadow sm:text-4xl">{restaurant.name}</h1>
-                  <span className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest shadow-sm ${restaurant.isOpen ? "bg-emerald-500 text-white border border-emerald-400" : "bg-[#555555] text-white border border-[#333333]"}`}>
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-3 mb-2">
+                  <h1 className="font-headline-md text-3xl md:text-4xl font-bold text-on-surface drop-shadow-sm">{restaurant.name}</h1>
+                  <span className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest shadow-sm ${restaurant.isOpen ? "bg-green-100 text-green-800 border border-green-200" : "bg-surface-variant text-on-surface-variant border border-outline-variant"}`}>
                     {restaurant.isOpen ? "● OPEN" : "○ CLOSED"}
                   </span>
                 </div>
                 {restaurant.description && (
-                  <p className="mt-2 max-w-lg text-sm text-white/90 drop-shadow-md leading-relaxed font-medium">{restaurant.description}</p>
+                  <p className="max-w-xl text-sm text-on-surface-variant font-medium drop-shadow-sm">{restaurant.description}</p>
                 )}
               </div>
             </div>

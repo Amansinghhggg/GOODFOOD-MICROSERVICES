@@ -37,9 +37,9 @@ const Navbar = () => {
         <div className="flex items-center justify-between gap-4 lg:shrink-0">
           <Link
             to="/"
-            className="flex items-center gap-2 rounded-full bg-[#111111] px-5 py-2 text-white shadow-md transition hover:-translate-y-0.5 hover:bg-[#333333]"
+            className="flex items-center gap-2 transition-transform hover:-translate-y-0.5 active:scale-95"
           >
-            <span className="font-serif text-sm font-extrabold tracking-[0.2em]">GOODFOOD</span>
+            <span className="font-headline-md text-2xl font-black tracking-tighter text-primary">GOODFOOD</span>
           </Link>
         </div>
 

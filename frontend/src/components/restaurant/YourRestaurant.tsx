@@ -66,11 +66,12 @@ const YourRestaurant: React.FC<Props> = ({ reload, restaurant, onToggle }) => {
     <div className="min-h-screen bg-brand-cream px-3 py-6 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-5xl">
         {/* ── Hero Card ── */}
-        <div className="relative overflow-hidden rounded-3xl shadow-premium-lg bg-brand-charcoal">
-          {/* Background gradient + decorative blobs */}
-          <div className="absolute inset-0 bg-gradient-to-br from-brand-secondary to-brand-charcoal" />
-          <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
-          <div className="absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-black/5 blur-2xl" />
+        <div className="relative overflow-hidden rounded-[32px] shadow-lg bg-surface-container-highest border border-outline-variant/30">
+          {/* Background image spread */}
+          <div className="absolute inset-0 z-0">
+            <img src={image} className="w-full h-full object-cover blur-[2px] opacity-60 scale-105" alt="restaurant background" />
+            <div className="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-surface-container-highest/80 to-transparent" />
+          </div>
 
           <div className="relative z-10 p-6 sm:p-10">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
