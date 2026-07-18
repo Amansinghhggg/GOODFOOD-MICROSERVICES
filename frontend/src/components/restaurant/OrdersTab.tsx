@@ -121,7 +121,7 @@ const ActiveOrders = ({ reload, restaurantId }: Props) => {
 
   if (loading) {
     return (
-      <div className="flex h-32 items-center justify-center rounded-xl border border-brand-border bg-white shadow-premium-sm">
+      <div className="flex h-32 items-center justify-center rounded-xl border border-[#3A352F] bg-[#2C2923] shadow-premium-sm">
         <div className="flex items-center gap-3 text-sm font-semibold text-brand-primary">
           <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
@@ -136,14 +136,14 @@ const ActiveOrders = ({ reload, restaurantId }: Props) => {
   return (
     <div className="space-y-6">
       {/* Sub-tabs */}
-      <div className="flex items-center gap-1.5 rounded-xl bg-brand-cream-dark p-1.5 w-fit border border-brand-border/60">
+      <div className="flex items-center gap-1.5 rounded-xl bg-[#22201B]-dark p-1.5 w-fit border border-[#3A352F]/60">
         <button
           type="button"
           onClick={() => setActiveTab("active")}
           className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition-all ${
             activeTab === "active"
-              ? "bg-white text-brand-charcoal border border-brand-border/40 shadow-premium-sm"
-              : "text-brand-muted hover:text-brand-charcoal"
+              ? "bg-[#2C2923] text-[#EFEBE3] border border-[#3A352F]/40 shadow-premium-sm"
+              : "text-[#A39B8F] hover:text-[#EFEBE3]"
           }`}
         >
           Active
@@ -158,13 +158,13 @@ const ActiveOrders = ({ reload, restaurantId }: Props) => {
           onClick={() => setActiveTab("completed")}
           className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition-all ${
             activeTab === "completed"
-              ? "bg-white text-brand-charcoal border border-brand-border/40 shadow-premium-sm"
-              : "text-brand-muted hover:text-brand-charcoal"
+              ? "bg-[#2C2923] text-[#EFEBE3] border border-[#3A352F]/40 shadow-premium-sm"
+              : "text-[#A39B8F] hover:text-[#EFEBE3]"
           }`}
         >
           Completed
           {completedOrders.length > 0 && (
-            <span className="rounded-full bg-brand-muted/40 px-2 py-0.5 text-[10px] font-extrabold text-brand-charcoal">
+            <span className="rounded-full bg-brand-muted/40 px-2 py-0.5 text-[10px] font-extrabold text-[#EFEBE3]">
               {completedOrders.length}
             </span>
           )}
@@ -173,9 +173,9 @@ const ActiveOrders = ({ reload, restaurantId }: Props) => {
 
       {/* Order list */}
       {ordersToShow.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-brand-border bg-white shadow-premium py-14 text-center">
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#3A352F] bg-[#2C2923] shadow-premium py-14 text-center">
           <div className="mb-3 text-4xl">🍽️</div>
-          <p className="text-sm font-semibold text-brand-muted">
+          <p className="text-sm font-semibold text-[#A39B8F]">
             {activeTab === "active" ? "No active orders right now" : "No completed orders yet"}
           </p>
         </div>

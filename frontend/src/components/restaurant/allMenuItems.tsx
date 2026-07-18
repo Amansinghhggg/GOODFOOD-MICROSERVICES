@@ -161,9 +161,9 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
     <div>
       <div className="space-y-4">
         {menuItems.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-brand-border bg-brand-cream/35 p-8 text-center shadow-premium-sm">
-            <p className="font-serif text-sm font-bold text-brand-charcoal">No menu items yet</p>
-            <p className="mt-1 text-xs text-brand-muted">Use the Add Item tab to create dishes.</p>
+          <div className="rounded-2xl border border-dashed border-[#3A352F] bg-[#22201B]/35 p-8 text-center shadow-premium-sm">
+            <p className="font-serif text-sm font-bold text-[#EFEBE3]">No menu items yet</p>
+            <p className="mt-1 text-xs text-[#A39B8F]">Use the Add Item tab to create dishes.</p>
           </div>
         ) : (
           <div className="divide-y divide-brand-border/50">
@@ -184,7 +184,7 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
                         Available
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1.5 rounded-md border border-brand-border bg-brand-cream-dark px-2 py-0.5 text-[10px] font-bold text-brand-muted">
+                      <span className="inline-flex items-center gap-1.5 rounded-md border border-[#3A352F] bg-[#22201B]-dark px-2 py-0.5 text-[10px] font-bold text-[#A39B8F]">
                         <span className="h-1.5 w-1.5 rounded-full bg-brand-muted/50" />
                         Unavailable
                       </span>
@@ -192,18 +192,18 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
                   </div>
 
                   {/* Name */}
-                  <h4 className={`font-serif text-base font-bold leading-snug ${it.isAvailable ? "text-brand-charcoal" : "text-brand-muted"}`}>
+                  <h4 className={`font-serif text-base font-bold leading-snug ${it.isAvailable ? "text-[#EFEBE3]" : "text-[#A39B8F]"}`}>
                     {it.name}
                   </h4>
 
                   {/* Price */}
-                  <p className={`mt-1 text-sm font-bold ${it.isAvailable ? "text-brand-charcoal" : "text-brand-muted"}`}>
+                  <p className={`mt-1 text-sm font-bold ${it.isAvailable ? "text-[#EFEBE3]" : "text-[#A39B8F]"}`}>
                     {formatCurrency(it.price)}
                   </p>
 
                   {/* Description */}
                   {it.description && (
-                    <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-brand-muted font-medium">
+                    <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-[#A39B8F] font-medium">
                       {it.description}
                     </p>
                   )}
@@ -214,7 +214,7 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
                       <button
                         type="button"
                         onClick={() => startEdit(it)}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-brand-border bg-white px-3 py-1.5 text-xs font-bold text-brand-charcoal hover:bg-brand-cream-dark/30 hover:border-brand-primary/30 transition duration-150"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#3A352F] bg-[#2C2923] px-3 py-1.5 text-xs font-bold text-[#EFEBE3] hover:bg-[#22201B]-dark/30 hover:border-brand-primary/30 transition duration-150"
                       >
                         <Edit2 size={12} />
                         Edit
@@ -222,15 +222,15 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
                       <button
                         type="button"
                         onClick={() => toggleAvailability(it._id)}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-brand-border bg-white px-3 py-1.5 text-xs font-bold text-brand-charcoal hover:bg-brand-cream-dark/30 transition duration-150"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#3A352F] bg-[#2C2923] px-3 py-1.5 text-xs font-bold text-[#EFEBE3] hover:bg-[#22201B]-dark/30 transition duration-150"
                       >
-                        {it.isAvailable ? <ToggleLeft size={13} className="text-brand-muted" /> : <ToggleRight size={13} className="text-brand-primary" />}
+                        {it.isAvailable ? <ToggleLeft size={13} className="text-[#A39B8F]" /> : <ToggleRight size={13} className="text-brand-primary" />}
                         {it.isAvailable ? "Set Unavailable" : "Set Available"}
                       </button>
                       <button
                         type="button"
                         onClick={() => deleteItem(it._id)}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-brand-border bg-white px-3 py-1.5 text-xs font-bold text-brand-error hover:bg-brand-error/5 hover:border-brand-error/30 transition duration-150"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#3A352F] bg-[#2C2923] px-3 py-1.5 text-xs font-bold text-brand-error hover:bg-brand-error/5 hover:border-brand-error/30 transition duration-150"
                       >
                         <Trash2 size={12} />
                         Delete
@@ -242,8 +242,8 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
                 {/* ── Right: Image + Add Button ── */}
                 <div className="relative shrink-0 self-start">
                   <div
-                    className={`h-28 w-28 overflow-hidden rounded-2xl border border-brand-border/60 shadow-premium-sm sm:h-32 sm:w-32 ${
-                      it.isAvailable ? "bg-brand-cream-dark/40" : "bg-brand-cream-dark/80"
+                    className={`h-28 w-28 overflow-hidden rounded-2xl border border-[#3A352F]/60 shadow-premium-sm sm:h-32 sm:w-32 ${
+                      it.isAvailable ? "bg-[#22201B]-dark/40" : "bg-[#22201B]-dark/80"
                     }`}
                   >
                     {it.image ? (
@@ -253,7 +253,7 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
                         className={`h-full w-full object-cover transition duration-500 group-hover:scale-105 ${it.isAvailable ? "" : "grayscale"}`}
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center text-brand-muted/30">
+                      <div className="flex h-full w-full items-center justify-center text-[#A39B8F]/30">
                         <ShoppingCart size={24} />
                       </div>
                     )}
@@ -264,14 +264,14 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
                     <button
                       type="button"
                       onClick={() => addtocart(it._id)}
-                      className="absolute -bottom-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-lg border border-brand-primary/30 bg-white px-5 py-1.5 text-xs font-extrabold uppercase tracking-wide text-brand-primary shadow-premium-sm transition hover:bg-brand-primary hover:text-white hover:shadow-premium hover:-translate-y-0.5 active:scale-95"
+                      className="absolute -bottom-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-lg border border-brand-primary/30 bg-[#2C2923] px-5 py-1.5 text-xs font-extrabold uppercase tracking-wide text-brand-primary shadow-premium-sm transition hover:bg-brand-primary hover:text-white hover:shadow-premium hover:-translate-y-0.5 active:scale-95"
                     >
                       <Plus size={14} strokeWidth={3} />
                       Add
                     </button>
                   )}
                   {!isOwner && !it.isAvailable && (
-                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 inline-flex items-center rounded-lg border border-brand-border bg-brand-cream-dark px-5 py-1.5 text-xs font-bold text-brand-muted shadow-premium-sm cursor-not-allowed">
+                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 inline-flex items-center rounded-lg border border-[#3A352F] bg-[#22201B]-dark px-5 py-1.5 text-xs font-bold text-[#A39B8F] shadow-premium-sm cursor-not-allowed">
                       Unavailable
                     </div>
                   )}
@@ -285,16 +285,16 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
       {/* ── Edit Modal (unchanged logic) ── */}
       {editingItem ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-brand-charcoal/40 backdrop-blur-sm px-4">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-premium-lg border border-brand-border/60">
+          <div className="w-full max-w-lg rounded-3xl bg-[#2C2923] p-6 shadow-premium-lg border border-[#3A352F]/60">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <h3 className="font-serif text-base font-bold text-brand-charcoal">Edit menu item</h3>
-                <p className="text-xs text-brand-muted">Update the item details and save changes.</p>
+                <h3 className="font-serif text-base font-bold text-[#EFEBE3]">Edit menu item</h3>
+                <p className="text-xs text-[#A39B8F]">Update the item details and save changes.</p>
               </div>
               <button
                 type="button"
                 onClick={closeEdit}
-                className="rounded-xl p-1.5 text-brand-muted hover:bg-brand-cream-dark/40"
+                className="rounded-xl p-1.5 text-[#A39B8F] hover:bg-[#22201B]-dark/40"
               >
                 <X size={15} />
               </button>
@@ -306,7 +306,7 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
                   placeholder="Item name"
-                  className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs text-brand-charcoal outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition"
+                  className="w-full rounded-xl border border-[#3A352F] bg-[#2C2923] px-3 py-2.5 text-xs text-[#EFEBE3] outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition"
                 />
               </div>
               <div>
@@ -315,7 +315,7 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
                   onChange={(e) => setEditPrice(e.target.value)}
                   placeholder="Price"
                   type="number"
-                  className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs text-brand-charcoal outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition"
+                  className="w-full rounded-xl border border-[#3A352F] bg-[#2C2923] px-3 py-2.5 text-xs text-[#EFEBE3] outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition"
                 />
               </div>
               <div>
@@ -324,7 +324,7 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
                   onChange={(e) => setEditDesc(e.target.value)}
                   placeholder="Description"
                   rows={3}
-                  className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs text-brand-charcoal outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition resize-none"
+                  className="w-full rounded-xl border border-[#3A352F] bg-[#2C2923] px-3 py-2.5 text-xs text-[#EFEBE3] outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 transition resize-none"
                 />
               </div>
               <div>
@@ -332,14 +332,14 @@ const AllMenuItems = ({ restaurantId, restaurantOwner, isOpen: _isOpen }: { rest
                   type="file"
                   accept="image/*"
                   onChange={(e) => setEditFile(e.target.files?.[0] ?? null)}
-                  className="w-full text-xs text-brand-muted file:mr-4 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20"
+                  className="w-full text-xs text-[#A39B8F] file:mr-4 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20"
                 />
               </div>
               <div className="flex justify-end gap-3 pt-2">
                 <button
                   type="button"
                   onClick={closeEdit}
-                  className="rounded-xl border border-brand-border bg-white px-4 py-2 text-xs font-bold text-brand-muted hover:bg-brand-cream-dark/30 transition"
+                  className="rounded-xl border border-[#3A352F] bg-[#2C2923] px-4 py-2 text-xs font-bold text-[#A39B8F] hover:bg-[#22201B]-dark/30 transition"
                 >
                   Cancel
                 </button>

@@ -167,7 +167,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-brand-cream">
+      <div className="flex min-h-screen items-center justify-center bg-[#22201B]">
         <div className="flex items-center gap-3 text-sm font-semibold text-brand-primary">
           <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -209,25 +209,25 @@ const Dashboard = () => {
   // ── No profile: registration form ──
   if (!profile) {
     return (
-      <div className="min-h-screen bg-brand-cream px-4 py-10">
+      <div className="min-h-screen bg-[#22201B] px-4 py-10">
         <div className="mx-auto max-w-md">
           <div className="mb-8 text-center">
             <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-xl bg-brand-primary/10 text-2xl">🛵</div>
-            <h1 className="text-3xl font-black font-serif text-brand-charcoal">Become a Rider</h1>
-            <p className="mt-1 text-sm text-brand-muted">Fill in your details to start delivering</p>
+            <h1 className="text-3xl font-black font-serif text-[#EFEBE3]">Become a Rider</h1>
+            <p className="mt-1 text-sm text-[#A39B8F]">Fill in your details to start delivering</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="rounded-xl border border-brand-border bg-white p-6 shadow-premium space-y-5">
+          <form onSubmit={handleSubmit} className="rounded-xl border border-[#3A352F] bg-[#2C2923] p-6 shadow-premium space-y-5">
             {/* Picture */}
             <div>
-              <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-brand-muted">Profile Picture</label>
-              <label className="group relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed border-brand-border bg-brand-cream/40 transition hover:border-brand-primary/50">
+              <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-[#A39B8F]">Profile Picture</label>
+              <label className="group relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed border-[#3A352F] bg-[#22201B]/40 transition hover:border-brand-primary/50">
                 {picturePreview ? (
                   <img src={picturePreview} alt="preview" className="h-36 w-full object-cover rounded-xl" />
                 ) : (
-                  <div className="flex flex-col items-center gap-2 py-8 text-brand-muted/40 group-hover:text-brand-primary/60">
+                  <div className="flex flex-col items-center gap-2 py-8 text-[#A39B8F]/40 group-hover:text-brand-primary/60">
                     <ImagePlus size={28} />
-                    <span className="text-xs font-semibold text-brand-muted">Upload photo</span>
+                    <span className="text-xs font-semibold text-[#A39B8F]">Upload photo</span>
                   </div>
                 )}
                 <input type="file" accept="image/*" onChange={(e) => {
@@ -240,42 +240,42 @@ const Dashboard = () => {
 
             {/* Phone */}
             <div>
-              <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-brand-muted">Phone Number</label>
+              <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-[#A39B8F]">Phone Number</label>
               <div className="relative">
-                <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
+                <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A39B8F]" />
                 <input
                   type="tel" placeholder="9876543210"
                   value={formData.phoneNumber}
                   onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                  className="w-full rounded-lg border border-brand-border bg-white py-2.5 pl-9 pr-3 text-sm text-brand-charcoal outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
+                  className="w-full rounded-lg border border-[#3A352F] bg-[#2C2923] py-2.5 pl-9 pr-3 text-sm text-[#EFEBE3] outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                 />
               </div>
             </div>
 
             {/* Aadhaar */}
             <div>
-              <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-brand-muted">Aadhaar Number</label>
+              <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-[#A39B8F]">Aadhaar Number</label>
               <div className="relative">
-                <CreditCard size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
+                <CreditCard size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A39B8F]" />
                 <input
                   type="text" placeholder="XXXX XXXX XXXX"
                   value={formData.aadharNumber}
                   onChange={(e) => setFormData({ ...formData, aadharNumber: e.target.value })}
-                  className="w-full rounded-lg border border-brand-border bg-white py-2.5 pl-9 pr-3 text-sm text-brand-charcoal outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
+                  className="w-full rounded-lg border border-[#3A352F] bg-[#2C2923] py-2.5 pl-9 pr-3 text-sm text-[#EFEBE3] outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                 />
               </div>
             </div>
 
             {/* DL */}
             <div>
-              <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-brand-muted">Driving License</label>
+              <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-[#A39B8F]">Driving License</label>
               <div className="relative">
-                <Car size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
+                <Car size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A39B8F]" />
                 <input
                   type="text" placeholder="MHXXXXXXXXXXXX"
                   value={formData.drivingLicenseNumber}
                   onChange={(e) => setFormData({ ...formData, drivingLicenseNumber: e.target.value })}
-                  className="w-full rounded-lg border border-brand-border bg-white py-2.5 pl-9 pr-3 text-sm text-brand-charcoal outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
+                  className="w-full rounded-lg border border-[#3A352F] bg-[#2C2923] py-2.5 pl-9 pr-3 text-sm text-[#EFEBE3] outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                 />
               </div>
             </div>
@@ -302,7 +302,7 @@ const Dashboard = () => {
 
   // ── Main dashboard ──
   return (
-    <div className="min-h-screen bg-brand-cream px-4 py-8">
+    <div className="min-h-screen bg-[#22201B] px-4 py-8">
       <div className="mx-auto max-w-lg space-y-5">
 
         {/* Audio prompt banner */}
@@ -310,8 +310,8 @@ const Dashboard = () => {
           <div className="relative flex items-start gap-3 rounded-xl border border-brand-gold/30 bg-brand-gold/5 p-4 shadow-premium-sm">
             <Volume2 size={18} className="mt-0.5 shrink-0 text-brand-gold" />
             <div className="flex-1">
-              <p className="text-sm font-bold text-brand-charcoal">Enable order notifications</p>
-              <p className="mt-0.5 text-xs text-brand-muted font-medium">Allow sound so you hear new incoming orders.</p>
+              <p className="text-sm font-bold text-[#EFEBE3]">Enable order notifications</p>
+              <p className="mt-0.5 text-xs text-[#A39B8F] font-medium">Allow sound so you hear new incoming orders.</p>
               <button onClick={unlockAudio} className="mt-2 rounded-lg bg-brand-gold/15 px-3 py-1.5 text-xs font-extrabold text-[#b07c1e] transition-all hover:bg-brand-gold/25">
                 Enable Sound
               </button>
@@ -321,7 +321,7 @@ const Dashboard = () => {
                 setShowAudioPrompt(false);
                 try { localStorage.setItem("audioPromptDismissed", "true"); } catch { }
               }}
-              className="text-brand-muted transition hover:text-brand-charcoal"
+              className="text-[#A39B8F] transition hover:text-[#EFEBE3]"
             >
               <X size={15} />
             </button>
@@ -329,16 +329,16 @@ const Dashboard = () => {
         )}
 
         {/* Profile card */}
-        <div className="rounded-xl border border-brand-border bg-white p-6 shadow-premium">
+        <div className="rounded-xl border border-[#3A352F] bg-[#2C2923] p-6 shadow-premium">
           {/* Avatar + name */}
           <div className="flex items-center gap-4">
             <div className="relative">
-              <img src={profile.picture} alt="Rider" className="h-20 w-20 rounded-xl border border-brand-border object-cover shadow-premium-sm" />
+              <img src={profile.picture} alt="Rider" className="h-20 w-20 rounded-xl border border-[#3A352F] object-cover shadow-premium-sm" />
               <span className={`absolute -bottom-1 -right-1 h-4.5 w-4.5 rounded-full border-2 border-white ${profile.isAvailable ? "bg-brand-success" : "bg-brand-muted"}`} />
             </div>
             <div>
-              <h2 className="text-lg font-bold font-serif text-brand-charcoal">Rider Profile</h2>
-              <p className="text-sm font-medium text-brand-muted">{profile.phoneNumber}</p>
+              <h2 className="text-lg font-bold font-serif text-[#EFEBE3]">Rider Profile</h2>
+              <p className="text-sm font-medium text-[#A39B8F]">{profile.phoneNumber}</p>
               <span className={`mt-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider border ${profile.isAvailable ? "bg-brand-secondary/10 text-brand-secondary border-brand-secondary/20" : "bg-brand-primary/10 text-brand-primary border-brand-primary/20"}`}>
                 {profile.isAvailable ? "● Online" : "○ Offline"}
               </span>
@@ -347,8 +347,8 @@ const Dashboard = () => {
 
           {/* Stats grid */}
           <div className="mt-6 grid grid-cols-2 gap-3">
-            <div className="rounded-xl border border-brand-border/60 bg-brand-cream/40 p-3">
-              <div className="flex items-center gap-1.5 text-brand-muted mb-1">
+            <div className="rounded-xl border border-[#3A352F]/60 bg-[#22201B]/40 p-3">
+              <div className="flex items-center gap-1.5 text-[#A39B8F] mb-1">
                 <ShieldCheck size={12} />
                 <span className="text-[10px] font-bold uppercase tracking-wider">Verification</span>
               </div>
@@ -356,22 +356,22 @@ const Dashboard = () => {
                 {profile.isVerified ? "Verified ✓" : "Pending"}
               </p>
             </div>
-            <div className="rounded-xl border border-brand-border/60 bg-brand-cream/40 p-3">
-              <div className="flex items-center gap-1.5 text-brand-muted mb-1">
+            <div className="rounded-xl border border-[#3A352F]/60 bg-[#22201B]/40 p-3">
+              <div className="flex items-center gap-1.5 text-[#A39B8F] mb-1">
                 <MapPin size={12} />
                 <span className="text-[10px] font-bold uppercase tracking-wider">City</span>
               </div>
-              <p className="text-sm font-extrabold text-brand-charcoal">{city || "Unknown"}</p>
+              <p className="text-sm font-extrabold text-[#EFEBE3]">{city || "Unknown"}</p>
             </div>
-            <div className="rounded-xl border border-brand-border/60 bg-brand-cream/40 p-3">
-              <div className="flex items-center gap-1.5 text-brand-muted mb-1">
+            <div className="rounded-xl border border-[#3A352F]/60 bg-[#22201B]/40 p-3">
+              <div className="flex items-center gap-1.5 text-[#A39B8F] mb-1">
                 <Clock size={12} />
                 <span className="text-[10px] font-bold uppercase tracking-wider">Last Active</span>
               </div>
-              <p className="text-sm font-extrabold text-brand-charcoal">{new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</p>
+              <p className="text-sm font-extrabold text-[#EFEBE3]">{new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</p>
             </div>
-            <div className="rounded-xl border border-brand-border/60 bg-brand-cream/40 p-3">
-              <div className="flex items-center gap-1.5 text-brand-muted mb-1">
+            <div className="rounded-xl border border-[#3A352F]/60 bg-[#22201B]/40 p-3">
+              <div className="flex items-center gap-1.5 text-[#A39B8F] mb-1">
                 <TrendingUp size={12} />
                 <span className="text-[10px] font-bold uppercase tracking-wider">Status</span>
               </div>
@@ -394,9 +394,9 @@ const Dashboard = () => {
             )}
             <button
               onClick={() => setEarnTab((v: boolean) => !v)}
-              className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-brand-cream-dark border border-brand-border/60 py-2.5 text-sm font-bold text-brand-charcoal transition-all hover:bg-brand-border/40"
+              className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-[#22201B]-dark border border-[#3A352F]/60 py-2.5 text-sm font-bold text-[#EFEBE3] transition-all hover:bg-brand-border/40"
             >
-              <TrendingUp size={14} className="text-brand-muted" /> Earnings
+              <TrendingUp size={14} className="text-[#A39B8F]" /> Earnings
             </button>
             <button
               onClick={handleLogout}
@@ -428,19 +428,19 @@ const Dashboard = () => {
 
         {/* Empty State / Looking for orders */}
         {!currentOrder && profile.isAvailable && incomingOrder.length === 0 && (
-          <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-[32px] border border-outline-variant/30 bg-surface-container-lowest py-20 px-6 text-center shadow-sm">
+          <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-[32px] border border-[#3A352F]/60 bg-[#2C2923] py-20 px-6 text-center shadow-premium">
             {/* Decorative background glow */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-surface-container-lowest to-surface-container-lowest pointer-events-none"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-brand-primary/10 via-[#2C2923] to-[#2C2923] pointer-events-none"></div>
 
             <div className="relative flex h-32 w-32 items-center justify-center mb-6">
               {/* Breathing Core Icon */}
-              <span className="relative inline-flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-tr from-primary to-primary/80 text-white shadow-lg animate-breathe">
+              <span className="relative inline-flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-tr from-brand-primary to-brand-primary-hover text-[#EFEBE3] shadow-premium animate-breathe">
                 <span className="material-symbols-outlined text-[36px]" style={{ fontVariationSettings: "'FILL'1" }}>🔍</span>
               </span>
             </div>
 
-            <h3 className="relative z-10 font-headline-md text-2xl font-bold text-on-surface">Searching for orders</h3>
-            <p className="relative z-10 mt-2 max-w-sm text-sm font-medium text-on-surface-variant">
+            <h3 className="relative z-10 font-serif text-2xl font-bold text-[#EFEBE3]">Searching for orders</h3>
+            <p className="relative z-10 mt-2 max-w-sm text-sm font-medium text-[#A39B8F]">
               Stay online. We are actively matching you with the nearest delivery requests.
             </p>
           </div>

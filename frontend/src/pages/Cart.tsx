@@ -56,27 +56,27 @@ const Cart = () => {
   }
 
   return (
-    <main className="min-h-[calc(100vh-5rem)] bg-brand-cream px-4 py-8 sm:px-6 lg:px-8">
+    <main className="min-h-[calc(100vh-5rem)] bg-[#22201B] px-4 py-8 sm:px-6 lg:px-8">
       <div className="relative mx-auto max-w-7xl">
         {/* Header */}
         <div className="mb-8">
           <p className="font-serif text-xs font-semibold uppercase tracking-[0.2em] text-brand-primary">Your selections</p>
-          <h1 className="mt-1 font-serif text-3xl font-black text-brand-charcoal">Cart</h1>
+          <h1 className="mt-1 font-serif text-3xl font-black text-[#EFEBE3]">Cart</h1>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
           {/* Items */}
           <section className="space-y-4">
-            <div className="flex items-center justify-between rounded-2xl border border-brand-border/60 bg-brand-card px-5 py-4 shadow-premium-sm">
+            <div className="flex items-center justify-between rounded-2xl border border-[#3A352F]/60 bg-[#2C2923] px-5 py-4 shadow-premium-sm">
               <div>
-                <p className="text-sm font-bold text-brand-charcoal">
+                <p className="text-sm font-bold text-[#EFEBE3]">
                   {cartItems.length} {cartItems.length === 1 ? "item" : "items"}
                 </p>
-                <p className="mt-0.5 text-xs text-brand-muted">Manage your cart below</p>
+                <p className="mt-0.5 text-xs text-[#A39B8F]">Manage your cart below</p>
               </div>
               <button
                 onClick={clearCart}
-                className="inline-flex items-center gap-2 rounded-full border border-brand-border bg-brand-card px-4 py-2 text-xs font-bold text-brand-muted transition hover:border-brand-error/40 hover:bg-brand-error/5 hover:text-brand-error"
+                className="inline-flex items-center gap-2 rounded-full border border-[#3A352F] bg-[#2C2923] px-4 py-2 text-xs font-bold text-[#A39B8F] transition hover:border-brand-error/40 hover:bg-brand-error/5 hover:text-brand-error"
               >
                 <Trash2 size={13} />
                 Clear all
@@ -84,13 +84,13 @@ const Cart = () => {
             </div>
 
             {cartItems.length === 0 ? (
-              <div className="flex flex-col items-center gap-5 rounded-3xl border border-dashed border-brand-border bg-brand-card/45 py-20 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-cream-dark/60 text-brand-muted">
+              <div className="flex flex-col items-center gap-5 rounded-3xl border border-dashed border-[#3A352F] bg-[#2C2923]/45 py-20 text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#22201B]-dark/60 text-[#A39B8F]">
                   <ShoppingBag size={28} />
                 </div>
                 <div>
-                  <h2 className="font-serif text-xl font-bold text-brand-charcoal">Your cart is empty</h2>
-                  <p className="mt-1 text-sm text-brand-muted">Add items from a restaurant to get started</p>
+                  <h2 className="font-serif text-xl font-bold text-[#EFEBE3]">Your cart is empty</h2>
+                  <p className="mt-1 text-sm text-[#A39B8F]">Add items from a restaurant to get started</p>
                 </div>
                 <Link
                   to="/"
@@ -112,11 +112,11 @@ const Cart = () => {
                   return (
                     <article
                       key={cartItem._id}
-                      className="group overflow-hidden rounded-2xl border border-brand-border/60 bg-brand-card transition hover:border-brand-primary/20 hover:shadow-premium-sm"
+                      className="group overflow-hidden rounded-2xl border border-[#3A352F]/60 bg-[#2C2923] transition hover:border-brand-primary/20 hover:shadow-premium-sm"
                     >
                       <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center">
                         {/* Image */}
-                        <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-brand-border bg-brand-cream-dark/30">
+                        <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-[#3A352F] bg-[#22201B]-dark/30">
                           {menuItem?.image ? (
                             <img
                               src={menuItem.image}
@@ -124,7 +124,7 @@ const Cart = () => {
                               className="h-full w-full object-cover transition duration-500 group-hover:scale-103"
                             />
                           ) : (
-                            <div className="flex h-full w-full items-center justify-center text-brand-muted/30 bg-brand-cream-dark/50">
+                            <div className="flex h-full w-full items-center justify-center text-[#A39B8F]/30 bg-[#22201B]-dark/50">
                               <ShoppingBag size={22} />
                             </div>
                           )}
@@ -133,18 +133,18 @@ const Cart = () => {
                         {/* Info */}
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-2">
-                            <h3 className="font-serif text-base font-bold text-brand-charcoal truncate">
+                            <h3 className="font-serif text-base font-bold text-[#EFEBE3] truncate">
                               {menuItem?.name ?? "Menu item"}
                             </h3>
                             <span className="rounded-full border border-brand-secondary/20 bg-brand-secondary/5 px-2.5 py-0.5 text-[10px] font-bold text-brand-secondary">
                               {restaurant?.name ?? "Restaurant"}
                             </span>
                           </div>
-                          <p className="mt-1 line-clamp-1 text-xs text-brand-muted leading-relaxed">
+                          <p className="mt-1 line-clamp-1 text-xs text-[#A39B8F] leading-relaxed">
                             {menuItem?.description ?? "No description available."}
                           </p>
-                          <div className="mt-2 flex flex-wrap items-center gap-2.5 text-xs text-brand-muted">
-                            <span className="font-semibold text-brand-charcoal">{formatCurrency(price)}</span>
+                          <div className="mt-2 flex flex-wrap items-center gap-2.5 text-xs text-[#A39B8F]">
+                            <span className="font-semibold text-[#EFEBE3]">{formatCurrency(price)}</span>
                             <span>×</span>
                             <span>{itemQuantity}</span>
                             <span>=</span>
@@ -153,15 +153,15 @@ const Cart = () => {
                         </div>
 
                         {/* Qty controls */}
-                        <div className="flex items-center gap-1 rounded-full border border-brand-border bg-brand-cream-dark/30 p-1 self-end sm:self-auto">
+                        <div className="flex items-center gap-1 rounded-full border border-[#3A352F] bg-[#22201B]-dark/30 p-1 self-end sm:self-auto">
                           <button
                             type="button"
                             onClick={() => removeItem(menuItem?._id, restaurant?._id)}
-                            className="flex h-8 w-8 items-center justify-center rounded-full text-brand-muted hover:bg-brand-cream-dark/60 hover:text-brand-charcoal transition"
+                            className="flex h-8 w-8 items-center justify-center rounded-full text-[#A39B8F] hover:bg-[#22201B]-dark/60 hover:text-[#EFEBE3] transition"
                           >
                             <Minus size={12} />
                           </button>
-                          <span className="min-w-[1.8rem] text-center text-xs font-bold text-brand-charcoal">
+                          <span className="min-w-[1.8rem] text-center text-xs font-bold text-[#EFEBE3]">
                             {itemQuantity}
                           </span>
                           <button
@@ -182,28 +182,28 @@ const Cart = () => {
 
           {/* Summary sidebar */}
           <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-            <div className="rounded-2xl border border-brand-border/60 bg-brand-card p-5 shadow-premium">
-              <p className="font-serif text-sm font-bold text-brand-charcoal mb-4">Order summary</p>
+            <div className="rounded-2xl border border-[#3A352F]/60 bg-[#2C2923] p-5 shadow-premium">
+              <p className="font-serif text-sm font-bold text-[#EFEBE3] mb-4">Order summary</p>
               <div className="space-y-3 text-xs">
-                <div className="flex justify-between text-brand-muted">
+                <div className="flex justify-between text-[#A39B8F]">
                   <span>Total items</span>
-                  <span className="text-brand-charcoal font-semibold">{quantity}</span>
+                  <span className="text-[#EFEBE3] font-semibold">{quantity}</span>
                 </div>
-                <div className="flex justify-between text-brand-muted">
+                <div className="flex justify-between text-[#A39B8F]">
                   <span>Items price</span>
-                  <span className="text-brand-charcoal font-semibold">{formatCurrency(subtotal)}</span>
+                  <span className="text-[#EFEBE3] font-semibold">{formatCurrency(subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-brand-muted">
+                <div className="flex justify-between text-[#A39B8F]">
                   <span>Delivery fee</span>
-                  <span className={subtotal > 250 ? "text-brand-success font-bold" : "text-brand-charcoal font-semibold"}>
+                  <span className={subtotal > 250 ? "text-brand-success font-bold" : "text-[#EFEBE3] font-semibold"}>
                     {subtotal > 250 ? "Free" : formatCurrency(deliveryFee)}
                   </span>
                 </div>
-                <div className="flex justify-between text-brand-muted">
+                <div className="flex justify-between text-[#A39B8F]">
                   <span>Platform fee</span>
-                  <span className="text-brand-charcoal font-semibold">{formatCurrency(platformServiceFee)}</span>
+                  <span className="text-[#EFEBE3] font-semibold">{formatCurrency(platformServiceFee)}</span>
                 </div>
-                <div className="flex justify-between border-t border-brand-border/60 pt-4 text-sm font-bold text-brand-charcoal font-serif">
+                <div className="flex justify-between border-t border-[#3A352F]/60 pt-4 text-sm font-bold text-[#EFEBE3] font-serif">
                   <span>Total</span>
                   <span className="text-brand-primary font-serif text-base font-black">
                     {formatCurrency(subtotal + deliveryFee + platformServiceFee)}
@@ -212,7 +212,7 @@ const Cart = () => {
               </div>
 
               {subtotal <= 250 && subtotal > 0 && (
-                <div className="mt-4 rounded-xl border border-brand-gold/30 bg-brand-gold/10 px-3 py-2 text-[11px] font-medium text-brand-muted leading-relaxed">
+                <div className="mt-4 rounded-xl border border-brand-gold/30 bg-brand-gold/10 px-3 py-2 text-[11px] font-medium text-[#A39B8F] leading-relaxed">
                   Add <span className="font-bold text-brand-primary">{formatCurrency(250 - subtotal)}</span> more for free delivery
                 </div>
               )}

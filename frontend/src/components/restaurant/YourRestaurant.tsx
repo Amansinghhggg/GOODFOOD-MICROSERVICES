@@ -63,14 +63,14 @@ const YourRestaurant: React.FC<Props> = ({ reload, restaurant, onToggle }) => {
   ] as const;
 
   return (
-    <div className="min-h-screen bg-brand-cream px-3 py-6 sm:px-6 lg:px-10">
+    <div className="min-h-screen bg-[#22201B] px-3 py-6 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-5xl">
         {/* ── Hero Card ── */}
-        <div className="relative overflow-hidden rounded-[32px] shadow-lg bg-surface-container-highest border border-outline-variant/30">
+        <div className="relative overflow-hidden rounded-[32px] shadow-lg bg-[#2C2923] border border-[#3A352F]/60">
           {/* Background image spread */}
           <div className="absolute inset-0 z-0">
             <img src={image} className="w-full h-full object-cover blur-[2px] opacity-60 scale-105" alt="restaurant background" />
-            <div className="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-surface-container-highest/80 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#2C2923] via-[#2C2923]/80 to-transparent" />
           </div>
 
           <div className="relative z-10 p-6 sm:p-10">
@@ -78,7 +78,7 @@ const YourRestaurant: React.FC<Props> = ({ reload, restaurant, onToggle }) => {
               {/* Avatar */}
               <div className="relative shrink-0 self-start">
                 <div className="h-28 w-28 overflow-hidden rounded-2xl border-4 border-white/20 shadow-premium sm:h-36 sm:w-36">
-                  <img src={image} alt={restaurant.name} className="h-full w-full object-cover bg-brand-cream-dark" />
+                  <img src={image} alt={restaurant.name} className="h-full w-full object-cover bg-[#22201B]-dark" />
                 </div>
                 {/* Online dot */}
                 <span
@@ -98,7 +98,7 @@ const YourRestaurant: React.FC<Props> = ({ reload, restaurant, onToggle }) => {
                     className={`rounded-full px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest ${
                       isOpen
                         ? "bg-brand-success/20 text-white ring-1 ring-brand-success/40"
-                        : "bg-white/10 text-white/60 ring-1 ring-white/20"
+                        : "bg-[#2C2923]/10 text-white/60 ring-1 ring-white/20"
                     }`}
                   >
                     {isOpen ? "● Open" : "○ Closed"}
@@ -111,11 +111,11 @@ const YourRestaurant: React.FC<Props> = ({ reload, restaurant, onToggle }) => {
 
                 {/* Contact row */}
                 <div className="mt-4 flex flex-wrap gap-3 text-xs">
-                  <div className="flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 backdrop-blur-sm">
+                  <div className="flex items-center gap-1.5 rounded-xl bg-[#2C2923]/10 px-3 py-1.5 backdrop-blur-sm">
                     <MapPin size={13} className="text-white/70" />
                     <span className="max-w-xs truncate text-white/95">{formattedAddress}</span>
                   </div>
-                  <div className="flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 backdrop-blur-sm">
+                  <div className="flex items-center gap-1.5 rounded-xl bg-[#2C2923]/10 px-3 py-1.5 backdrop-blur-sm">
                     <Phone size={13} className="text-white/70" />
                     <a
                       href={`tel:+91${String(restaurant.phone)}`}
@@ -130,7 +130,7 @@ const YourRestaurant: React.FC<Props> = ({ reload, restaurant, onToggle }) => {
                 <div className="mt-5 flex flex-wrap gap-2">
                   <Link
                     to="/edit-restaurant"
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/10 px-4 py-2 text-xs font-bold text-white backdrop-blur-sm transition hover:bg-white/20"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-[#2C2923]/10 px-4 py-2 text-xs font-bold text-white backdrop-blur-sm transition hover:bg-[#2C2923]/20"
                   >
                     <Edit size={13} /> Edit Profile
                   </Link>
@@ -138,7 +138,7 @@ const YourRestaurant: React.FC<Props> = ({ reload, restaurant, onToggle }) => {
                     onClick={() => handleToggle()}
                     className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition duration-200 ${
                       isOpen
-                        ? "bg-white/90 text-brand-primary hover:bg-white"
+                        ? "bg-[#2C2923]/90 text-brand-primary hover:bg-[#2C2923]"
                         : "bg-brand-primary text-white hover:bg-brand-primary-hover shadow-premium-sm"
                     }`}
                   >
@@ -163,9 +163,9 @@ const YourRestaurant: React.FC<Props> = ({ reload, restaurant, onToggle }) => {
         </div>
 
         {/* ── Tabs + Content Card ── */}
-        <div className="mt-6 overflow-hidden rounded-3xl bg-brand-card shadow-premium border border-brand-border/60">
+        <div className="mt-6 overflow-hidden rounded-3xl bg-[#2C2923] shadow-premium border border-[#3A352F]/60">
           {/* Tab bar */}
-          <div className="flex items-center gap-1 overflow-x-auto border-b border-brand-border bg-brand-cream-dark/30 px-4 py-3 sm:px-6">
+          <div className="flex items-center gap-1 overflow-x-auto border-b border-[#3A352F] bg-[#22201B]-dark/30 px-4 py-3 sm:px-6">
             {tabs.map(({ key, label, icon }) => (
               <button
                 key={key}
@@ -173,14 +173,14 @@ const YourRestaurant: React.FC<Props> = ({ reload, restaurant, onToggle }) => {
                 className={`flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 ${
                   active === key
                     ? "bg-brand-primary text-white shadow-premium-sm hover:bg-brand-primary-hover"
-                    : "text-brand-muted hover:bg-white hover:text-brand-charcoal"
+                    : "text-[#A39B8F] hover:bg-[#2C2923] hover:text-[#EFEBE3]"
                 }`}
               >
                 {icon}
                 {label}
               </button>
             ))}
-            <span className="ml-auto hidden text-xs text-brand-muted sm:block">
+            <span className="ml-auto hidden text-xs text-[#A39B8F] sm:block">
               Manage your restaurant
             </span>
           </div>

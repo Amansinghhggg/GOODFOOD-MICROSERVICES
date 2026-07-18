@@ -52,13 +52,13 @@ const Checkout = () => {
 
   if (!cart || quantity === 0) {
     return (
-      <div className="min-h-[calc(100vh-5rem)] bg-brand-cream flex items-center justify-center px-4">
+      <div className="min-h-[calc(100vh-5rem)] bg-[#22201B] flex items-center justify-center px-4">
         <div className="text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-cream-dark text-brand-muted">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#22201B]-dark text-[#A39B8F]">
             <ShoppingBag size={24} />
           </div>
-          <h2 className="mt-4 font-serif text-xl font-bold text-brand-charcoal">Cart is empty</h2>
-          <p className="mt-2 text-xs text-brand-muted">Add items to your cart before checkout</p>
+          <h2 className="mt-4 font-serif text-xl font-bold text-[#EFEBE3]">Cart is empty</h2>
+          <p className="mt-2 text-xs text-[#A39B8F]">Add items to your cart before checkout</p>
           <Link to="/" className="mt-5 inline-flex items-center gap-2 rounded-xl bg-brand-primary px-5 py-2.5 text-xs font-bold text-white shadow-premium hover:bg-brand-primary-hover">
             Browse restaurants
           </Link>
@@ -173,27 +173,27 @@ const Checkout = () => {
   const isProcessing = loadingRazorpay || creatingOrder;
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] bg-brand-cream px-4 py-8 sm:px-6 lg:px-8">
+    <div className="min-h-[calc(100vh-5rem)] bg-[#22201B] px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
         <div className="mb-8">
           <p className="font-serif text-xs font-semibold uppercase tracking-[0.2em] text-brand-primary">Almost there</p>
-          <h1 className="mt-1 font-serif text-3xl font-black text-brand-charcoal">Checkout</h1>
+          <h1 className="mt-1 font-serif text-3xl font-black text-[#EFEBE3]">Checkout</h1>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
           {/* Left — Address */}
           <div className="space-y-5">
-            <section className="rounded-2xl border border-brand-border/60 bg-brand-card p-6 shadow-premium">
+            <section className="rounded-2xl border border-[#3A352F]/60 bg-[#2C2923] p-6 shadow-premium">
               <div className="mb-5 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-primary/10 text-brand-primary">
                     <MapPin size={15} />
                   </div>
-                  <h2 className="font-serif text-base font-bold text-brand-charcoal">Delivery Address</h2>
+                  <h2 className="font-serif text-base font-bold text-[#EFEBE3]">Delivery Address</h2>
                 </div>
                 <Link
                   to="/AddAddress"
-                  className="inline-flex items-center gap-1 rounded-full border border-brand-border bg-brand-card px-3 py-1.5 text-xs font-bold text-brand-muted transition hover:border-brand-primary/45 hover:text-brand-primary"
+                  className="inline-flex items-center gap-1 rounded-full border border-[#3A352F] bg-[#2C2923] px-3 py-1.5 text-xs font-bold text-[#A39B8F] transition hover:border-brand-primary/45 hover:text-brand-primary"
                 >
                   <Plus size={12} />
                   Add new
@@ -203,13 +203,13 @@ const Checkout = () => {
               {loadingAddress ? (
                 <div className="space-y-3">
                   {[1, 2].map((i) => (
-                    <div key={i} className="h-16 animate-pulse rounded-xl bg-brand-cream-dark/50 border border-brand-border/40" />
+                    <div key={i} className="h-16 animate-pulse rounded-xl bg-[#22201B]-dark/50 border border-[#3A352F]/40" />
                   ))}
                 </div>
               ) : addresss.length === 0 ? (
-                <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-brand-border py-10 text-center">
-                  <MapPin size={24} className="text-brand-muted/40" />
-                  <p className="text-sm text-brand-muted">No saved addresses</p>
+                <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-[#3A352F] py-10 text-center">
+                  <MapPin size={24} className="text-[#A39B8F]/40" />
+                  <p className="text-sm text-[#A39B8F]">No saved addresses</p>
                   <Link
                     to="/AddAddress"
                     className="rounded-xl bg-brand-primary px-4 py-2 text-xs font-bold text-white shadow-premium hover:bg-brand-primary-hover"
@@ -227,7 +227,7 @@ const Checkout = () => {
                       className={`w-full rounded-xl border px-4 py-4 text-left transition duration-200 ${
                         selectedAddress === addr._id
                           ? "border-brand-primary bg-brand-primary/5 ring-1 ring-brand-primary/20 shadow-premium-sm"
-                          : "border-brand-border/60 bg-brand-card hover:border-brand-primary/30 hover:bg-brand-primary/5"
+                          : "border-[#3A352F]/60 bg-[#2C2923] hover:border-brand-primary/30 hover:bg-brand-primary/5"
                       }`}
                     >
                       <div className="flex items-start gap-3">
@@ -235,14 +235,14 @@ const Checkout = () => {
                           className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition duration-200 ${
                             selectedAddress === addr._id
                               ? "border-brand-primary bg-brand-primary"
-                              : "border-brand-border"
+                              : "border-[#3A352F]"
                           }`}
                         >
                           {selectedAddress === addr._id && <CheckCircle2 size={11} className="text-white" />}
                         </div>
                         <div>
-                          <p className="text-sm font-semibold text-brand-charcoal">{addr.formattedAddress}</p>
-                          <p className="mt-1 text-xs text-brand-muted">📞 {addr.mobile}</p>
+                          <p className="text-sm font-semibold text-[#EFEBE3]">{addr.formattedAddress}</p>
+                          <p className="mt-1 text-xs text-[#A39B8F]">📞 {addr.mobile}</p>
                         </div>
                       </div>
                     </button>
@@ -254,42 +254,42 @@ const Checkout = () => {
 
           {/* Right — Order Summary */}
           <aside className="lg:sticky lg:top-24 lg:self-start space-y-4">
-            <div className="rounded-2xl border border-brand-border/60 bg-brand-card p-5 shadow-premium">
+            <div className="rounded-2xl border border-[#3A352F]/60 bg-[#2C2923] p-5 shadow-premium">
               <div className="mb-4 flex items-center gap-2.5">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-primary/10 text-brand-primary">
                   <ShoppingBag size={15} />
                 </div>
-                <h2 className="font-serif text-base font-bold text-brand-charcoal">Order Summary</h2>
+                <h2 className="font-serif text-base font-bold text-[#EFEBE3]">Order Summary</h2>
               </div>
 
-              <div className="mb-4 rounded-xl border border-brand-border bg-brand-cream-dark/30 px-4 py-3">
-                <p className="text-[10px] uppercase font-bold text-brand-muted">From</p>
-                <p className="mt-0.5 text-xs font-bold text-brand-charcoal">{restaurant.name}</p>
+              <div className="mb-4 rounded-xl border border-[#3A352F] bg-[#22201B]-dark/30 px-4 py-3">
+                <p className="text-[10px] uppercase font-bold text-[#A39B8F]">From</p>
+                <p className="mt-0.5 text-xs font-bold text-[#EFEBE3]">{restaurant.name}</p>
               </div>
 
               <div className="space-y-3 text-xs">
-                <div className="flex justify-between text-brand-muted">
+                <div className="flex justify-between text-[#A39B8F]">
                   <span>Items subtotal</span>
-                  <span className="text-brand-charcoal font-semibold">{formatCurrency(subtotal)}</span>
+                  <span className="text-[#EFEBE3] font-semibold">{formatCurrency(subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-brand-muted">
+                <div className="flex justify-between text-[#A39B8F]">
                   <span>Delivery fee</span>
-                  <span className={subtotal >= 250 ? "text-brand-success font-bold" : "text-brand-charcoal font-semibold"}>
+                  <span className={subtotal >= 250 ? "text-brand-success font-bold" : "text-[#EFEBE3] font-semibold"}>
                     {subtotal >= 250 ? "Free" : formatCurrency(deliveryFee)}
                   </span>
                 </div>
-                <div className="flex justify-between text-brand-muted">
+                <div className="flex justify-between text-[#A39B8F]">
                   <span>Platform fee</span>
-                  <span className="text-brand-charcoal font-semibold">{formatCurrency(platformFee)}</span>
+                  <span className="text-[#EFEBE3] font-semibold">{formatCurrency(platformFee)}</span>
                 </div>
-                <div className="flex justify-between border-t border-brand-border/60 pt-3 text-sm font-bold text-brand-charcoal font-serif">
+                <div className="flex justify-between border-t border-[#3A352F]/60 pt-3 text-sm font-bold text-[#EFEBE3] font-serif">
                   <span>Total</span>
                   <span className="text-brand-primary font-serif text-base font-black">{formatCurrency(grandTotal)}</span>
                 </div>
               </div>
 
               {subtotal < 250 && (
-                <div className="mt-3 rounded-lg border border-brand-gold/30 bg-brand-gold/10 px-3 py-2 text-[11px] font-medium text-brand-muted leading-relaxed">
+                <div className="mt-3 rounded-lg border border-brand-gold/30 bg-brand-gold/10 px-3 py-2 text-[11px] font-medium text-[#A39B8F] leading-relaxed">
                   Add <span className="font-bold text-brand-primary">{formatCurrency(250 - subtotal)}</span> more for free delivery
                 </div>
               )}
@@ -306,7 +306,7 @@ const Checkout = () => {
             </button>
 
             {!selectedAddress && (
-              <p className="text-center text-[10px] text-brand-muted font-medium">Select a delivery address to continue</p>
+              <p className="text-center text-[10px] text-[#A39B8F] font-medium">Select a delivery address to continue</p>
             )}
           </aside>
         </div>

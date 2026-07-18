@@ -31,7 +31,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-[#e8e8e8] bg-white/95 backdrop-blur-md shadow-sm">
+    <nav className="sticky top-0 z-50 border-b border-[#3A352F] bg-[#2C2923]/95 backdrop-blur-md shadow-sm">
       <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:gap-5 lg:px-8">
         {/* Logo */}
         <div className="flex items-center justify-between gap-4 lg:shrink-0">
@@ -39,26 +39,28 @@ const Navbar = () => {
             to="/"
             className="flex items-center gap-2 transition-transform hover:-translate-y-0.5 active:scale-95"
           >
-            <span className="font-headline-md text-2xl font-black tracking-tighter text-primary">GOODFOOD</span>
+            <span className="font-serif text-2xl font-black tracking-tighter text-[#EFEBE3]">
+              GOOD<span className="text-brand-primary">FOOD</span>
+            </span>
           </Link>
         </div>
 
         {/* Search bar or blank space */}
         {isHomepage ? (
-          <div className="flex flex-1 items-center rounded-full border border-[#e8e8e8] bg-[#f7f7f7] px-4 py-2 transition focus-within:border-[#ff385c]/50 focus-within:bg-white focus-within:shadow-sm">
-            <Search size={16} className="mr-3 shrink-0 text-[#999999]" />
+          <div className="flex flex-1 items-center rounded-full border border-[#3A352F] bg-[#22201B] px-4 py-2 transition focus-within:border-[#ff385c]/50 focus-within:bg-[#2C2923] focus-within:shadow-sm">
+            <Search size={16} className="mr-3 shrink-0 text-[#877E71]" />
             <input
               type="text"
               placeholder="Search restaurants, dishes, cuisines..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="min-w-0 flex-1 bg-transparent text-sm text-[#111111] outline-none placeholder:text-[#999999]"
+              className="min-w-0 flex-1 bg-transparent text-sm text-[#EFEBE3] outline-none placeholder:text-[#877E71]"
             />
             {search && (
               <button
                 type="button"
                 onClick={() => setSearch("")}
-                className="ml-2 text-xs text-[#999999] hover:text-[#111111] transition"
+                className="ml-2 text-xs text-[#877E71] hover:text-[#EFEBE3] transition"
               >
                 ✕
               </button>
@@ -71,9 +73,9 @@ const Navbar = () => {
         {/* Right actions */}
         <div className="flex items-center justify-end gap-3 lg:shrink-0">
           {/* Location pill */}
-          <div className="hidden items-center gap-2 rounded-full border border-[#e8e8e8] bg-[#f7f7f7] px-4 py-2 sm:flex">
+          <div className="hidden items-center gap-2 rounded-full border border-[#3A352F] bg-[#22201B] px-4 py-2 sm:flex">
             <MapPin size={14} className="text-[#ff385c] shrink-0" />
-            <span className="max-w-[8rem] truncate text-xs font-semibold text-[#555555]">
+            <span className="max-w-[8rem] truncate text-xs font-semibold text-[#A39B8F]">
               {loadingLocation ? "Detecting..." : city}
             </span>
           </div>
@@ -81,7 +83,7 @@ const Navbar = () => {
           {/* Cart */}
           <Link
             to="/cart"
-            className="relative flex h-10 w-10 items-center justify-center rounded-full border border-[#e8e8e8] bg-white text-[#555555] transition hover:border-[#ff385c]/40 hover:bg-[#ff385c]/5 hover:text-[#ff385c]"
+            className="relative flex h-10 w-10 items-center justify-center rounded-full border border-[#3A352F] bg-[#2C2923] text-[#A39B8F] transition hover:border-[#ff385c]/40 hover:bg-[#ff385c]/5 hover:text-[#ff385c]"
             aria-label="Cart"
           >
             <ShoppingCart size={18} />
@@ -96,7 +98,7 @@ const Navbar = () => {
           {isAuth ? (
             <Link
                to="/account"
-               className="inline-flex items-center gap-2 rounded-full border border-[#e8e8e8] bg-white px-5 py-2 text-sm font-semibold text-[#555555] transition hover:border-[#ff385c]/40 hover:text-[#ff385c] hover:bg-[#ff385c]/5"
+               className="inline-flex items-center gap-2 rounded-full border border-[#3A352F] bg-[#2C2923] px-5 py-2 text-sm font-semibold text-[#A39B8F] transition hover:border-[#ff385c]/40 hover:text-[#ff385c] hover:bg-[#ff385c]/5"
              >
                <User size={16} />
                <span>Account</span>

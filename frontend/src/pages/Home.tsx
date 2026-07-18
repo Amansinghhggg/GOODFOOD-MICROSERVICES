@@ -35,15 +35,15 @@ export default function Home() {
 
 
   return (
-    <div className="min-h-screen bg-[#f7f7f7] px-4 py-8 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#22201B] px-4 py-8 sm:px-6 lg:px-8">
       <div className="relative mx-auto max-w-6xl">
         <div className="mb-8">
           <p className="font-serif text-xs font-semibold uppercase tracking-[0.2em] text-[#ff385c]">Discover</p>
-          <h1 className="mt-1 font-serif text-3xl font-black text-[#111111] sm:text-4xl">Nearby Restaurants</h1>
+          <h1 className="mt-1 font-serif text-3xl font-black text-[#EFEBE3] sm:text-4xl">Nearby Restaurants</h1>
           {location && (
-            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#e8e8e8] bg-white px-3.5 py-2 shadow-sm">
+            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#3A352F] bg-[#2C2923] px-3.5 py-2 shadow-sm">
               <MapPin size={14} className="text-[#ff385c]" />
-              <span className="text-xs font-bold text-[#555555] truncate max-w-xs">
+              <span className="text-xs font-bold text-[#A39B8F] truncate max-w-xs">
                 {location.formattedAddress || "Detecting location..."}
               </span>
             </div>
@@ -53,7 +53,7 @@ export default function Home() {
         {loading ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="overflow-hidden rounded-2xl border border-[#e8e8e8] bg-white shadow-sm">
+              <div key={i} className="overflow-hidden rounded-2xl border border-[#3A352F] bg-[#2C2923] shadow-sm">
                 <div className="h-48 w-full animate-pulse bg-[#f0f0f0]" />
                 <div className="p-5 space-y-3">
                   <div className="h-5 w-2/3 animate-pulse rounded bg-[#f0f0f0]" />
@@ -68,10 +68,10 @@ export default function Home() {
             ))}
           </div>
         ) : restaurants.length === 0 ? (
-          <div className="flex flex-col items-center gap-4 rounded-3xl border border-dashed border-[#cccccc] bg-white py-24 text-center shadow-sm">
+          <div className="flex flex-col items-center gap-4 rounded-3xl border border-dashed border-[#4B443B] bg-[#2C2923] py-24 text-center shadow-sm">
             <div className="text-5xl">🍽️</div>
-            <p className="font-serif text-xl font-bold text-[#111111]">No restaurants nearby</p>
-            <p className="text-sm font-medium text-[#999999]">Try a different location or check back later</p>
+            <p className="font-serif text-xl font-bold text-[#EFEBE3]">No restaurants nearby</p>
+            <p className="text-sm font-medium text-[#877E71]">Try a different location or check back later</p>
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -80,7 +80,7 @@ export default function Home() {
                 <Link
                   to={`/restaurant/${restaurant._id}`}
                   key={restaurant._id}
-                  className="group overflow-hidden rounded-2xl border border-[#e8e8e8] bg-white transition-all duration-300 hover:border-[#ff385c]/30 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#ff385c]/5"
+                  className="group overflow-hidden rounded-2xl border border-[#3A352F] bg-[#2C2923] transition-all duration-300 hover:border-[#ff385c]/30 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#ff385c]/5"
                 >
                   <div className="relative h-48 overflow-hidden bg-[#f0f0f0]">
                     <img
@@ -90,21 +90,21 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-90" />
                     {restaurant.distanceKm && (
-                      <div className="absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1.5 text-[10px] font-black text-[#111111] backdrop-blur-md shadow-sm">
+                      <div className="absolute right-3 top-3 rounded-full bg-[#2C2923]/90 px-3 py-1.5 text-[10px] font-black text-[#EFEBE3] backdrop-blur-md shadow-sm">
                         {restaurant.distanceKm} km
                       </div>
                     )}
                     <div className="absolute bottom-3 left-3">
                       <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-black text-white shadow-sm border border-emerald-400">
-                        <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#2C2923] animate-pulse" />
                         OPEN
                       </span>
                     </div>
                   </div>
                   <div className="p-5">
-                    <h2 className="font-serif text-lg font-bold text-[#111111] group-hover:text-[#ff385c] transition-colors">{restaurant.name}</h2>
-                    <p className="mt-1.5 line-clamp-2 text-xs text-[#555555] leading-relaxed font-medium">{restaurant.description}</p>
-                    <div className="mt-4 flex items-center gap-2 text-[11px] font-semibold text-[#999999] border-t border-[#f0f0f0] pt-4">
+                    <h2 className="font-serif text-lg font-bold text-[#EFEBE3] group-hover:text-[#ff385c] transition-colors">{restaurant.name}</h2>
+                    <p className="mt-1.5 line-clamp-2 text-xs text-[#A39B8F] leading-relaxed font-medium">{restaurant.description}</p>
+                    <div className="mt-4 flex items-center gap-2 text-[11px] font-semibold text-[#877E71] border-t border-[#f0f0f0] pt-4">
                       <MapPin size={13} className="text-[#ff385c]" />
                       <span className="truncate">{restaurant.autoLocation?.formattedAddress || "Unknown address"}</span>
                     </div>
@@ -113,7 +113,7 @@ export default function Home() {
               ) : (
                 <div
                   key={restaurant._id}
-                  className="overflow-hidden rounded-2xl border border-[#e8e8e8] bg-white opacity-60"
+                  className="overflow-hidden rounded-2xl border border-[#3A352F] bg-[#2C2923] opacity-60"
                 >
                   <div className="relative h-48 overflow-hidden bg-[#f0f0f0]">
                     <img
@@ -123,16 +123,16 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 bg-[#111111]/40" />
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-xs font-black text-white border border-white/30 backdrop-blur-md">
+                      <div className="inline-flex items-center gap-2 rounded-full bg-[#2C2923]/20 px-4 py-2 text-xs font-black text-white border border-white/30 backdrop-blur-md">
                         <Clock size={14} />
                         CLOSED
                       </div>
                     </div>
                   </div>
                   <div className="p-5">
-                    <h2 className="font-serif text-lg font-bold text-[#555555]">{restaurant.name}</h2>
-                    <p className="mt-1.5 line-clamp-2 text-xs text-[#999999] font-medium leading-relaxed">{restaurant.description}</p>
-                    <div className="mt-4 flex items-center gap-2 text-[11px] font-semibold text-[#999999] border-t border-[#f0f0f0] pt-4">
+                    <h2 className="font-serif text-lg font-bold text-[#A39B8F]">{restaurant.name}</h2>
+                    <p className="mt-1.5 line-clamp-2 text-xs text-[#877E71] font-medium leading-relaxed">{restaurant.description}</p>
+                    <div className="mt-4 flex items-center gap-2 text-[11px] font-semibold text-[#877E71] border-t border-[#f0f0f0] pt-4">
                       <MapPin size={13} />
                       <span className="truncate">{restaurant.autoLocation?.formattedAddress || "Unknown address"}</span>
                     </div>

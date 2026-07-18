@@ -24,10 +24,10 @@ function App() {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[#f7f7f7]">
+      <div className="flex h-screen items-center justify-center bg-[#22201B]">
         <div className="flex flex-col items-center gap-4">
           <div className="h-10 w-10 animate-spin rounded-full border-[3px] border-[#ff385c] border-t-transparent shadow-sm" />
-          <span className="font-serif text-xl font-bold tracking-wide text-[#111111]">GOODFOOD</span>
+          <span className="font-serif text-xl font-bold tracking-wide text-[#EFEBE3]">GOODFOOD</span>
         </div>
       </div>
     );

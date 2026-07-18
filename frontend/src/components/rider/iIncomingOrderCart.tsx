@@ -52,7 +52,7 @@ const IncomingOrderCart = ({ orderId, onAccepted, distance, amount }: Props) => 
   const dashOffset = circumference - (secondsLeft / 10) * circumference;
 
   return (
-    <div className="mt-3 overflow-hidden rounded-xl border border-brand-primary/20 bg-brand-cream/60 p-4 shadow-premium-sm">
+    <div className="mt-3 overflow-hidden rounded-xl border border-brand-primary/20 bg-[#22201B]/60 p-4 shadow-premium-sm">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-4">
           {/* Countdown ring */}
@@ -89,8 +89,8 @@ const IncomingOrderCart = ({ orderId, onAccepted, distance, amount }: Props) => 
             </span>
           </div>
           <div>
-            <p className="text-sm font-bold text-brand-charcoal">New Order Available!</p>
-            <p className="text-xs text-brand-muted font-mono font-bold">
+            <p className="text-sm font-bold text-[#EFEBE3]">New Order Available!</p>
+            <p className="text-xs text-[#A39B8F] font-mono font-bold">
               #{orderId.slice(-8)}
             </p>
           </div>
@@ -99,13 +99,13 @@ const IncomingOrderCart = ({ orderId, onAccepted, distance, amount }: Props) => 
               <p className="text-[9px] font-bold uppercase tracking-wider text-brand-secondary">
                 Distance
               </p>
-              <p className="text-xs font-extrabold text-brand-charcoal">{distance.toFixed(2)} km</p>
+              <p className="text-xs font-extrabold text-[#EFEBE3]">{distance.toFixed(2)} km</p>
             </div>
             <div className="rounded-lg border border-brand-gold/20 bg-brand-gold/5 px-3 py-1.5 text-center">
               <p className="text-[9px] font-bold uppercase tracking-wider text-[#b07c1e]">
                 Amount
               </p>
-              <p className="text-xs font-extrabold text-brand-charcoal">₹{amount.toFixed(2)}</p>
+              <p className="text-xs font-extrabold text-[#EFEBE3]">₹{amount.toFixed(2)}</p>
             </div>
           </div>
         </div>

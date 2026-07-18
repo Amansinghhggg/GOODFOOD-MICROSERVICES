@@ -60,21 +60,21 @@ export default function RessingleOrderTab({
   const progressPct = ((SEARCH_DURATION - timeLeft) / SEARCH_DURATION) * 100;
  
   return (
-    <li className="rounded-xl border border-brand-border bg-white p-5 shadow-premium transition-all hover:shadow-premium-lg">
+    <li className="rounded-xl border border-[#3A352F] bg-[#2C2923] p-5 shadow-premium transition-all hover:shadow-premium-lg">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         {/* ── Left: Order Details ── */}
         <div className="flex-1 space-y-4">
           {/* Header */}
           <div className="flex flex-wrap items-center gap-3">
-            <p className="text-xs font-semibold uppercase tracking-wider text-brand-muted">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#A39B8F]">
               Order ID:{" "}
-              <span className="font-bold text-brand-charcoal font-mono">{order._id}</span>
+              <span className="font-bold text-[#EFEBE3] font-mono">{order._id}</span>
             </p>
             <span
               className={`inline-flex rounded-full px-3 py-0.5 text-xs font-bold tracking-wide capitalize ${
                 isCompleted
                   ? "bg-brand-secondary/10 text-brand-secondary ring-1 ring-brand-secondary/20"
-                  : (statusTone[order.status] ?? "bg-brand-cream-dark text-brand-charcoal ring-1 ring-brand-border/60")
+                  : (statusTone[order.status] ?? "bg-[#22201B]-dark text-[#EFEBE3] ring-1 ring-brand-border/60")
               }`}
             >
               {order.status.replace(/_/g, " ")}
@@ -84,20 +84,20 @@ export default function RessingleOrderTab({
           {/* Items */}
           <div className="space-y-2">
             {(order.items ?? []).length === 0 ? (
-              <p className="text-sm text-brand-muted">No items found.</p>
+              <p className="text-sm text-[#A39B8F]">No items found.</p>
             ) : (
               (order.items ?? []).map((item: any, i: number) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between rounded-lg bg-brand-cream/60 border border-brand-border/30 px-4 py-2"
+                  className="flex items-center justify-between rounded-lg bg-[#22201B]/60 border border-[#3A352F]/30 px-4 py-2"
                 >
-                  <p className="text-sm font-bold text-brand-charcoal">
+                  <p className="text-sm font-bold text-[#EFEBE3]">
                     {item.name}{" "}
-                    <span className="font-medium text-brand-muted text-xs">
+                    <span className="font-medium text-[#A39B8F] text-xs">
                       × {item.quantity}
                     </span>
                   </p>
-                  <p className="text-sm font-bold text-brand-charcoal">
+                  <p className="text-sm font-bold text-[#EFEBE3]">
                     {formatMoney(item.price * item.quantity)}
                   </p>
                 </div>
@@ -106,16 +106,16 @@ export default function RessingleOrderTab({
           </div>
 
           {/* Footer */}
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-brand-muted">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-[#A39B8F]">
             <span>
               Total:{" "}
-              <span className="font-bold text-brand-charcoal">
+              <span className="font-bold text-[#EFEBE3]">
                 {formatMoney(order.totalAmount)}
               </span>
             </span>
             <span>
               Placed:{" "}
-              <span className="font-semibold text-brand-charcoal">
+              <span className="font-semibold text-[#EFEBE3]">
                 {new Date(order.createdAt).toLocaleString()}
               </span>
             </span>
@@ -137,10 +137,10 @@ export default function RessingleOrderTab({
                   <span className="animate-pulse font-semibold text-brand-gold">
                     Searching for rider…
                   </span>
-                  <span className="font-bold text-brand-charcoal">{timeLeft}s</span>
+                  <span className="font-bold text-[#EFEBE3]">{timeLeft}s</span>
                 </div>
                 {/* Progress bar */}
-                <div className="h-2 w-full overflow-hidden rounded-full bg-brand-cream-dark">
+                <div className="h-2 w-full overflow-hidden rounded-full bg-[#22201B]-dark">
                   <div
                     className="h-full rounded-full bg-brand-gold transition-all duration-1000 ease-linear"
                     style={{ width: `${progressPct}%` }}
@@ -165,7 +165,7 @@ export default function RessingleOrderTab({
               </button>
             ) : (
               /* Case 5: no next status */
-              <span className="inline-flex rounded-lg bg-brand-cream-dark px-4 py-2 text-xs font-bold text-brand-muted border border-brand-border/60">
+              <span className="inline-flex rounded-lg bg-[#22201B]-dark px-4 py-2 text-xs font-bold text-[#A39B8F] border border-[#3A352F]/60">
                 Completed
               </span>
             )}

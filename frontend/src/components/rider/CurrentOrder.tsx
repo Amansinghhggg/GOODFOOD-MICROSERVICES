@@ -60,12 +60,12 @@ const CurrentOrder = ({ order, onstatusUpdate }: CurrentOrderProps) => {
     };
 
     return (
-        <div className="mt-4 space-y-4 rounded-xl border border-brand-border bg-white p-6 shadow-premium">
+        <div className="mt-4 space-y-4 rounded-xl border border-[#3A352F] bg-[#2C2923] p-6 shadow-premium">
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-brand-border/60 pb-3">
+            <div className="flex items-center justify-between border-b border-[#3A352F]/60 pb-3">
                 <div>
-                    <h2 className="text-lg font-bold font-serif text-brand-charcoal">Active Order</h2>
-                    <p className="font-mono text-xs text-brand-muted">#{order._id.slice(-10)}</p>
+                    <h2 className="text-lg font-bold font-serif text-[#EFEBE3]">Active Order</h2>
+                    <p className="font-mono text-xs text-[#A39B8F]">#{order._id.slice(-10)}</p>
                 </div>
                 <span className="rounded-full border border-brand-secondary/20 bg-brand-secondary/5 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-secondary">
                     {order.status.replace(/_/g, " ")}
@@ -81,26 +81,26 @@ const CurrentOrder = ({ order, onstatusUpdate }: CurrentOrderProps) => {
                     </div>
                     <p className="text-3xl font-black text-brand-secondary">₹{order.riderAmount}</p>
                 </div>
-                <div className="rounded-xl border border-brand-border bg-brand-cream/60 p-4">
-                    <div className="flex items-center gap-1.5 text-brand-muted mb-1">
+                <div className="rounded-xl border border-[#3A352F] bg-[#22201B]/60 p-4">
+                    <div className="flex items-center gap-1.5 text-[#A39B8F] mb-1">
                         <Navigation size={12} />
                         <span className="text-[10px] uppercase tracking-widest font-bold">Distance</span>
                     </div>
-                    <p className="text-3xl font-black text-brand-charcoal">{order.distance.toFixed(1)}<span className="text-base font-semibold text-brand-muted"> km</span></p>
+                    <p className="text-3xl font-black text-[#EFEBE3]">{order.distance.toFixed(1)}<span className="text-base font-semibold text-[#A39B8F]"> km</span></p>
                 </div>
             </div>
 
             {/* Pickup section */}
             {!isPickedUp && (
-                <div className="rounded-xl border border-brand-border bg-brand-cream/30 overflow-hidden shadow-premium-sm">
+                <div className="rounded-xl border border-[#3A352F] bg-[#22201B]/30 overflow-hidden shadow-premium-sm">
                     <img src={order.restaurantId.image} alt={order.restaurantId.name} className="h-36 w-full object-cover" />
                     <div className="p-4">
                         <p className="text-[10px] uppercase tracking-widest text-brand-primary font-bold mb-1">Pickup From</p>
-                        <h4 className="text-base font-bold text-brand-charcoal">{order.restaurantId.name}</h4>
-                        <p className="mt-1 text-xs text-brand-muted">{order.restaurantId.description}</p>
-                        <div className="mt-3 flex items-start gap-1.5 border-t border-brand-border/40 pt-3">
-                            <MapPin size={13} className="mt-0.5 shrink-0 text-brand-muted" />
-                            <p className="text-xs text-brand-muted font-medium">{order.restaurantId.autoLocation.formattedAddress}</p>
+                        <h4 className="text-base font-bold text-[#EFEBE3]">{order.restaurantId.name}</h4>
+                        <p className="mt-1 text-xs text-[#A39B8F]">{order.restaurantId.description}</p>
+                        <div className="mt-3 flex items-start gap-1.5 border-t border-[#3A352F]/40 pt-3">
+                            <MapPin size={13} className="mt-0.5 shrink-0 text-[#A39B8F]" />
+                            <p className="text-xs text-[#A39B8F] font-medium">{order.restaurantId.autoLocation.formattedAddress}</p>
                         </div>
                         <div className="mt-4 flex gap-2">
                             <a href={`tel:${order.restaurantId.phone}`} className="flex items-center gap-1.5 rounded-lg bg-brand-secondary px-4 py-2 text-xs font-bold text-white transition-all hover:bg-brand-secondary-hover shadow-premium-sm">
@@ -116,18 +116,18 @@ const CurrentOrder = ({ order, onstatusUpdate }: CurrentOrderProps) => {
 
             {/* Delivery section */}
             {isPickedUp && (
-                <div className="rounded-xl border border-brand-border bg-brand-cream/30 p-4 space-y-4 shadow-premium-sm">
+                <div className="rounded-xl border border-[#3A352F] bg-[#22201B]/30 p-4 space-y-4 shadow-premium-sm">
                     <div>
                         <p className="text-[10px] uppercase tracking-widest text-brand-primary font-bold mb-1.5">Deliver To</p>
                         <div className="flex items-start gap-2">
-                            <MapPin size={14} className="mt-0.5 shrink-0 text-brand-muted" />
-                            <p className="text-sm font-semibold text-brand-charcoal">{order.deliveryAddress.formattedAddress}</p>
+                            <MapPin size={14} className="mt-0.5 shrink-0 text-[#A39B8F]" />
+                            <p className="text-sm font-semibold text-[#EFEBE3]">{order.deliveryAddress.formattedAddress}</p>
                         </div>
                         <p className="flex items-center gap-2 mt-2 text-sm font-bold text-brand-primary">
                             <Phone size={13} /> {order.deliveryAddress.mobile}
                         </p>
                     </div>
-                    <div className="flex gap-2 border-t border-brand-border/40 pt-3">
+                    <div className="flex gap-2 border-t border-[#3A352F]/40 pt-3">
                         <a href={`tel:${order.deliveryAddress.mobile}`} className="flex items-center gap-1.5 rounded-lg bg-brand-secondary px-4 py-2 text-xs font-bold text-white hover:bg-brand-secondary-hover shadow-premium-sm">
                             <Phone size={13} /> Call Customer
                         </a>
@@ -138,8 +138,8 @@ const CurrentOrder = ({ order, onstatusUpdate }: CurrentOrderProps) => {
 
                     {/* OTP */}
                     <div className="rounded-xl border border-brand-secondary/20 bg-brand-secondary/5 p-4">
-                        <h4 className="font-bold text-brand-charcoal text-sm">Delivery OTP</h4>
-                        <p className="mt-0.5 text-xs text-brand-muted font-medium">Ask customer for the 4-digit OTP.</p>
+                        <h4 className="font-bold text-[#EFEBE3] text-sm">Delivery OTP</h4>
+                        <p className="mt-0.5 text-xs text-[#A39B8F] font-medium">Ask customer for the 4-digit OTP.</p>
                         <div className="mt-3 space-y-2">
                             <input
                                 type="text"
@@ -147,7 +147,7 @@ const CurrentOrder = ({ order, onstatusUpdate }: CurrentOrderProps) => {
                                 value={otp}
                                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
                                 placeholder="· · · ·"
-                                className="w-full rounded-lg border border-brand-border bg-white px-4 py-2.5 text-center text-3xl font-black tracking-[0.6em] text-brand-charcoal outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 shadow-premium-sm"
+                                className="w-full rounded-lg border border-[#3A352F] bg-[#2C2923] px-4 py-2.5 text-center text-3xl font-black tracking-[0.6em] text-[#EFEBE3] outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20 shadow-premium-sm"
                             />
                             <button
                                 onClick={handleVerifyOtp}
@@ -162,26 +162,26 @@ const CurrentOrder = ({ order, onstatusUpdate }: CurrentOrderProps) => {
             )}
 
             {/* Order Items */}
-            <div className="rounded-xl border border-brand-border bg-brand-cream/30 p-4 shadow-premium-sm">
-                <div className="flex items-center gap-2 mb-3 border-b border-brand-border/40 pb-2">
-                    <ShoppingBag size={14} className="text-brand-muted" />
-                    <h3 className="text-sm font-bold font-serif text-brand-charcoal">Order Items</h3>
+            <div className="rounded-xl border border-[#3A352F] bg-[#22201B]/30 p-4 shadow-premium-sm">
+                <div className="flex items-center gap-2 mb-3 border-b border-[#3A352F]/40 pb-2">
+                    <ShoppingBag size={14} className="text-[#A39B8F]" />
+                    <h3 className="text-sm font-bold font-serif text-[#EFEBE3]">Order Items</h3>
                 </div>
                 <div className="space-y-2">
                     {order.items.map((item: any) => (
                         <div key={item._id} className="flex items-center justify-between text-sm">
-                            <span className="text-brand-charcoal font-semibold">{item.quantity} × {item.name}</span>
-                            <span className="font-bold text-brand-muted">₹{item.price}</span>
+                            <span className="text-[#EFEBE3] font-semibold">{item.quantity} × {item.name}</span>
+                            <span className="font-bold text-[#A39B8F]">₹{item.price}</span>
                         </div>
                     ))}
                 </div>
-                <div className="mt-4 border-t border-brand-border/40 pt-3 space-y-1.5">
+                <div className="mt-4 border-t border-[#3A352F]/40 pt-3 space-y-1.5">
                     <div className="flex justify-between text-sm">
-                        <span className="text-brand-muted font-semibold">Total</span>
-                        <span className="font-bold text-brand-charcoal">₹{order.totalAmount}</span>
+                        <span className="text-[#A39B8F] font-semibold">Total</span>
+                        <span className="font-bold text-[#EFEBE3]">₹{order.totalAmount}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                        <span className="text-brand-muted font-semibold">Payment</span>
+                        <span className="text-[#A39B8F] font-semibold">Payment</span>
                         <span className="font-extrabold text-brand-secondary">{order.paymentStatus}</span>
                     </div>
                 </div>

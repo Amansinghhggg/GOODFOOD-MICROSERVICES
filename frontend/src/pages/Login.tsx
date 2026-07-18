@@ -90,18 +90,18 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen bg-brand-cream px-4 py-8 text-brand-charcoal sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#22201B] px-4 py-8 text-[#EFEBE3] sm:px-6 lg:px-8">
       <div className="relative mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
         {/* Left — Brand */}
         <div className="space-y-6 hidden lg:block">
           <div>
             <p className="font-serif text-xs font-semibold uppercase tracking-[0.3em] text-brand-primary">Food delivery</p>
-            <h1 className="mt-3 font-serif text-6xl font-black leading-none tracking-tight text-brand-charcoal">
+            <h1 className="mt-3 font-serif text-6xl font-black leading-none tracking-tight text-[#EFEBE3]">
               GOOD
               <span className="text-brand-primary">FOOD</span>
             </h1>
           </div>
-          <p className="max-w-sm font-serif text-lg leading-relaxed text-brand-muted">
+          <p className="max-w-sm font-serif text-lg leading-relaxed text-[#A39B8F]">
             Crave it. Discover it. Enjoy it — delivered right to your door.
           </p>
 
@@ -110,7 +110,7 @@ const Login = () => {
             {["🍕 1000+ restaurants", "⚡ 30 min delivery", "🎯 Live tracking"].map((f) => (
               <span
                 key={f}
-                className="rounded-full border border-brand-border bg-brand-cream-dark/40 px-4 py-2 text-xs font-semibold text-brand-muted shadow-premium-sm"
+                className="rounded-full border border-[#3A352F] bg-[#22201B]-dark/40 px-4 py-2 text-xs font-semibold text-[#A39B8F] shadow-premium-sm"
               >
                 {f}
               </span>
@@ -119,27 +119,27 @@ const Login = () => {
         </div>
 
         {/* Right — Auth card */}
-        <div className="rounded-3xl border border-brand-border/60 bg-brand-card p-6 shadow-premium-lg sm:p-8">
+        <div className="rounded-3xl border border-[#3A352F]/60 bg-[#2C2923] p-6 shadow-premium-lg sm:p-8">
           {/* Mobile logo */}
           <div className="mb-6 lg:hidden text-center">
-            <h1 className="font-serif text-3xl font-black text-brand-charcoal">GOOD<span className="text-brand-primary">FOOD</span></h1>
+            <h1 className="font-serif text-3xl font-black text-[#EFEBE3]">GOOD<span className="text-brand-primary">FOOD</span></h1>
           </div>
 
           <div className="mb-6">
-            <h2 className="font-serif text-2xl font-black text-brand-charcoal">{title}</h2>
-            <p className="mt-1 text-sm text-brand-muted">
+            <h2 className="font-serif text-2xl font-black text-[#EFEBE3]">{title}</h2>
+            <p className="mt-1 text-sm text-[#A39B8F]">
               {isLogin ? "Sign in to your account" : "Join GOODFOOD today"}
             </p>
           </div>
 
           {/* Tab switcher */}
-          <div className="mb-6 grid grid-cols-2 rounded-2xl border border-brand-border bg-brand-cream-dark/50 p-1">
+          <div className="mb-6 grid grid-cols-2 rounded-2xl border border-[#3A352F] bg-[#22201B]-dark/50 p-1">
             <button
               type="button"
               onClick={() => setMode("login")}
               className={`rounded-xl px-4 py-2 text-xs font-bold transition duration-200 ${isLogin
                   ? "bg-brand-primary text-white shadow-premium-sm"
-                  : "text-brand-muted hover:text-brand-charcoal"
+                  : "text-[#A39B8F] hover:text-[#EFEBE3]"
                 }`}
             >
               Login
@@ -149,7 +149,7 @@ const Login = () => {
               onClick={() => setMode("signup")}
               className={`rounded-xl px-4 py-2 text-xs font-bold transition duration-200 ${!isLogin
                   ? "bg-brand-primary text-white shadow-premium-sm"
-                  : "text-brand-muted hover:text-brand-charcoal"
+                  : "text-[#A39B8F] hover:text-[#EFEBE3]"
                 }`}
             >
               Sign up
@@ -218,20 +218,20 @@ const Login = () => {
 
           <div className="my-5 flex items-center gap-4">
             <span className="h-px flex-1 bg-brand-border/60" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-brand-muted">or</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-[#A39B8F]">or</span>
             <span className="h-px flex-1 bg-brand-border/60" />
           </div>
 
           <button
             onClick={() => googleLogin()}
             disabled={loading}
-            className="flex w-full items-center justify-center gap-3 rounded-xl border border-brand-border bg-white px-4 py-2.5 text-sm font-bold text-brand-charcoal shadow-premium-sm transition hover:bg-brand-cream-dark/20 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-3 rounded-xl border border-[#3A352F] bg-[#2C2923] px-4 py-2.5 text-sm font-bold text-[#EFEBE3] shadow-premium-sm transition hover:bg-[#22201B]-dark/20 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <FcGoogle size={18} />
             {loading ? "Signing in..." : "Continue with Google"}
           </button>
 
-          <p className="mt-5 text-center font-serif text-xs text-brand-muted italic">
+          <p className="mt-5 text-center font-serif text-xs text-[#A39B8F] italic">
             Taste first. Tap later.
           </p>
         </div>
@@ -256,7 +256,7 @@ const Field = ({
   onChange: (v: string) => void;
 }) => (
   <div>
-    <label htmlFor={id} className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+    <label htmlFor={id} className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-[#A39B8F]">
       {label}
     </label>
     <input
@@ -265,7 +265,7 @@ const Field = ({
       value={value}
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-xl border border-brand-border bg-brand-cream/20 px-4 py-2.5 text-sm text-brand-charcoal outline-none placeholder:text-brand-muted/40 focus:border-brand-primary/50 focus:bg-white focus:ring-1 focus:ring-brand-primary/20 transition duration-155"
+      className="w-full rounded-xl border border-[#3A352F] bg-[#22201B]/20 px-4 py-2.5 text-sm text-[#EFEBE3] outline-none placeholder:text-[#A39B8F]/40 focus:border-brand-primary/50 focus:bg-[#2C2923] focus:ring-1 focus:ring-brand-primary/20 transition duration-155"
     />
   </div>
 );

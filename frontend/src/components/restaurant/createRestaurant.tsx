@@ -81,48 +81,48 @@ const CreateRestaurant = () => {
     }
 
     return (
-        <div className="max-w-3xl mx-auto my-10 rounded-xl bg-white p-8 border border-brand-border shadow-premium">
-            <h2 className="text-3xl font-bold font-serif text-brand-charcoal mb-6">Create Restaurant</h2>
+        <div className="max-w-3xl mx-auto my-10 rounded-xl bg-[#2C2923] p-8 border border-[#3A352F] shadow-premium">
+            <h2 className="text-3xl font-bold font-serif text-[#EFEBE3] mb-6">Create Restaurant</h2>
             <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Name</label>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#A39B8F] mb-1">Name</label>
                     <input
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="mt-1 block w-full rounded-lg border border-brand-border bg-white py-2.5 px-3 text-sm text-brand-charcoal shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
+                        className="mt-1 block w-full rounded-lg border border-[#3A352F] bg-[#2C2923] py-2.5 px-3 text-sm text-[#EFEBE3] shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                         placeholder="Restaurant name"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Description</label>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#A39B8F] mb-1">Description</label>
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         rows={4}
-                        className="mt-1 block w-full rounded-lg border border-brand-border bg-white py-2.5 px-3 text-sm text-brand-charcoal shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
+                        className="mt-1 block w-full rounded-lg border border-[#3A352F] bg-[#2C2923] py-2.5 px-3 text-sm text-[#EFEBE3] shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                         placeholder="Short description"
                     />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Latitude</label>
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-[#A39B8F] mb-1">Latitude</label>
                         <input
                             value={latitude}
                             onChange={(e) => setLatitude(e.target.value === "" ? "" : Number(e.target.value))}
-                            className="mt-1 block w-full rounded-lg border border-brand-border bg-white py-2.5 px-3 text-sm text-brand-charcoal shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
+                            className="mt-1 block w-full rounded-lg border border-[#3A352F] bg-[#2C2923] py-2.5 px-3 text-sm text-[#EFEBE3] shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                             placeholder="Latitude"
                             type="number"
                             step="any"
                         />
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Longitude</label>
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-[#A39B8F] mb-1">Longitude</label>
                         <input
                             value={longitude}
                             onChange={(e) => setLongitude(e.target.value === "" ? "" : Number(e.target.value))}
-                            className="mt-1 block w-full rounded-lg border border-brand-border bg-white py-2.5 px-3 text-sm text-brand-charcoal shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
+                            className="mt-1 block w-full rounded-lg border border-[#3A352F] bg-[#2C2923] py-2.5 px-3 text-sm text-[#EFEBE3] shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                             placeholder="Longitude"
                             type="number"
                             step="any"
@@ -131,35 +131,35 @@ const CreateRestaurant = () => {
                 </div>
 
                 <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Formatted Address</label>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#A39B8F] mb-1">Formatted Address</label>
                     <input
                         value={formattedAddress}
                         onChange={(e) => setFormattedAddress(e.target.value)}
-                        className="mt-1 block w-full rounded-lg border border-brand-border bg-white py-2.5 px-3 text-sm text-brand-charcoal shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
+                        className="mt-1 block w-full rounded-lg border border-[#3A352F] bg-[#2C2923] py-2.5 px-3 text-sm text-[#EFEBE3] shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                         placeholder="Address"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Phone</label>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#A39B8F] mb-1">Phone</label>
                     <input
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="mt-1 block w-full rounded-lg border border-brand-border bg-white py-2.5 px-3 text-sm text-brand-charcoal shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
+                        className="mt-1 block w-full rounded-lg border border-[#3A352F] bg-[#2C2923] py-2.5 px-3 text-sm text-[#EFEBE3] shadow-premium-sm outline-none transition focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/20"
                         placeholder="Contact phone"
                         type="number"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-brand-muted mb-1">Image</label>
-                    <input type="file" accept="image/*" onChange={handleFileChange} className="mt-2 block w-full text-sm text-brand-muted file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-cream file:text-brand-charcoal hover:file:bg-brand-cream-dark cursor-pointer" />
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#A39B8F] mb-1">Image</label>
+                    <input type="file" accept="image/*" onChange={handleFileChange} className="mt-2 block w-full text-sm text-[#A39B8F] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#22201B] file:text-[#EFEBE3] hover:file:bg-[#22201B]-dark cursor-pointer" />
                     {previewUrl && (
-                        <img src={previewUrl} alt="preview" className="mt-4 h-40 w-auto rounded-xl border border-brand-border object-cover shadow-premium-sm" />
+                        <img src={previewUrl} alt="preview" className="mt-4 h-40 w-auto rounded-xl border border-[#3A352F] object-cover shadow-premium-sm" />
                     )}
                 </div>
 
-                <div className="flex items-center justify-end pt-4 border-t border-brand-border/60">
+                <div className="flex items-center justify-end pt-4 border-t border-[#3A352F]/60">
                     <button
                         type="submit"
                         disabled={submitting}

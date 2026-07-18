@@ -52,7 +52,7 @@ const OrderMap = ({ order }: IOrderMapProps) => {
 
     if (order.deliveryAddress.latitude == null || order.deliveryAddress.longitude == null) {
         return (
-            <div className="flex h-32 items-center justify-center rounded-xl border border-brand-border bg-white text-sm text-brand-muted">
+            <div className="flex h-32 items-center justify-center rounded-xl border border-[#3A352F] bg-[#2C2923] text-sm text-[#A39B8F]">
                 Location data not available
             </div>
         );
@@ -90,17 +90,17 @@ const OrderMap = ({ order }: IOrderMapProps) => {
 
     if (!riderPosition) {
         return (
-            <div className="flex h-32 items-center justify-center rounded-xl border border-brand-border bg-white text-sm text-brand-primary font-semibold">
+            <div className="flex h-32 items-center justify-center rounded-xl border border-[#3A352F] bg-[#2C2923] text-sm text-brand-primary font-semibold">
                 Fetching your location…
             </div>
         );
     }
 
     return (
-        <div className="overflow-hidden rounded-xl border border-brand-border shadow-premium">
-            <div className="flex items-center justify-between bg-brand-cream-dark border-b border-brand-border px-4 py-2.5">
+        <div className="overflow-hidden rounded-xl border border-[#3A352F] shadow-premium">
+            <div className="flex items-center justify-between bg-[#22201B]-dark border-b border-[#3A352F] px-4 py-2.5">
                 <p className="text-xs font-bold uppercase tracking-wider text-brand-primary">Live Route</p>
-                <div className="flex items-center gap-3 text-xs text-brand-muted font-medium">
+                <div className="flex items-center gap-3 text-xs text-[#A39B8F] font-medium">
                     <span>🛵 You</span>
                     <span>📦 Drop</span>
                 </div>

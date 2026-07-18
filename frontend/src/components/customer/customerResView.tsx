@@ -45,10 +45,10 @@ const CustomerResView = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f7f7f7]">
+      <div className="min-h-screen bg-[#22201B]">
         {/* Skeleton Hero */}
-        <div className="relative overflow-hidden bg-[#e8e8e8] h-52 sm:h-64 animate-pulse"></div>
-        
+        <div className="relative overflow-hidden bg-[#3A352F] h-52 sm:h-64 animate-pulse"></div>
+
         {/* Skeleton Profile */}
         <div className="relative -mt-10 px-4 sm:px-8 max-w-5xl mx-auto flex items-end gap-4 pb-6">
           <div className="h-20 w-20 shrink-0 rounded-2xl bg-[#d4d4d4] animate-pulse border-4 border-white sm:h-24 sm:w-24"></div>
@@ -59,20 +59,20 @@ const CustomerResView = () => {
         </div>
 
         {/* Skeleton Info Strip */}
-        <div className="border-b border-[#e8e8e8] bg-white px-4 py-4 shadow-sm sm:px-8">
+        <div className="border-b border-[#3A352F] bg-[#2C2923] px-4 py-4 shadow-sm sm:px-8">
           <div className="mx-auto flex max-w-5xl gap-6">
-            <div className="h-4 w-1/4 bg-[#e8e8e8] animate-pulse rounded"></div>
-            <div className="h-4 w-1/6 bg-[#e8e8e8] animate-pulse rounded"></div>
-            <div className="h-4 w-1/5 bg-[#e8e8e8] animate-pulse rounded"></div>
+            <div className="h-4 w-1/4 bg-[#3A352F] animate-pulse rounded"></div>
+            <div className="h-4 w-1/6 bg-[#3A352F] animate-pulse rounded"></div>
+            <div className="h-4 w-1/5 bg-[#3A352F] animate-pulse rounded"></div>
           </div>
         </div>
 
         {/* Skeleton Menu Items */}
         <div className="mx-auto max-w-5xl px-4 py-8 sm:px-8">
-          <div className="h-6 w-32 bg-[#e8e8e8] animate-pulse rounded mb-6"></div>
+          <div className="h-6 w-32 bg-[#3A352F] animate-pulse rounded mb-6"></div>
           <div className="grid gap-6 sm:grid-cols-2">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} className="flex gap-4 p-4 rounded-2xl border border-[#e8e8e8] bg-white">
+              <div key={i} className="flex gap-4 p-4 rounded-2xl border border-[#3A352F] bg-[#2C2923]">
                 <div className="flex-1 space-y-3">
                   <div className="h-5 w-3/4 bg-[#f0f0f0] animate-pulse rounded"></div>
                   <div className="h-3 w-full bg-[#f0f0f0] animate-pulse rounded"></div>
@@ -90,7 +90,7 @@ const CustomerResView = () => {
 
   if (!restaurant) {
     return (
-      <div className="flex min-h-60 items-center justify-center text-sm font-medium text-[#999999]">
+      <div className="flex min-h-60 items-center justify-center text-sm font-medium text-[#877E71]">
         Restaurant not found.
       </div>
     );
@@ -107,7 +107,7 @@ const CustomerResView = () => {
             alt={restaurant.name}
             className="h-full w-full object-cover blur-[1px] scale-105 opacity-60"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-surface/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#22201B] via-[#22201B]/60 to-[#22201B]/10" />
         </div>
 
         {/* Content over banner */}
@@ -115,19 +115,19 @@ const CustomerResView = () => {
           <div className="w-full px-margin-mobile pb-6 md:px-gutter">
             <div className="flex flex-col md:flex-row md:items-end gap-5 max-w-container-max mx-auto">
               {/* Logo */}
-              <div className="h-24 w-24 md:h-32 md:w-32 shrink-0 overflow-hidden rounded-[24px] border-4 border-surface shadow-md bg-surface-container-lowest">
+              <div className="h-24 w-24 md:h-32 md:w-32 shrink-0 overflow-hidden rounded-[24px] border-4 border-[#22201B] shadow-md bg-[#22201B]">
                 <img src={restaurant.image} alt={restaurant.name} className="h-full w-full object-cover" />
               </div>
 
               <div className="flex-1">
                 <div className="flex flex-wrap items-center gap-3 mb-2">
-                  <h1 className="font-headline-md text-3xl md:text-4xl font-bold text-on-surface drop-shadow-sm">{restaurant.name}</h1>
-                  <span className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest shadow-sm ${restaurant.isOpen ? "bg-green-100 text-green-800 border border-green-200" : "bg-surface-variant text-on-surface-variant border border-outline-variant"}`}>
+                  <h1 className="font-serif text-3xl md:text-4xl font-bold text-[#EFEBE3] drop-shadow-sm">{restaurant.name}</h1>
+                  <span className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest shadow-sm ${restaurant.isOpen ? "bg-brand-success/10 text-brand-success border border-brand-success/20" : "bg-[#2C2923] text-[#A39B8F] border border-[#3A352F]"}`}>
                     {restaurant.isOpen ? "● OPEN" : "○ CLOSED"}
                   </span>
                 </div>
                 {restaurant.description && (
-                  <p className="max-w-xl text-sm text-on-surface-variant font-medium drop-shadow-sm">{restaurant.description}</p>
+                  <p className="max-w-xl text-sm text-[#A39B8F] font-medium drop-shadow-sm">{restaurant.description}</p>
                 )}
               </div>
             </div>
@@ -136,14 +136,14 @@ const CustomerResView = () => {
       </div>
 
       {/* Info strip */}
-      <div className="border-b border-[#e8e8e8] bg-white px-4 py-4 shadow-sm sm:px-8">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-4 text-xs text-[#555555] font-semibold">
+      <div className="border-b border-[#3A352F] bg-[#2C2923] px-4 py-4 shadow-sm sm:px-8">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-4 text-xs text-[#A39B8F] font-semibold">
           <div className="flex items-center gap-1.5">
             <MapPin size={14} className="text-[#ff385c]" />
             <span className="max-w-xs truncate">{restaurant.autoLocation?.formattedAddress || "Address not available"}</span>
           </div>
           <span className="text-[#e8e8e8]">|</span>
-          <a href={`tel:+91${restaurant.phone}`} className="flex items-center gap-1.5 font-bold text-[#111111] hover:text-[#ff385c] transition-colors">
+          <a href={`tel:+91${restaurant.phone}`} className="flex items-center gap-1.5 font-bold text-[#EFEBE3] hover:text-[#ff385c] transition-colors">
             <Phone size={14} className="text-[#ff385c]" />
             +91 {restaurant.phone}
           </a>
@@ -157,7 +157,7 @@ const CustomerResView = () => {
 
       {/* Menu */}
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-8">
-        <h2 className="mb-6 font-serif text-2xl font-black text-[#111111]">Menu</h2>
+        <h2 className="mb-6 font-serif text-2xl font-black text-[#EFEBE3]">Menu</h2>
         <AllMenuItems
           restaurantId={restaurant._id}
           restaurantOwner={restaurant.owner}

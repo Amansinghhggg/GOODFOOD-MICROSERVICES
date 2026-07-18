@@ -99,8 +99,8 @@ const EditRestaurant = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-brand-cream">
-        <div className="flex items-center gap-3 text-xs text-brand-muted">
+      <div className="flex min-h-screen items-center justify-center bg-[#22201B]">
+        <div className="flex items-center gap-3 text-xs text-[#A39B8F]">
           <svg className="h-5 w-5 animate-spin text-brand-primary" viewBox="0 0 24 24" fill="none">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
@@ -112,10 +112,10 @@ const EditRestaurant = () => {
   }
 
   const inputClass =
-    "w-full rounded-xl border border-brand-border bg-white py-2.5 pl-10 pr-3 text-xs text-brand-charcoal outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 placeholder:text-brand-muted/40";
+    "w-full rounded-xl border border-[#3A352F] bg-[#2C2923] py-2.5 pl-10 pr-3 text-xs text-[#EFEBE3] outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 placeholder:text-[#A39B8F]/40";
 
   return (
-    <div className="min-h-screen bg-brand-cream px-4 py-8 sm:px-6">
+    <div className="min-h-screen bg-[#22201B] px-4 py-8 sm:px-6">
       <div className="mx-auto max-w-2xl">
 
         {/* Header */}
@@ -123,37 +123,37 @@ const EditRestaurant = () => {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-brand-border bg-brand-card text-brand-muted shadow-premium-sm transition hover:bg-brand-cream-dark/30 hover:text-brand-charcoal"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#3A352F] bg-[#2C2923] text-[#A39B8F] shadow-premium-sm transition hover:bg-[#22201B]-dark/30 hover:text-[#EFEBE3]"
           >
             <ArrowLeft size={15} />
           </button>
           <div>
-            <h1 className="font-serif text-xl font-bold text-brand-charcoal">Edit Restaurant</h1>
-            <p className="text-xs text-brand-muted">Update your restaurant details</p>
+            <h1 className="font-serif text-xl font-bold text-[#EFEBE3]">Edit Restaurant</h1>
+            <p className="text-xs text-[#A39B8F]">Update your restaurant details</p>
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-3xl bg-brand-card shadow-premium border border-brand-border/60">
+        <div className="overflow-hidden rounded-3xl bg-[#2C2923] shadow-premium border border-[#3A352F]/60">
           <form onSubmit={handleSubmit} className="space-y-6 p-6 sm:p-8">
 
             {/* Image upload */}
             <div>
-              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-[#A39B8F]">
                 Restaurant Photo
               </label>
-              <label className="group relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-brand-border bg-brand-cream/35 transition hover:border-brand-primary hover:bg-brand-cream/60">
+              <label className="group relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-[#3A352F] bg-[#22201B]/35 transition hover:border-brand-primary hover:bg-[#22201B]/60">
                 {previewUrl ? (
                   <div className="relative w-full">
                     <img src={previewUrl} alt="preview" className="h-48 w-full object-cover" />
                     <div className="absolute inset-0 flex items-center justify-center bg-brand-charcoal/40 opacity-0 transition group-hover:opacity-100 backdrop-blur-[2px]">
-                      <span className="rounded-xl bg-white px-3 py-1.5 text-xs font-bold text-brand-charcoal shadow-premium">Change Photo</span>
+                      <span className="rounded-xl bg-[#2C2923] px-3 py-1.5 text-xs font-bold text-[#EFEBE3] shadow-premium">Change Photo</span>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center gap-2 py-10 text-brand-muted/40 group-hover:text-brand-primary/60">
+                  <div className="flex flex-col items-center gap-2 py-10 text-[#A39B8F]/40 group-hover:text-brand-primary/60">
                     <ImagePlus size={30} />
-                    <span className="text-xs font-bold text-brand-muted">Click to upload photo</span>
-                    <span className="text-[10px] text-brand-muted/75">PNG, JPG, WEBP accepted</span>
+                    <span className="text-xs font-bold text-[#A39B8F]">Click to upload photo</span>
+                    <span className="text-[10px] text-[#A39B8F]/75">PNG, JPG, WEBP accepted</span>
                   </div>
                 )}
                 <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 cursor-pointer opacity-0" />
@@ -162,11 +162,11 @@ const EditRestaurant = () => {
 
             {/* Name */}
             <div>
-              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-[#A39B8F]">
                 Restaurant Name
               </label>
               <div className="relative">
-                <Store size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
+                <Store size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A39B8F]" />
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -178,11 +178,11 @@ const EditRestaurant = () => {
 
             {/* Description */}
             <div>
-              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-[#A39B8F]">
                 Description
               </label>
               <div className="relative">
-                <FileText size={14} className="absolute left-3 top-3 text-brand-muted" />
+                <FileText size={14} className="absolute left-3 top-3 text-[#A39B8F]" />
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -196,11 +196,11 @@ const EditRestaurant = () => {
             {/* Lat / Lng */}
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+                <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-[#A39B8F]">
                   Latitude
                 </label>
                 <div className="relative">
-                  <Navigation size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
+                  <Navigation size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A39B8F]" />
                   <input
                     value={latitude}
                     onChange={(e) => setLatitude(e.target.value === "" ? "" : Number(e.target.value))}
@@ -212,11 +212,11 @@ const EditRestaurant = () => {
                 </div>
               </div>
               <div>
-                <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+                <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-[#A39B8F]">
                   Longitude
                 </label>
                 <div className="relative">
-                  <Navigation size={14} className="absolute left-3 top-1/2 -translate-y-1/2 rotate-90 text-brand-muted" />
+                  <Navigation size={14} className="absolute left-3 top-1/2 -translate-y-1/2 rotate-90 text-[#A39B8F]" />
                   <input
                     value={longitude}
                     onChange={(e) => setLongitude(e.target.value === "" ? "" : Number(e.target.value))}
@@ -231,11 +231,11 @@ const EditRestaurant = () => {
 
             {/* Address */}
             <div>
-              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-[#A39B8F]">
                 Formatted Address
               </label>
               <div className="relative">
-                <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
+                <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A39B8F]" />
                 <input
                   value={formattedAddress}
                   onChange={(e) => setFormattedAddress(e.target.value)}
@@ -247,12 +247,12 @@ const EditRestaurant = () => {
 
             {/* Phone */}
             <div>
-              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-[#A39B8F]">
                 Phone Number
               </label>
               <div className="relative">
-                <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted" />
-                <div className="pointer-events-none absolute left-9 top-1/2 -translate-y-1/2 select-none text-xs font-bold text-brand-muted">
+                <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A39B8F]" />
+                <div className="pointer-events-none absolute left-9 top-1/2 -translate-y-1/2 select-none text-xs font-bold text-[#A39B8F]">
                   +91
                 </div>
                 <input
@@ -266,14 +266,14 @@ const EditRestaurant = () => {
             </div>
 
             {/* Divider */}
-            <div className="border-t border-brand-border/60" />
+            <div className="border-t border-[#3A352F]/60" />
 
             {/* Actions */}
             <div className="flex items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="rounded-xl border border-brand-border bg-brand-card px-5 py-2.5 text-xs font-bold text-brand-muted hover:bg-brand-cream-dark/30 transition"
+                className="rounded-xl border border-[#3A352F] bg-[#2C2923] px-5 py-2.5 text-xs font-bold text-[#A39B8F] hover:bg-[#22201B]-dark/30 transition"
               >
                 Cancel
               </button>

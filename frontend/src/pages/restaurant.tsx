@@ -159,7 +159,7 @@ const Restaurant = () => {
                   </button>
                   <button
                     onClick={dismissAudioPrompt}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/40 transition hover:text-white/60"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#2C2923]/[0.04] px-4 py-2 text-xs font-medium text-white/40 transition hover:text-white/60"
                   >
                     <BellOff size={13} />
                     Dismiss
